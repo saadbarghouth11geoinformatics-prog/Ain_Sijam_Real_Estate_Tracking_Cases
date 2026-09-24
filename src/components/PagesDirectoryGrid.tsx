@@ -244,7 +244,7 @@ export const PagesDirectoryGrid: React.FC<PagesDirectoryGridProps> = ({
               <div className="lg:col-span-5 relative bg-slate-950 p-4 sm:p-6 flex flex-col justify-center items-center border-t lg:border-t-0 lg:border-r border-slate-800">
                 <div className="w-full relative rounded-2xl overflow-hidden border border-slate-700/80 shadow-inner group">
                   <img 
-                    src="/assets/case-studies/01-kafd-riyadh/comparison_clear_before_latest.jpg"
+                    src="/assets/case-studies/01_kafd_riyadh/comparison_clear_before_latest.jpg"
                     alt="مقارنة الأقمار الصناعية لمركز الملك عبدالله المالي كافد"
                     className="w-full h-56 sm:h-72 lg:h-80 object-contain bg-slate-950 transition-transform duration-500 group-hover:scale-102"
                     loading="lazy"
@@ -294,7 +294,7 @@ export const PagesDirectoryGrid: React.FC<PagesDirectoryGridProps> = ({
 
                 <div className="px-4 py-2 flex-1 flex items-center justify-center">
                   <img 
-                    src="/assets/case-studies/02-riyadh-metro-west-depot/construction_progress_3_clear_stages.jpg"
+                    src="/assets/case-studies/02_riyadh_metro_west_depot/construction_progress_3_clear_stages.jpg"
                     alt="رصد مراحل البناء والإنشاء بالأقمار الصناعية"
                     className="w-full max-h-64 object-contain transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"

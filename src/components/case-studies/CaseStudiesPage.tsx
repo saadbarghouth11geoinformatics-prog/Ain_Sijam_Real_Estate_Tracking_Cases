@@ -260,8 +260,8 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onNavigate }) 
                 title="انقر لفتح دراسة حالة مركز الملك عبدالله المالي بالكامل"
               >
                 <ImageViewerWithZoom
-                  src="/assets/case-studies/01-kafd-riyadh/comparison_clear_before_latest.jpg"
-                  fallbackSrc="/assets/case-studies/01-kafd-riyadh/timeline_5_stages_high_resolution.jpg"
+                  src="/assets/case-studies/01_kafd_riyadh/comparison_clear_before_latest.jpg"
+                  fallbackSrc="/assets/case-studies/01_kafd_riyadh/timeline_5_stages_high_resolution.jpg"
                   alt="مقارنة فضائية قبل وبعد لمشروع مركز الملك عبدالله المالي"
                   caption="مقارنة فضائية معتمدة توضح مراحل التطور لمركز الملك عبدالله المالي (KAFD) من التأسيس إلى التشغيل"
                   badgeLabel="نموذج مقارنة فضائي معتمد"
