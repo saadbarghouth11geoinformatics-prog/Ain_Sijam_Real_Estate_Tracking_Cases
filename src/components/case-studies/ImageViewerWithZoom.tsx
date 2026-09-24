@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ZoomIn, ZoomOut, RotateCcw, Maximize2, X, Satellite } from 'lucide-react';
 
 /**
@@ -100,9 +101,15 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
     setScale(1);
   };
 
-  const toggleFullscreen = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsFullscreen(!isFullscreen);
+  const toggleFullscreen = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setIsFullscreen((open) => !open);
+    setScale(1);
+  };
+
+  const openFullscreen = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setIsFullscreen(true);
     setScale(1);
   };
 
@@ -158,7 +165,7 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
             )}
             <div className="w-[1px] h-4 bg-slate-700 mx-0.5" />
             <button
-              onClick={toggleFullscreen}
+              onClick={openFullscreen}
               className="p-1.5 rounded-lg hover:bg-blue-600 hover:text-white active:scale-90 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:outline-none"
               title="عرض بملء الشاشة"
               aria-label="ملء الشاشة"
@@ -209,9 +216,9 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
       </div>
 
       {/* Fullscreen Modal View */}
-      {isFullscreen && (
+      {isFullscreen && createPortal(
         <div 
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col animate-in fade-in duration-200"
           dir="rtl"
           role="dialog"
           aria-modal="true"
@@ -283,7 +290,8 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
               {caption}
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
