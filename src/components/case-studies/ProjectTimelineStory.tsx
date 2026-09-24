@@ -30,6 +30,22 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
   const [isCrossFading, setIsCrossFading] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // The satellite images are up to ~1.4 MB each. Start warming the browser
+  // cache shortly after the first image renders, so changing years is instant.
+  useEffect(() => {
+    if (!stages || stages.length === 0) return;
+
+    const preloadTimer = window.setTimeout(() => {
+      stages.slice(1).forEach((stage) => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.src = normalizeCaseStudyAssetPath(stage.imagePath) ?? stage.imagePath;
+      });
+    }, 500);
+
+    return () => window.clearTimeout(preloadTimer);
+  }, [stages]);
+
   if (!stages || stages.length === 0) {
     return null;
   }
@@ -150,6 +166,7 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
               aspectRatioClass="aspect-16/10"
               objectFit="contain"
               className="w-full h-full border-0 bg-transparent"
+              loading="eager"
             />
           </div>
         </div>

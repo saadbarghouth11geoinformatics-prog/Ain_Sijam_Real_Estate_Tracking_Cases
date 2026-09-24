@@ -22,6 +22,7 @@ interface ImageViewerWithZoomProps {
   className?: string;
   isCoverThumbnail?: boolean;
   objectFit?: 'contain' | 'cover';
+  loading?: 'eager' | 'lazy';
 }
 
 export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
@@ -34,7 +35,8 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
   aspectRatioClass = 'aspect-16/10',
   className = '',
   isCoverThumbnail = false,
-  objectFit = 'contain'
+  objectFit = 'contain',
+  loading = 'lazy'
 }) => {
   const normalizedSrc = normalizeCaseStudyAssetPath(src) ?? src;
   const normalizedFallbackSrc = normalizeCaseStudyAssetPath(fallbackSrc);
@@ -178,7 +180,8 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
                 isLoaded ? 'opacity-100' : 'opacity-0'
               } ${scale === 1 ? 'hover:scale-[1.025]' : ''}`}
               onClick={toggleFullscreen}
-              loading="lazy"
+              loading={loading}
+              fetchPriority={loading === 'eager' ? 'high' : 'auto'}
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#0a1128] text-slate-500 space-y-2">
