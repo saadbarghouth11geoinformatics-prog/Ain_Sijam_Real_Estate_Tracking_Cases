@@ -11,7 +11,7 @@ import {
   Clock
 } from 'lucide-react';
 import { HistoricalStageImage } from '../../data/caseStudiesData';
-import { ImageViewerWithZoom } from './ImageViewerWithZoom';
+import { ImageViewerWithZoom, normalizeCaseStudyAssetPath } from './ImageViewerWithZoom';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface ProjectTimelineStoryProps {
@@ -224,7 +224,7 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
               }`}
             >
               <img 
-                src={stg.imagePath} 
+                src={normalizeCaseStudyAssetPath(stg.imagePath)}
                 alt="" 
                 className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
                 loading="lazy"

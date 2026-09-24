@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ZoomIn, ZoomOut, RotateCcw, Maximize2, X, Satellite } from 'lucide-react';
 
+/**
+ * The case-study assets are stored with underscore-separated folder names,
+ * while an earlier data export used hyphen-separated slugs in its URLs.
+ */
+export const normalizeCaseStudyAssetPath = (path?: string) =>
+  path?.replace(
+    /\/(0[1-6])-(kafd-riyadh|riyadh-metro-west-depot|six-flags-qiddiya|red-sea-airport|sheybarah-resort|spark-energy-park)(?=\/)/,
+    (_match, number, slug) => `/${number}_${slug.replace(/-/g, '_')}`
+  );
+
 interface ImageViewerWithZoomProps {
   src: string;
   fallbackSrc?: string;
@@ -26,20 +36,22 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
   isCoverThumbnail = false,
   objectFit = 'contain'
 }) => {
+  const normalizedSrc = normalizeCaseStudyAssetPath(src) ?? src;
+  const normalizedFallbackSrc = normalizeCaseStudyAssetPath(fallbackSrc);
   const [scale, setScale] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState(src);
+  const [currentSrc, setCurrentSrc] = useState(normalizedSrc);
   const [hasTriedFallback, setHasTriedFallback] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Sync if src changes
   useEffect(() => {
-    setCurrentSrc(src);
+    setCurrentSrc(normalizedSrc);
     setHasTriedFallback(false);
     setImageError(false);
     setIsLoaded(false);
-  }, [src]);
+  }, [normalizedSrc]);
 
   // Handle escape key to exit fullscreen
   useEffect(() => {
@@ -58,9 +70,9 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
   }, [isFullscreen]);
 
   const handleImageError = () => {
-    if (fallbackSrc && !hasTriedFallback && currentSrc !== fallbackSrc) {
+    if (normalizedFallbackSrc && !hasTriedFallback && currentSrc !== normalizedFallbackSrc) {
       setHasTriedFallback(true);
-      setCurrentSrc(fallbackSrc);
+      setCurrentSrc(normalizedFallbackSrc);
     } else {
       setImageError(true);
       setIsLoaded(true);
