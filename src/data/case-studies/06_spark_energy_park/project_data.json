@@ -1,0 +1,118 @@
+{
+  "project_id": "06_spark_energy_park",
+  "name_ar": "مدينة الملك سلمان للطاقة – سبارك",
+  "name_en": "King Salman Energy Park (SPARK)",
+  "status_ar": "مدينة صناعية متكاملة؛ اكتملت غالبية البنية الأساسية للمرحلة الأولى مع استمرار استقطاب وتطوير أصول المستثمرين.",
+  "portfolio_story_ar": "يظهر التسلسل توسع شبكات الطرق والمرافق وتقسيم الأراضي الصناعية ثم ظهور منشآت المستثمرين داخل المخطط.",
+  "location": {
+    "bbox_wgs84": [
+      49.79,
+      25.89,
+      49.94,
+      26.03
+    ]
+  },
+  "satellite_stages": [
+    {
+      "stage": 1,
+      "label_ar": "بدء التطوير",
+      "requested_year": "2018",
+      "acquisition_date": "2018-09-30",
+      "cloud_cover_percent": 0.005136,
+      "sentinel_item_id": "S2B_39RUJ_20180930_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/39/R/UJ/2018/9/S2B_39RUJ_20180930_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        49.79,
+        25.89,
+        49.94,
+        26.03
+      ],
+      "file": "satellite_images/01_2018_بدء_التطوير.png"
+    },
+    {
+      "stage": 2,
+      "label_ar": "تقدم المرحلة الأولى",
+      "requested_year": "2021",
+      "acquisition_date": "2021-10-14",
+      "cloud_cover_percent": 0.003332,
+      "sentinel_item_id": "S2B_39RUJ_20211014_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/39/R/UJ/2021/10/S2B_39RUJ_20211014_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        49.79,
+        25.89,
+        49.94,
+        26.03
+      ],
+      "file": "satellite_images/02_2021_تقدم_المرحلة_الأولى.png"
+    },
+    {
+      "stage": 3,
+      "label_ar": "تشغيل وتخصيص أصول",
+      "requested_year": "2025",
+      "acquisition_date": "2025-10-23",
+      "cloud_cover_percent": 0.008347,
+      "sentinel_item_id": "S2B_39RUJ_20251023_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/39/R/UJ/2025/10/S2B_39RUJ_20251023_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        49.79,
+        25.89,
+        49.94,
+        26.03
+      ],
+      "file": "satellite_images/03_2025_تشغيل_وتخصيص_أصول.png"
+    }
+  ],
+  "tracking_workflow": [
+    {
+      "order": "01",
+      "title_ar": "اعتماد الأصل ونطاق الأرض",
+      "description_ar": "تسجيل رقم القطعة، الحدود، المالك/المطور، قرار التخصيص، والاستخدام المعتمد."
+    },
+    {
+      "order": "02",
+      "title_ar": "الفحص الجغرافي وخط الأساس",
+      "description_ar": "تثبيت حدود منطقة الاهتمام وحفظ صورة مرجعية مؤرخة وحساب حالة الأرض قبل التنفيذ."
+    },
+    {
+      "order": "03",
+      "title_ar": "المخطط والتصاريح",
+      "description_ar": "ربط المخطط العام، تقسيم القطع، اشتراطات الارتفاع، المساحات الخضراء، وتصاريح الجهات الحكومية."
+    },
+    {
+      "order": "04",
+      "title_ar": "تجهيز الموقع والبنية الأساسية",
+      "description_ar": "رصد التسوية والحفر والطرق المؤقتة وشبكات المياه والطاقة والصرف والاتصالات."
+    },
+    {
+      "order": "05",
+      "title_ar": "الإنشاء ونسب الإنجاز",
+      "description_ar": "قياس تغير المساحة المبنية والطرق والمرافق وربط كل لقطة بتقرير المقاول والمستخلصات."
+    },
+    {
+      "order": "06",
+      "title_ar": "الاختبارات والتسليم",
+      "description_ar": "توثيق اكتمال المباني والمرافق وشهادات الفحص والسلامة والاستلام الابتدائي والنهائي."
+    },
+    {
+      "order": "07",
+      "title_ar": "التشغيل والمراقبة",
+      "description_ar": "مقارنة الأصل المنفذ بالمخطط، تسجيل الانحرافات، ومتابعة التوسعات أو تغيرات الاستخدام."
+    }
+  ],
+  "official_sources": [
+    {
+      "title": "Saudi Aramco – SPARK groundbreaking",
+      "url": "https://www.aramco.com/en/news-media/news/2018/spark-new-era-of-growth-for-saudi-arabia"
+    },
+    {
+      "title": "SPARK – master plan",
+      "url": "https://www.spark.sa/page/Master_Plan"
+    },
+    {
+      "title": "SPARK – phase one progress",
+      "url": "https://www.spark.sa/page/news_detail/108"
+    }
+  ],
+  "disclosure_ar": "الصور الفضائية تثبت التغير المرئي في الموقع ضمن دقة Sentinel-2، ولا تثبت وحدها صدور تصريح أو ملكية أو نسبة إنجاز تعاقدية. يجب ربطها بوثائق الجهة المختصة داخل المنصة.",
+  "imagery_attribution": "Contains modified Copernicus Sentinel data. Rendered from the Earth Search public STAC catalog."
+}

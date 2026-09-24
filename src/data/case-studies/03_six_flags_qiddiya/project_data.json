@@ -1,0 +1,114 @@
+{
+  "project_id": "03_six_flags_qiddiya",
+  "name_ar": "Six Flags مدينة القدية",
+  "name_en": "Six Flags Qiddiya City",
+  "status_ar": "افتُتح رسميًا في 31 ديسمبر 2025 كأول أصل تشغيلي رئيسي في مدينة القدية.",
+  "portfolio_story_ar": "يبين التسلسل انتقال الموقع من أرض غير مطورة إلى أعمال طرق ومنشآت، ثم إلى متنزه مكتمل بعناصر كبيرة واضحة من الفضاء.",
+  "location": {
+    "bbox_wgs84": [
+      46.314,
+      24.574,
+      46.356,
+      24.607
+    ]
+  },
+  "satellite_stages": [
+    {
+      "stage": 1,
+      "label_ar": "الموقع قبل التطوير",
+      "requested_year": "2018",
+      "acquisition_date": "2018-05-31",
+      "cloud_cover_percent": 0,
+      "sentinel_item_id": "S2A_38RPN_20180531_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2018/5/S2A_38RPN_20180531_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.314,
+        24.574,
+        46.356,
+        24.607
+      ],
+      "file": "satellite_images/01_2018_الموقع_قبل_التطوير.png"
+    },
+    {
+      "stage": 2,
+      "label_ar": "أعمال الإنشاء",
+      "requested_year": "2022",
+      "acquisition_date": "2022-03-16",
+      "cloud_cover_percent": 0.000126,
+      "sentinel_item_id": "S2B_38RPN_20220316_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2022/3/S2B_38RPN_20220316_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.314,
+        24.574,
+        46.356,
+        24.607
+      ],
+      "file": "satellite_images/02_2022_أعمال_الإنشاء.png"
+    },
+    {
+      "stage": 3,
+      "label_ar": "اكتمال الأصل وافتتاحه",
+      "requested_year": "2025",
+      "acquisition_date": "2025-07-18",
+      "cloud_cover_percent": 6.6e-05,
+      "sentinel_item_id": "S2B_38RPN_20250718_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2025/7/S2B_38RPN_20250718_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.314,
+        24.574,
+        46.356,
+        24.607
+      ],
+      "file": "satellite_images/03_2025_اكتمال_الأصل_وافتتاحه.png"
+    }
+  ],
+  "tracking_workflow": [
+    {
+      "order": "01",
+      "title_ar": "اعتماد الأصل ونطاق الأرض",
+      "description_ar": "تسجيل رقم القطعة، الحدود، المالك/المطور، قرار التخصيص، والاستخدام المعتمد."
+    },
+    {
+      "order": "02",
+      "title_ar": "الفحص الجغرافي وخط الأساس",
+      "description_ar": "تثبيت حدود منطقة الاهتمام وحفظ صورة مرجعية مؤرخة وحساب حالة الأرض قبل التنفيذ."
+    },
+    {
+      "order": "03",
+      "title_ar": "المخطط والتصاريح",
+      "description_ar": "ربط المخطط العام، تقسيم القطع، اشتراطات الارتفاع، المساحات الخضراء، وتصاريح الجهات الحكومية."
+    },
+    {
+      "order": "04",
+      "title_ar": "تجهيز الموقع والبنية الأساسية",
+      "description_ar": "رصد التسوية والحفر والطرق المؤقتة وشبكات المياه والطاقة والصرف والاتصالات."
+    },
+    {
+      "order": "05",
+      "title_ar": "الإنشاء ونسب الإنجاز",
+      "description_ar": "قياس تغير المساحة المبنية والطرق والمرافق وربط كل لقطة بتقرير المقاول والمستخلصات."
+    },
+    {
+      "order": "06",
+      "title_ar": "الاختبارات والتسليم",
+      "description_ar": "توثيق اكتمال المباني والمرافق وشهادات الفحص والسلامة والاستلام الابتدائي والنهائي."
+    },
+    {
+      "order": "07",
+      "title_ar": "التشغيل والمراقبة",
+      "description_ar": "مقارنة الأصل المنفذ بالمخطط، تسجيل الانحرافات، ومتابعة التوسعات أو تغيرات الاستخدام."
+    }
+  ],
+  "official_sources": [
+    {
+      "title": "Saudi Press Agency – opening ceremony",
+      "url": "https://www.spa.gov.sa/en/N2478121"
+    },
+    {
+      "title": "Qiddiya – construction contract",
+      "url": "https://qiddiya.com/media-centre/media-centre-listing/qic-announces-sar-375-billion-construction-contract-to-build-six-flags-qiddiya/"
+    }
+  ],
+  "disclosure_ar": "الصور الفضائية تثبت التغير المرئي في الموقع ضمن دقة Sentinel-2، ولا تثبت وحدها صدور تصريح أو ملكية أو نسبة إنجاز تعاقدية. يجب ربطها بوثائق الجهة المختصة داخل المنصة.",
+  "imagery_attribution": "Contains modified Copernicus Sentinel data. Rendered from the Earth Search public STAC catalog."
+}

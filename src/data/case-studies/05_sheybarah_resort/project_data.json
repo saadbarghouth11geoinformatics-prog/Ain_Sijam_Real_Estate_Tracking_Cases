@@ -1,0 +1,114 @@
+{
+  "project_id": "05_sheybarah_resort",
+  "name_ar": "منتجع شيبارة – البحر الأحمر",
+  "name_en": "Shebara Resort – The Red Sea",
+  "status_ar": "استقبل المنتجع الحجوزات والضيوف ابتداءً من نوفمبر 2024.",
+  "portfolio_story_ar": "يوضح المثال كيف يمكن متابعة أصل سياحي حساس بيئيًا من مرحلة الجزيرة غير المطورة إلى إنشاء الفلل والممرات والخدمات ثم التشغيل.",
+  "location": {
+    "bbox_wgs84": [
+      36.865,
+      25.392,
+      36.914,
+      25.431
+    ]
+  },
+  "satellite_stages": [
+    {
+      "stage": 1,
+      "label_ar": "الجزيرة قبل التطوير",
+      "requested_year": "2018",
+      "acquisition_date": "2018-10-20",
+      "cloud_cover_percent": 0.054084,
+      "sentinel_item_id": "S2A_36RZP_20181020_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/R/ZP/2018/10/S2A_36RZP_20181020_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        36.865,
+        25.392,
+        36.914,
+        25.431
+      ],
+      "file": "satellite_images/01_2018_الجزيرة_قبل_التطوير.png"
+    },
+    {
+      "stage": 2,
+      "label_ar": "أعمال الوصول والإنشاء",
+      "requested_year": "2021",
+      "acquisition_date": "2021-11-08",
+      "cloud_cover_percent": 0.037711,
+      "sentinel_item_id": "S2B_36RZP_20211108_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/R/ZP/2021/11/S2B_36RZP_20211108_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        36.865,
+        25.392,
+        36.914,
+        25.431
+      ],
+      "file": "satellite_images/02_2021_أعمال_الوصول_والإنشاء.png"
+    },
+    {
+      "stage": 3,
+      "label_ar": "افتتاح المنتجع",
+      "requested_year": "2024",
+      "acquisition_date": "2024-10-08",
+      "cloud_cover_percent": 0.037392,
+      "sentinel_item_id": "S2A_37RBJ_20241008_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/37/R/BJ/2024/10/S2A_37RBJ_20241008_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        36.865,
+        25.392,
+        36.914,
+        25.431
+      ],
+      "file": "satellite_images/03_2024_افتتاح_المنتجع.png"
+    }
+  ],
+  "tracking_workflow": [
+    {
+      "order": "01",
+      "title_ar": "اعتماد الأصل ونطاق الأرض",
+      "description_ar": "تسجيل رقم القطعة، الحدود، المالك/المطور، قرار التخصيص، والاستخدام المعتمد."
+    },
+    {
+      "order": "02",
+      "title_ar": "الفحص الجغرافي وخط الأساس",
+      "description_ar": "تثبيت حدود منطقة الاهتمام وحفظ صورة مرجعية مؤرخة وحساب حالة الأرض قبل التنفيذ."
+    },
+    {
+      "order": "03",
+      "title_ar": "المخطط والتصاريح",
+      "description_ar": "ربط المخطط العام، تقسيم القطع، اشتراطات الارتفاع، المساحات الخضراء، وتصاريح الجهات الحكومية."
+    },
+    {
+      "order": "04",
+      "title_ar": "تجهيز الموقع والبنية الأساسية",
+      "description_ar": "رصد التسوية والحفر والطرق المؤقتة وشبكات المياه والطاقة والصرف والاتصالات."
+    },
+    {
+      "order": "05",
+      "title_ar": "الإنشاء ونسب الإنجاز",
+      "description_ar": "قياس تغير المساحة المبنية والطرق والمرافق وربط كل لقطة بتقرير المقاول والمستخلصات."
+    },
+    {
+      "order": "06",
+      "title_ar": "الاختبارات والتسليم",
+      "description_ar": "توثيق اكتمال المباني والمرافق وشهادات الفحص والسلامة والاستلام الابتدائي والنهائي."
+    },
+    {
+      "order": "07",
+      "title_ar": "التشغيل والمراقبة",
+      "description_ar": "مقارنة الأصل المنفذ بالمخطط، تسجيل الانحرافات، ومتابعة التوسعات أو تغيرات الاستخدام."
+    }
+  ],
+  "official_sources": [
+    {
+      "title": "Red Sea Global – Shebara reservations/opening",
+      "url": "https://redseaglobal.com/en/media-center/news/the-red-sea-s-newest-luxury-resort-shebara-now-taking-reservations/"
+    },
+    {
+      "title": "Shebara official website",
+      "url": "https://shebara.sa/"
+    }
+  ],
+  "disclosure_ar": "الصور الفضائية تثبت التغير المرئي في الموقع ضمن دقة Sentinel-2، ولا تثبت وحدها صدور تصريح أو ملكية أو نسبة إنجاز تعاقدية. يجب ربطها بوثائق الجهة المختصة داخل المنصة.",
+  "imagery_attribution": "Contains modified Copernicus Sentinel data. Rendered from the Earth Search public STAC catalog."
+}

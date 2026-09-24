@@ -1,0 +1,114 @@
+{
+  "project_id": "04_red_sea_airport",
+  "name_ar": "مطار البحر الأحمر الدولي",
+  "name_en": "Red Sea International Airport",
+  "status_ar": "بدأ الرحلات الداخلية في 2023، وتوسع إلى الرحلات الدولية في 2024.",
+  "portfolio_story_ar": "حالة واضحة لرصد تسوية الأرض، إنشاء المدرج والممرات، ثم اكتمال مباني التشغيل وربط الأصل بالطرق.",
+  "location": {
+    "bbox_wgs84": [
+      37.047,
+      25.588,
+      37.124,
+      25.668
+    ]
+  },
+  "satellite_stages": [
+    {
+      "stage": 1,
+      "label_ar": "الموقع قبل الإنشاء",
+      "requested_year": "2018",
+      "acquisition_date": "2018-10-20",
+      "cloud_cover_percent": 0.014381,
+      "sentinel_item_id": "S2A_37RCJ_20181020_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/37/R/CJ/2018/10/S2A_37RCJ_20181020_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        37.047,
+        25.588,
+        37.124,
+        25.668
+      ],
+      "file": "satellite_images/01_2018_الموقع_قبل_الإنشاء.png"
+    },
+    {
+      "stage": 2,
+      "label_ar": "إنشاء المدرج والمرافق",
+      "requested_year": "2021",
+      "acquisition_date": "2021-12-25",
+      "cloud_cover_percent": 0.006196,
+      "sentinel_item_id": "S2B_37RCJ_20211225_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/37/R/CJ/2021/12/S2B_37RCJ_20211225_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        37.047,
+        25.588,
+        37.124,
+        25.668
+      ],
+      "file": "satellite_images/02_2021_إنشاء_المدرج_والمرافق.png"
+    },
+    {
+      "stage": 3,
+      "label_ar": "تشغيل الرحلات الدولية",
+      "requested_year": "2024",
+      "acquisition_date": "2024-12-14",
+      "cloud_cover_percent": 0.003234,
+      "sentinel_item_id": "S2A_37RCJ_20241214_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/37/R/CJ/2024/12/S2A_37RCJ_20241214_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        37.047,
+        25.588,
+        37.124,
+        25.668
+      ],
+      "file": "satellite_images/03_2024_تشغيل_الرحلات_الدولية.png"
+    }
+  ],
+  "tracking_workflow": [
+    {
+      "order": "01",
+      "title_ar": "اعتماد الأصل ونطاق الأرض",
+      "description_ar": "تسجيل رقم القطعة، الحدود، المالك/المطور، قرار التخصيص، والاستخدام المعتمد."
+    },
+    {
+      "order": "02",
+      "title_ar": "الفحص الجغرافي وخط الأساس",
+      "description_ar": "تثبيت حدود منطقة الاهتمام وحفظ صورة مرجعية مؤرخة وحساب حالة الأرض قبل التنفيذ."
+    },
+    {
+      "order": "03",
+      "title_ar": "المخطط والتصاريح",
+      "description_ar": "ربط المخطط العام، تقسيم القطع، اشتراطات الارتفاع، المساحات الخضراء، وتصاريح الجهات الحكومية."
+    },
+    {
+      "order": "04",
+      "title_ar": "تجهيز الموقع والبنية الأساسية",
+      "description_ar": "رصد التسوية والحفر والطرق المؤقتة وشبكات المياه والطاقة والصرف والاتصالات."
+    },
+    {
+      "order": "05",
+      "title_ar": "الإنشاء ونسب الإنجاز",
+      "description_ar": "قياس تغير المساحة المبنية والطرق والمرافق وربط كل لقطة بتقرير المقاول والمستخلصات."
+    },
+    {
+      "order": "06",
+      "title_ar": "الاختبارات والتسليم",
+      "description_ar": "توثيق اكتمال المباني والمرافق وشهادات الفحص والسلامة والاستلام الابتدائي والنهائي."
+    },
+    {
+      "order": "07",
+      "title_ar": "التشغيل والمراقبة",
+      "description_ar": "مقارنة الأصل المنفذ بالمخطط، تسجيل الانحرافات، ومتابعة التوسعات أو تغيرات الاستخدام."
+    }
+  ],
+  "official_sources": [
+    {
+      "title": "Red Sea Global – airport project",
+      "url": "https://www.redseaglobal.com/en/portfolio/projects/red-sea-international-airport/"
+    },
+    {
+      "title": "Red Sea Global – first flight",
+      "url": "https://www.redseaglobal.com/en/media-center/news/ready-for-take-off-red-sea-global-celebrates-first-flight-to-new-airport/"
+    }
+  ],
+  "disclosure_ar": "الصور الفضائية تثبت التغير المرئي في الموقع ضمن دقة Sentinel-2، ولا تثبت وحدها صدور تصريح أو ملكية أو نسبة إنجاز تعاقدية. يجب ربطها بوثائق الجهة المختصة داخل المنصة.",
+  "imagery_attribution": "Contains modified Copernicus Sentinel data. Rendered from the Earth Search public STAC catalog."
+}

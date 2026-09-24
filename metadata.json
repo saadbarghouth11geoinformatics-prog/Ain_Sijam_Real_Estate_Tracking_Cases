@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix عين سيجام لتخطيط الأراضي وإدارة مواقع البناء",
+  "description": "منصة عين سيجام الهندسية لفحص صلاحية الأراضي للبناء، وإدارة مواقع المشاريع الإنشائية وأسطول المعدات، وتتبع المقارنات الزمنية للتطور العمراني ونسب الإنجاز.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

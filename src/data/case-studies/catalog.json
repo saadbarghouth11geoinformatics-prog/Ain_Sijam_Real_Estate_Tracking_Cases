@@ -1,0 +1,50 @@
+[
+  {
+    "project_id": "01_kafd_riyadh",
+    "title_ar": "مركز الملك عبدالله المالي – الرياض",
+    "title_en": "King Abdullah Financial District (KAFD)",
+    "status_ar": "وجهة أعمال ونمط حياة عاملة، مع استمرار تطوير بعض الأصول والبنية المحيطة.",
+    "thumbnail": "01_kafd_riyadh/comparison_before_during_after.jpg",
+    "data_file": "01_kafd_riyadh/project_data.json"
+  },
+  {
+    "project_id": "02_riyadh_metro_west_depot",
+    "title_ar": "مستودع غرب مترو الرياض",
+    "title_en": "Riyadh Metro – West Depot",
+    "status_ar": "أحد أصول منظومة مترو الرياض التي دخلت الخدمة على مراحل ابتداءً من ديسمبر 2024.",
+    "thumbnail": "02_riyadh_metro_west_depot/comparison_before_during_after.jpg",
+    "data_file": "02_riyadh_metro_west_depot/project_data.json"
+  },
+  {
+    "project_id": "03_six_flags_qiddiya",
+    "title_ar": "Six Flags مدينة القدية",
+    "title_en": "Six Flags Qiddiya City",
+    "status_ar": "افتُتح رسميًا في 31 ديسمبر 2025 كأول أصل تشغيلي رئيسي في مدينة القدية.",
+    "thumbnail": "03_six_flags_qiddiya/comparison_before_during_after.jpg",
+    "data_file": "03_six_flags_qiddiya/project_data.json"
+  },
+  {
+    "project_id": "04_red_sea_airport",
+    "title_ar": "مطار البحر الأحمر الدولي",
+    "title_en": "Red Sea International Airport",
+    "status_ar": "بدأ الرحلات الداخلية في 2023، وتوسع إلى الرحلات الدولية في 2024.",
+    "thumbnail": "04_red_sea_airport/comparison_before_during_after.jpg",
+    "data_file": "04_red_sea_airport/project_data.json"
+  },
+  {
+    "project_id": "05_sheybarah_resort",
+    "title_ar": "منتجع شيبارة – البحر الأحمر",
+    "title_en": "Shebara Resort – The Red Sea",
+    "status_ar": "استقبل المنتجع الحجوزات والضيوف ابتداءً من نوفمبر 2024.",
+    "thumbnail": "05_sheybarah_resort/comparison_before_during_after.jpg",
+    "data_file": "05_sheybarah_resort/project_data.json"
+  },
+  {
+    "project_id": "06_spark_energy_park",
+    "title_ar": "مدينة الملك سلمان للطاقة – سبارك",
+    "title_en": "King Salman Energy Park (SPARK)",
+    "status_ar": "مدينة صناعية متكاملة؛ اكتملت غالبية البنية الأساسية للمرحلة الأولى مع استمرار استقطاب وتطوير أصول المستثمرين.",
+    "thumbnail": "06_spark_energy_park/comparison_before_during_after.jpg",
+    "data_file": "06_spark_energy_park/project_data.json"
+  }
+]

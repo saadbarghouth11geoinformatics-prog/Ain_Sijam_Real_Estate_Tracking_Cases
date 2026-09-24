@@ -1,0 +1,406 @@
+{
+  "project_id": "02_riyadh_metro_west_depot",
+  "name_ar": "مستودع غرب مترو الرياض",
+  "name_en": "Riyadh Metro – West Depot",
+  "status_ar": "أحد أصول منظومة مترو الرياض التي دخلت الخدمة على مراحل ابتداءً من ديسمبر 2024.",
+  "portfolio_story_ar": "يركز المثال على أصل تشغيلي محدد يمكن رصده مكانيًا: المستودع وورش الصيانة ومسارات الحركة المحيطة به.",
+  "location": {
+    "bbox_wgs84": [
+      46.535,
+      24.579,
+      46.574,
+      24.611
+    ]
+  },
+  "satellite_stages": [
+    {
+      "stage": 1,
+      "label_ar": "بداية الإنشاء",
+      "requested_year": "2017",
+      "acquisition_date": "2017-01-16",
+      "cloud_cover_percent": 0.035348,
+      "sentinel_item_id": "S2A_38RPN_20170116_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2017/1/S2A_38RPN_20170116_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.535,
+        24.579,
+        46.574,
+        24.611
+      ],
+      "file": "satellite_images/01_2017_بداية_الإنشاء.png"
+    },
+    {
+      "stage": 2,
+      "label_ar": "تقدم مرافق التشغيل",
+      "requested_year": "2020",
+      "acquisition_date": "2020-08-28",
+      "cloud_cover_percent": 4e-05,
+      "sentinel_item_id": "S2A_38RPN_20200828_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2020/8/S2A_38RPN_20200828_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.535,
+        24.579,
+        46.574,
+        24.611
+      ],
+      "file": "satellite_images/02_2020_تقدم_مرافق_التشغيل.png"
+    },
+    {
+      "stage": 3,
+      "label_ar": "مرحلة الإطلاق التشغيلي",
+      "requested_year": "2024",
+      "acquisition_date": "2024-10-16",
+      "cloud_cover_percent": 1e-05,
+      "sentinel_item_id": "S2A_38RPN_20241016_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2024/10/S2A_38RPN_20241016_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.535,
+        24.579,
+        46.574,
+        24.611
+      ],
+      "file": "satellite_images/03_2024_مرحلة_الإطلاق_التشغيلي.png"
+    }
+  ],
+  "tracking_workflow": [
+    {
+      "order": "01",
+      "title_ar": "اعتماد الأصل ونطاق الأرض",
+      "description_ar": "تسجيل رقم القطعة، الحدود، المالك/المطور، قرار التخصيص، والاستخدام المعتمد."
+    },
+    {
+      "order": "02",
+      "title_ar": "الفحص الجغرافي وخط الأساس",
+      "description_ar": "تثبيت حدود منطقة الاهتمام وحفظ صورة مرجعية مؤرخة وحساب حالة الأرض قبل التنفيذ."
+    },
+    {
+      "order": "03",
+      "title_ar": "المخطط والتصاريح",
+      "description_ar": "ربط المخطط العام، تقسيم القطع، اشتراطات الارتفاع، المساحات الخضراء، وتصاريح الجهات الحكومية."
+    },
+    {
+      "order": "04",
+      "title_ar": "تجهيز الموقع والبنية الأساسية",
+      "description_ar": "رصد التسوية والحفر والطرق المؤقتة وشبكات المياه والطاقة والصرف والاتصالات."
+    },
+    {
+      "order": "05",
+      "title_ar": "الإنشاء ونسب الإنجاز",
+      "description_ar": "قياس تغير المساحة المبنية والطرق والمرافق وربط كل لقطة بتقرير المقاول والمستخلصات."
+    },
+    {
+      "order": "06",
+      "title_ar": "الاختبارات والتسليم",
+      "description_ar": "توثيق اكتمال المباني والمرافق وشهادات الفحص والسلامة والاستلام الابتدائي والنهائي."
+    },
+    {
+      "order": "07",
+      "title_ar": "التشغيل والمراقبة",
+      "description_ar": "مقارنة الأصل المنفذ بالمخطط، تسجيل الانحرافات، ومتابعة التوسعات أو تغيرات الاستخدام."
+    }
+  ],
+  "official_sources": [
+    {
+      "title": "RCRC open data – Riyadh Metro stations",
+      "url": "https://opendata.rcrc.gov.sa/explore/"
+    },
+    {
+      "title": "RCRC media monitoring – launch reference",
+      "url": "https://media.rcrc.gov.sa/default?d=15&m=2&y=2025"
+    }
+  ],
+  "disclosure_ar": "الصور الفضائية تثبت التغير المرئي في الموقع ضمن دقة Sentinel-2، ولا تثبت وحدها صدور تصريح أو ملكية أو نسبة إنجاز تعاقدية. يجب ربطها بوثائق الجهة المختصة داخل المنصة.",
+  "imagery_attribution": "Contains modified Copernicus Sentinel data. Rendered from the Earth Search public STAC catalog.",
+  "satellite_stages_v2": [
+    {
+      "stage": 1,
+      "label_ar": "بداية الإنشاء",
+      "requested_year": "2017",
+      "acquisition_date": "2017-01-16",
+      "cloud_cover_percent": 0.035348,
+      "sentinel_item_id": "S2A_38RPN_20170116_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2017/1/S2A_38RPN_20170116_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.535,
+        24.579,
+        46.574,
+        24.611
+      ],
+      "file": "timeline_5_stages/2017_بداية_الإنشاء.png"
+    },
+    {
+      "acquisition_date": "2018-05-31",
+      "cloud_cover_percent": 0,
+      "sentinel_item_id": "S2A_38RPN_20180531_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2018/5/S2A_38RPN_20180531_1_L2A/TCI.tif",
+      "phase_ar": "إنشاء المستودع والمسارات",
+      "file": "timeline_5_stages/2018_إنشاء_المستودع_والمسارات.png",
+      "requested_year": "2018",
+      "label_ar": "إنشاء المستودع والمسارات",
+      "bbox_wgs84": [
+        46.535,
+        24.579,
+        46.574,
+        24.611
+      ]
+    },
+    {
+      "stage": 2,
+      "label_ar": "تقدم مرافق التشغيل",
+      "requested_year": "2020",
+      "acquisition_date": "2020-08-28",
+      "cloud_cover_percent": 4e-05,
+      "sentinel_item_id": "S2A_38RPN_20200828_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2020/8/S2A_38RPN_20200828_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.535,
+        24.579,
+        46.574,
+        24.611
+      ],
+      "file": "timeline_5_stages/2020_تقدم_مرافق_التشغيل.png"
+    },
+    {
+      "acquisition_date": "2022-03-16",
+      "cloud_cover_percent": 0.000126,
+      "sentinel_item_id": "S2B_38RPN_20220316_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2022/3/S2B_38RPN_20220316_0_L2A/TCI.tif",
+      "phase_ar": "الاختبارات وتجهيز التشغيل",
+      "file": "timeline_5_stages/2022_الاختبارات_وتجهيز_التشغيل.png",
+      "requested_year": "2022",
+      "label_ar": "الاختبارات وتجهيز التشغيل",
+      "bbox_wgs84": [
+        46.535,
+        24.579,
+        46.574,
+        24.611
+      ]
+    },
+    {
+      "stage": 3,
+      "label_ar": "مرحلة الإطلاق التشغيلي",
+      "requested_year": "2024",
+      "acquisition_date": "2024-10-16",
+      "cloud_cover_percent": 1e-05,
+      "sentinel_item_id": "S2A_38RPN_20241016_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2024/10/S2A_38RPN_20241016_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.535,
+        24.579,
+        46.574,
+        24.611
+      ],
+      "file": "timeline_5_stages/2024_مرحلة_الإطلاق_التشغيلي.png"
+    }
+  ],
+  "tracking_workflow_v2": [
+    {
+      "order": 1,
+      "stage_ar": "تعريف الفرصة الاستثمارية",
+      "owner_ar": "المستثمر / مدير الاستثمار",
+      "evidence": [
+        "مذكرة الفرصة",
+        "نموذج العائد المستهدف",
+        "نطاق الأصل"
+      ],
+      "satellite_role_ar": "تحديد الموقع والسياق العمراني العام."
+    },
+    {
+      "order": 2,
+      "stage_ar": "الفحص القانوني والملكية",
+      "owner_ar": "الشؤون القانونية / مالك الأرض",
+      "evidence": [
+        "صك أو مستند ملكية",
+        "القيود والرهون",
+        "صلاحية التمثيل"
+      ],
+      "satellite_role_ar": "لا تثبت الصورة الملكية؛ تُربط الوثائق بسجل الموقع."
+    },
+    {
+      "order": 3,
+      "stage_ar": "الرفع المساحي وتثبيت الحدود",
+      "owner_ar": "مكتب مساحي معتمد",
+      "evidence": [
+        "قرار مساحي",
+        "إحداثيات الحدود",
+        "مساحة القطعة ومحضر التثبيت"
+      ],
+      "satellite_role_ar": "إنشاء AOI ومقارنة الحدود مع الاستخدام الظاهر."
+    },
+    {
+      "order": 4,
+      "stage_ar": "دراسة الجدوى والتقييم",
+      "owner_ar": "المطور / الاستشاري المالي",
+      "evidence": [
+        "دراسة سوق",
+        "تقييم أرض",
+        "تكلفة وعائد ومخاطر"
+      ],
+      "satellite_role_ar": "تحليل النمو المحيط والطرق والخدمات واستخدامات الأراضي."
+    },
+    {
+      "order": 5,
+      "stage_ar": "المخطط العام واستعمالات الأرض",
+      "owner_ar": "المخطط العمراني / المطور",
+      "evidence": [
+        "Master Plan",
+        "نسب الاستعمالات",
+        "الكثافات والارتفاعات"
+      ],
+      "satellite_role_ar": "وضع المخطط فوق الصورة المرجعية وقياس التطابق."
+    },
+    {
+      "order": 6,
+      "stage_ar": "تقسيم أو دمج قطع الأراضي",
+      "owner_ar": "المطور / المكتب الهندسي / البلدية",
+      "evidence": [
+        "مخطط التقسيم",
+        "الموافقة الأولية",
+        "الموافقة النهائية",
+        "جداول القطع"
+      ],
+      "satellite_role_ar": "متابعة ظهور الطرق وحدود الكتل والخدمات المشتركة."
+    },
+    {
+      "order": 7,
+      "stage_ar": "الدراسات البيئية والمرورية والخدمات",
+      "owner_ar": "استشاريون وجهات الاختصاص",
+      "evidence": [
+        "دراسة الأثر البيئي",
+        "دراسة مرورية",
+        "موافقات أو إفادات الخدمات"
+      ],
+      "satellite_role_ar": "توثيق الغطاء الأرضي ومناطق الحماية ومسارات الوصول."
+    },
+    {
+      "order": 8,
+      "stage_ar": "التصميم التفصيلي واعتماد المخططات",
+      "owner_ar": "المكتب الهندسي المعتمد",
+      "evidence": [
+        "معماري وإنشائي وMEP",
+        "مخططات السلامة",
+        "مراجعات واعتمادات"
+      ],
+      "satellite_role_ar": "مرجع مكاني قبل بدء أي تغيير على الأرض."
+    },
+    {
+      "order": 9,
+      "stage_ar": "رخصة البناء والتراخيص الخاصة",
+      "owner_ar": "المالك / المكتب الهندسي / الجهات المختصة",
+      "evidence": [
+        "رخصة البناء",
+        "تصريح التسوير أو الحفر عند الحاجة",
+        "تصاريح بيئية أو قطاعية"
+      ],
+      "satellite_role_ar": "تاريخ الرخصة يصبح نقطة فصل بين التخطيط والتنفيذ."
+    },
+    {
+      "order": 10,
+      "stage_ar": "البيع على الخارطة عند انطباقه",
+      "owner_ar": "المطور / الهيئة العامة للعقار",
+      "evidence": [
+        "تأهيل المطور",
+        "رخصة وافي",
+        "حساب الضمان وتقارير الاستشاري"
+      ],
+      "satellite_role_ar": "ربط تقارير الإنجاز الدورية بلقطات الموقع."
+    },
+    {
+      "order": 11,
+      "stage_ar": "الطرح والترسية وتجهيز المقاول",
+      "owner_ar": "المطور / إدارة المشتريات",
+      "evidence": [
+        "وثائق الطرح",
+        "العروض",
+        "عقد المقاول",
+        "البرنامج الزمني وخطة الجودة"
+      ],
+      "satellite_role_ar": "توثيق حالة الموقع قبل تسليم المقاول."
+    },
+    {
+      "order": 12,
+      "stage_ar": "تجهيز الموقع والأعمال الترابية",
+      "owner_ar": "المقاول / الاستشاري المشرف",
+      "evidence": [
+        "محضر استلام الموقع",
+        "تقارير الحفر والردم",
+        "اختبارات التربة"
+      ],
+      "satellite_role_ar": "كشف التسوية والحفر والطرق المؤقتة ومساحات التخزين."
+    },
+    {
+      "order": 13,
+      "stage_ar": "البنية الأساسية وتقسيم القطع",
+      "owner_ar": "المقاولون والجهات الخدمية",
+      "evidence": [
+        "شبكات وطرق وإنارة",
+        "اختبارات المرافق",
+        "مخططات As-Built مرحلية"
+      ],
+      "satellite_role_ar": "قياس أطوال الطرق والمساحات المخدومة وتغير تقسيم الأرض."
+    },
+    {
+      "order": 14,
+      "stage_ar": "الإنشاء ونسب الإنجاز",
+      "owner_ar": "المقاول / الاستشاري / مدير المشروع",
+      "evidence": [
+        "تقارير شهرية",
+        "مستخلصات",
+        "صور موقع",
+        "برنامج زمني محدث"
+      ],
+      "satellite_role_ar": "قياس المساحة المبنية وعدد الكتل والتغير بين التواريخ."
+    },
+    {
+      "order": 15,
+      "stage_ar": "الفحص وشهادة الإشغال والتسليم",
+      "owner_ar": "الاستشاري / البلدية / الدفاع المدني / المشغل",
+      "evidence": [
+        "اختبارات التشغيل",
+        "شهادة إشغال أو إتمام",
+        "استلام ابتدائي ونهائي",
+        "ملفات As-Built"
+      ],
+      "satellite_role_ar": "توثيق اكتمال الكتل والطرق والتشجير ومناطق الاستخدام."
+    },
+    {
+      "order": 16,
+      "stage_ar": "التشغيل وإدارة الأصل",
+      "owner_ar": "مدير الأصل / المالك / المشغل",
+      "evidence": [
+        "ترخيص التشغيل عند الحاجة",
+        "عقود الصيانة",
+        "سجل التغييرات",
+        "مؤشرات الأداء"
+      ],
+      "satellite_role_ar": "رصد التوسعات والتعديات والتغير في المساحات الخضراء والإشغال."
+    }
+  ],
+  "government_process_sources": [
+    {
+      "title": "Balady – Issuing a Building Permit",
+      "url": "https://balady.gov.sa/en/services/issuing-building-permit"
+    },
+    {
+      "title": "Balady – Land Merging and Subdivision Request",
+      "url": "https://balady.gov.sa/en/services/creating-land-merging-and-subdivision-request"
+    },
+    {
+      "title": "Balady – Preliminary Approval for Private Plans",
+      "url": "https://balady.gov.sa/en/services/preliminary-approval-service"
+    },
+    {
+      "title": "Balady – Final Approval Service",
+      "url": "https://balady.gov.sa/en/services/final-approval-service"
+    },
+    {
+      "title": "REGA – Wafi Off-Plan Sales and Lease",
+      "url": "https://rega.gov.sa/en/rega-services/platforms/wafi-off-plan-sales-and-lease/"
+    },
+    {
+      "title": "National Platform – Environmental Permit for Construction",
+      "url": "https://my.gov.sa/en/services/321590"
+    }
+  ],
+  "workflow_note_ar": "الموافقات المطلوبة تختلف حسب نوع المشروع والاستعمال والموقع. لا تُسجل أي موافقة كمنجزة إلا بعد إرفاق رقمها وتاريخها والجهة المصدرة ونسخة المستند."
+}

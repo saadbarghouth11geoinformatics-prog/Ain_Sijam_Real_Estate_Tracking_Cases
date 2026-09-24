@@ -1,0 +1,114 @@
+{
+  "project_id": "01_kafd_riyadh",
+  "name_ar": "مركز الملك عبدالله المالي – الرياض",
+  "name_en": "King Abdullah Financial District (KAFD)",
+  "status_ar": "وجهة أعمال ونمط حياة عاملة، مع استمرار تطوير بعض الأصول والبنية المحيطة.",
+  "portfolio_story_ar": "يوضح التسلسل كيف تحولت الكتلة العمرانية إلى منطقة مالية مترابطة عالية الكثافة، مع توسع المباني والطرق والمساحات العامة.",
+  "location": {
+    "bbox_wgs84": [
+      46.625,
+      24.748,
+      46.656,
+      24.78
+    ]
+  },
+  "satellite_stages": [
+    {
+      "stage": 1,
+      "label_ar": "خط أساس",
+      "requested_year": "2017",
+      "acquisition_date": "2017-01-16",
+      "cloud_cover_percent": 0.035348,
+      "sentinel_item_id": "S2A_38RPN_20170116_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2017/1/S2A_38RPN_20170116_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.625,
+        24.748,
+        46.656,
+        24.78
+      ],
+      "file": "satellite_images/01_2017_خط_أساس.png"
+    },
+    {
+      "stage": 2,
+      "label_ar": "أعمال وتكثيف عمراني",
+      "requested_year": "2020",
+      "acquisition_date": "2020-08-28",
+      "cloud_cover_percent": 4e-05,
+      "sentinel_item_id": "S2A_38RPN_20200828_1_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2020/8/S2A_38RPN_20200828_1_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.625,
+        24.748,
+        46.656,
+        24.78
+      ],
+      "file": "satellite_images/02_2020_أعمال_وتكثيف_عمراني.png"
+    },
+    {
+      "stage": 3,
+      "label_ar": "تشغيل وتطوير مستمر",
+      "requested_year": "2025",
+      "acquisition_date": "2025-07-18",
+      "cloud_cover_percent": 6.6e-05,
+      "sentinel_item_id": "S2B_38RPN_20250718_0_L2A",
+      "source_cog": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/38/R/PN/2025/7/S2B_38RPN_20250718_0_L2A/TCI.tif",
+      "bbox_wgs84": [
+        46.625,
+        24.748,
+        46.656,
+        24.78
+      ],
+      "file": "satellite_images/03_2025_تشغيل_وتطوير_مستمر.png"
+    }
+  ],
+  "tracking_workflow": [
+    {
+      "order": "01",
+      "title_ar": "اعتماد الأصل ونطاق الأرض",
+      "description_ar": "تسجيل رقم القطعة، الحدود، المالك/المطور، قرار التخصيص، والاستخدام المعتمد."
+    },
+    {
+      "order": "02",
+      "title_ar": "الفحص الجغرافي وخط الأساس",
+      "description_ar": "تثبيت حدود منطقة الاهتمام وحفظ صورة مرجعية مؤرخة وحساب حالة الأرض قبل التنفيذ."
+    },
+    {
+      "order": "03",
+      "title_ar": "المخطط والتصاريح",
+      "description_ar": "ربط المخطط العام، تقسيم القطع، اشتراطات الارتفاع، المساحات الخضراء، وتصاريح الجهات الحكومية."
+    },
+    {
+      "order": "04",
+      "title_ar": "تجهيز الموقع والبنية الأساسية",
+      "description_ar": "رصد التسوية والحفر والطرق المؤقتة وشبكات المياه والطاقة والصرف والاتصالات."
+    },
+    {
+      "order": "05",
+      "title_ar": "الإنشاء ونسب الإنجاز",
+      "description_ar": "قياس تغير المساحة المبنية والطرق والمرافق وربط كل لقطة بتقرير المقاول والمستخلصات."
+    },
+    {
+      "order": "06",
+      "title_ar": "الاختبارات والتسليم",
+      "description_ar": "توثيق اكتمال المباني والمرافق وشهادات الفحص والسلامة والاستلام الابتدائي والنهائي."
+    },
+    {
+      "order": "07",
+      "title_ar": "التشغيل والمراقبة",
+      "description_ar": "مقارنة الأصل المنفذ بالمخطط، تسجيل الانحرافات، ومتابعة التوسعات أو تغيرات الاستخدام."
+    }
+  ],
+  "official_sources": [
+    {
+      "title": "PIF – KAFD portfolio",
+      "url": "https://www.pif.gov.sa/en/our-investments/our-portfolio/king-abdullah-financial-district/"
+    },
+    {
+      "title": "KAFD official website",
+      "url": "https://www.kafd.sa/en"
+    }
+  ],
+  "disclosure_ar": "الصور الفضائية تثبت التغير المرئي في الموقع ضمن دقة Sentinel-2، ولا تثبت وحدها صدور تصريح أو ملكية أو نسبة إنجاز تعاقدية. يجب ربطها بوثائق الجهة المختصة داخل المنصة.",
+  "imagery_attribution": "Contains modified Copernicus Sentinel data. Rendered from the Earth Search public STAC catalog."
+}
