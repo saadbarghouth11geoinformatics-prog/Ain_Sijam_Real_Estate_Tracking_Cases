@@ -49,11 +49,15 @@ export const ImageViewerWithZoom: React.FC<ImageViewerWithZoomProps> = ({
 
   // Sync if src changes
   useEffect(() => {
+    // Avoid resetting a freshly cached image after its load event has fired.
+    // This was leaving the loading overlay visible when users changed years.
+    if (currentSrc === normalizedSrc) return;
+
     setCurrentSrc(normalizedSrc);
     setHasTriedFallback(false);
     setImageError(false);
     setIsLoaded(false);
-  }, [normalizedSrc]);
+  }, [currentSrc, normalizedSrc]);
 
   // Handle escape key to exit fullscreen
   useEffect(() => {

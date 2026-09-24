@@ -157,7 +157,6 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
         >
           <div className="w-full h-full transform transition-transform duration-500 ease-out group-hover/view:scale-[1.025]">
             <ImageViewerWithZoom
-              key={currentStage.imagePath}
               src={currentStage.imagePath}
               fallbackSrc={currentStage.fallbackAliasPath}
               alt={`المرحلة ${activeStageIndex + 1}: ${currentStage.phaseNameAr} - ${projectName}`}
