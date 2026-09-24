@@ -258,55 +258,62 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
   ];
 
   return (
-    <div className="space-y-12 sm:space-y-16 py-4 max-w-6xl mx-auto px-4 sm:px-6" dir={isAr ? 'rtl' : 'ltr'}>
+    <div className="w-full" dir={isAr ? 'rtl' : 'ltr'}>
+      <style>{`
+        @keyframes ainHeroImageIn { from { opacity: .72; transform: scale(1.025); } to { opacity: 1; transform: scale(1); } }
+        @keyframes ainHeroReveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .ain-hero-image { animation: ainHeroImageIn 650ms cubic-bezier(.16,1,.3,1) both; object-position: center 48%; }
+        .ain-hero-reveal { animation: ainHeroReveal 550ms cubic-bezier(.16,1,.3,1) both; }
+        @media (max-width: 639px) { .ain-hero-image { object-position: 63% 52%; } }
+        @media (prefers-reduced-motion: reduce) { .ain-hero-image, .ain-hero-reveal { animation: none !important; } }
+      `}</style>
       
-      {/* 1. HERO SECTION: High-Definition Architectural Background with Crisp Overlay & Glowing Text */}
-      <ScrollReveal direction="none" delayMs={50}>
-        <section className="relative overflow-hidden rounded-3xl border border-slate-700/60 shadow-2xl text-center p-6 sm:p-12 lg:p-16 group">
-          {/* Real Saudi Land Planning & Riyadh Skyline Background Image (03-riyadh-skyline-wide.webp as primary hero visual) */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* 1. HERO SECTION: a full-bleed Riyadh geospatial command center */}
+      <section className="relative isolate min-h-[690px] w-full overflow-hidden bg-slate-950 text-center sm:min-h-[calc(100vh-6.5rem)]">
+          {/* The Riyadh panorama remains visible beneath deliberately light, directional overlays. */}
+          <div className="absolute inset-0 pointer-events-none">
             <img
               src="/images_webp/03-riyadh-skyline-wide.webp"
               alt={t('بانوراما الأفق العمراني الواسع لمدينة الرياض وتخطيط الأراضي', 'Wide Panoramic Skyline of Riyadh & Strategic Land Planning')}
-              className="w-full h-full object-cover object-center scale-100 group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-              style={{ objectPosition: 'center 42%' }}
+              className="ain-hero-image h-full w-full object-cover"
             />
-            {/* Restrained brand-colored gradient overlay: Keeps the wide skyline completely clear and visible while making white text pop */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/65 to-slate-950/80" />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-transparent to-slate-950/70" />
+            <div className="absolute inset-0 bg-slate-950/35" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,26,54,0.68)_0%,rgba(8,26,54,0.35)_43%,rgba(8,26,54,0.08)_72%)]" />
+            <div className="absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-[#061327]/90 via-[#081b37]/45 to-transparent" />
 
             {/* Floating Glassmorphic Telemetry Overlay (Top Corners) */}
-            <div className="absolute top-4 start-4 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/15 text-[11px] font-mono text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="absolute top-6 start-6 hidden items-center gap-2 border border-white/15 bg-slate-950/45 px-3 py-1.5 text-[11px] font-mono text-emerald-300 sm:flex">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
               <span>KSA-GRF: FIXED</span>
               <span className="text-slate-400">|</span>
               <span className="text-slate-300">24.7136° N, 46.6753° E</span>
             </div>
 
-            <div className="absolute top-4 end-4 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/15 text-[11px] font-mono text-sky-300">
+            <div className="absolute top-6 end-6 hidden items-center gap-2 border border-white/15 bg-slate-950/45 px-3 py-1.5 text-[11px] font-mono text-sky-200 sm:flex">
               <span>ORBITAL RES: 0.05m</span>
               <span className="text-slate-400">|</span>
               <span className="text-emerald-400">SBC 303 VALID</span>
             </div>
           </div>
 
-          {/* Content Container (Sharp, high-contrast, fully legible text with gentle entrance) */}
-          <div className="relative z-10 space-y-6 max-w-4xl mx-auto">
+          <div className="relative z-10 mx-auto flex min-h-[690px] max-w-5xl flex-col items-center justify-center px-5 pb-10 pt-24 sm:min-h-[calc(100vh-6.5rem)] sm:px-8 sm:pb-12 sm:pt-28">
+          {/* Content Container */}
+          <div className="w-full space-y-5 sm:space-y-6">
             {/* Brand Tagline Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-blue-400/50 text-blue-200 text-xs sm:text-sm font-bold shadow-lg backdrop-blur-md">
+            <div className="ain-hero-reveal inline-flex items-center gap-2 border border-sky-300/35 bg-[#0a2348]/65 px-4 py-2 text-xs font-bold text-sky-100 backdrop-blur-sm sm:text-sm" style={{ animationDelay: '80ms' }}>
               <AinSigamLogo size="sm" variant="mark-only" />
               <span>{t('منظومة عين سيجام لتخطيط الأراضي والذكاء العقاري المعتمد بالمملكة', 'Ain Sigam - Certified Spatial & Real Estate Platform in KSA')}</span>
             </div>
 
             {/* Main Title & Subtitle with Strong Contrast & Readability */}
-            <div className="space-y-4 max-w-3xl mx-auto">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight sm:leading-none font-['Cairo'] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
+            <div className="ain-hero-reveal mx-auto max-w-3xl space-y-3" style={{ animationDelay: '160ms' }}>
+              <h1 className="font-['Cairo'] text-3xl font-black leading-[1.32] tracking-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:text-5xl lg:text-[3.6rem]">
                 {t('تخطيط الأراضي والبيانات العقارية...', 'Land Planning & Real Estate Data...')} <br className="hidden sm:inline" />
-                <span className="text-sky-300 font-black drop-shadow-[0_2px_12px_rgba(14,165,233,0.6)]">
+                <span className="font-black text-sky-300">
                   {t('بدقة ورؤية عين سيجام', 'With Precision & Vision of Ain Sigam')}
                 </span>
               </h1>
-              <p className="text-sm sm:text-base lg:text-lg text-slate-100 leading-relaxed font-semibold max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+              <p className="mx-auto max-w-2xl text-sm font-semibold leading-7 text-slate-100 drop-shadow-[0_1px_5px_rgba(0,0,0,0.5)] sm:text-base lg:text-lg">
                 {t(
                   'استكشف صفقات السوق العقاري، أسعار المتر في الأحياء، وفحص صلاحية الأراضي والتخطيط العمراني المعتمد بدون تعقيد.',
                   'Explore market transactions, price per sq. meter, and certified land suitability & master planning indicators.'
@@ -315,8 +322,8 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
             </div>
 
             {/* Search Bar - Crisp Floating Container */}
-            <div className="max-w-xl mx-auto relative pt-2">
-              <div className="relative flex items-center bg-white/95 dark:bg-slate-900/95 border-2 border-white/80 dark:border-slate-600 focus-within:border-sky-400 rounded-2xl shadow-2xl transition-all p-1.5 backdrop-blur-md">
+            <div className="ain-hero-reveal relative mx-auto max-w-xl pt-1" style={{ animationDelay: '240ms' }}>
+              <div className="relative flex items-center border border-white/80 bg-white/95 p-1.5 shadow-xl transition-colors focus-within:border-sky-400 dark:border-slate-600 dark:bg-slate-900/95">
                 <Search className="w-5 h-5 text-slate-500 dark:text-slate-400 mr-3 ml-2 shrink-0" />
                 <input
                   type="text"
@@ -336,7 +343,7 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
                 )}
                 <button
                   onClick={() => handleSearchSubmit(searchQuery || 'حي النرجس')}
-                  className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm shadow-md transition-all shrink-0 cursor-pointer"
+                  className="shrink-0 bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-md transition-colors hover:bg-blue-500 sm:text-sm"
                 >
                   {t('بحث', 'Search')}
                 </button>
@@ -344,7 +351,7 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
 
               {/* Autocomplete Dropdown */}
               {showSuggestions && (
-                <div className="absolute top-full mt-2 w-full bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-2 z-30 text-start animate-in fade-in duration-100">
+                <div className="absolute top-full z-30 mt-2 w-full border border-slate-200 bg-white/98 p-2 text-start shadow-2xl backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/98">
                   <div className="text-[10px] font-bold text-slate-400 px-3 py-1 mb-1">
                     {t('أحياء مقترحة للبحث السريع:', 'Popular suggested districts:')}
                   </div>
@@ -373,7 +380,7 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
                   <button
                     key={idx}
                     onClick={() => handleSearchSubmit(d.nameAr)}
-                    className="px-2.5 py-1 rounded-lg bg-slate-900/85 hover:bg-blue-600 text-white font-medium transition-colors cursor-pointer text-[11px] border border-white/20 shadow-md backdrop-blur-sm"
+                    className="border border-white/20 bg-slate-900/75 px-2.5 py-1 text-[11px] font-medium text-white transition-colors hover:bg-blue-600"
                   >
                     {isAr ? d.nameAr : d.nameEn}
                   </button>
@@ -382,10 +389,10 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
             </div>
 
             {/* Clear & Prominent Primary Calls to Action */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <div className="ain-hero-reveal flex flex-col items-stretch justify-center gap-3 pt-1 sm:flex-row sm:items-center" style={{ animationDelay: '320ms' }}>
               <button
                 onClick={() => onNavigate('map')}
-                className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm shadow-xl shadow-blue-600/35 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 cursor-pointer"
+                className="flex items-center justify-center gap-2 bg-blue-600 px-6 py-3 text-xs font-bold text-white shadow-lg shadow-blue-950/30 transition-colors hover:bg-blue-500 sm:text-sm"
               >
                 <MapPin className="w-4 h-4 text-sky-200" />
                 <span>{t('استكشف الخريطة العقارية المباشرة', 'Explore Live Spatial Map')}</span>
@@ -394,7 +401,7 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
 
               <button
                 onClick={() => onNavigate('calculator')}
-                className="px-6 py-3 rounded-2xl bg-slate-900/85 hover:bg-slate-900 border border-white/20 hover:border-sky-400 text-white font-bold text-xs sm:text-sm shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 cursor-pointer backdrop-blur-md"
+                className="flex items-center justify-center gap-2 border border-white/25 bg-slate-950/60 px-6 py-3 text-xs font-bold text-white shadow-lg backdrop-blur-sm transition-colors hover:border-sky-300 hover:bg-slate-950/80 sm:text-sm"
               >
                 <Calculator className="w-4 h-4 text-sky-400" />
                 <span>{t('حاسبة التقييم والعوائد', 'Valuation & ROI Calculator')}</span>
@@ -402,24 +409,25 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
             </div>
 
             {/* 3 Key Stats Pills with clear glass backdrop and bright text */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto pt-2">
-              <div className="p-3 sm:p-4 rounded-2xl bg-slate-950/80 backdrop-blur-md border border-white/20 text-center shadow-lg">
+            <div className="ain-hero-reveal mx-auto grid max-w-2xl grid-cols-3 gap-2 pt-2 sm:gap-4" style={{ animationDelay: '400ms' }}>
+              <div className="border-t border-white/35 bg-slate-950/45 p-3 text-center backdrop-blur-sm sm:p-4">
                 <div className="text-base sm:text-2xl font-black text-white font-mono">4.2M+</div>
                 <div className="text-[10px] sm:text-xs text-slate-300 font-medium">{t('صفقة موثقة', 'Verified Deals')}</div>
               </div>
-              <div className="p-3 sm:p-4 rounded-2xl bg-slate-950/80 backdrop-blur-md border border-white/20 text-center shadow-lg">
+              <div className="border-t border-white/35 bg-slate-950/45 p-3 text-center backdrop-blur-sm sm:p-4">
                 <div className="text-base sm:text-2xl font-black text-white font-mono">1,400+</div>
                 <div className="text-[10px] sm:text-xs text-slate-300 font-medium">{t('حي بالمملكة', 'Districts in KSA')}</div>
               </div>
-              <div className="p-3 sm:p-4 rounded-2xl bg-slate-950/80 backdrop-blur-md border border-white/20 text-center shadow-lg">
+              <div className="border-t border-white/35 bg-slate-950/45 p-3 text-center backdrop-blur-sm sm:p-4">
                 <div className="text-base sm:text-2xl font-black text-sky-400 font-mono">100%</div>
                 <div className="text-[10px] sm:text-xs text-slate-300 font-medium">{t('بيانات معتمدة', 'Official Sources')}</div>
               </div>
             </div>
           </div>
-        </section>
-      </ScrollReveal>
+          </div>
+      </section>
 
+      <div className="mx-auto max-w-6xl space-y-12 px-4 py-12 sm:space-y-16 sm:px-6 sm:py-16">
       {/* 2. CORE SERVICES SECTION: High-Definition Background Container with Crisp Overlay & Transparent White Text */}
       <ScrollReveal direction="up" delayMs={50}>
         <section className="relative overflow-hidden rounded-3xl border border-slate-700/60 shadow-2xl p-6 sm:p-10 group">
@@ -855,6 +863,7 @@ export const BaseetaCleanHome: React.FC<BaseetaCleanHomeProps> = ({
         </section>
       </ScrollReveal>
 
+      </div>
     </div>
   );
 };
