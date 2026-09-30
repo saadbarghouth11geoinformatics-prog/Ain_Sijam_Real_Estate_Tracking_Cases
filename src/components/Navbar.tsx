@@ -1,17 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   ChevronDown, 
+  ChevronLeft,
+  ChevronRight,
   Globe, 
   Menu, 
   X, 
   MapPin, 
-  BarChart3, 
-  Briefcase, 
+  ChartNoAxesColumnIncreasing, 
+  BriefcaseBusiness, 
   Bot, 
-  Table, 
+  ReceiptText, 
   Calculator, 
-  GitCompare, 
-  Layers, 
+  GitCompareArrows, 
+  Layers3, 
   ShieldCheck, 
   Mail, 
   Phone, 
@@ -57,6 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(true);
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -113,12 +116,12 @@ export const Navbar: React.FC<NavbarProps> = ({
   // Paseetah Platform Services List for the "الخدمات ⌵" Dropdown
   const servicesList = [
     { id: 'map', labelAr: 'الخريطة العقارية الحية', labelEn: 'Live Real Estate Map', icon: MapPin, descAr: 'استكشاف قطع الأراضي والصفقات مكانياً', descEn: 'Explore spatial parcels and deals' },
-    { id: 'indicators', labelAr: 'مؤشر الأسعار والمتر', labelEn: 'Price Index & Sqm', icon: BarChart3, descAr: 'مؤشرات دقيقة لأسعار الصفقات الرسمية', descEn: 'Precise official transaction indices' },
-    { id: 'deals', labelAr: 'سجل الصفقات العقارية', labelEn: 'Real Estate Deals', icon: Table, descAr: 'صفقات وزارة العدل والسجل العقاري المباشرة', descEn: 'Ministry of Justice live registry deals' },
-    { id: 'portfolio', labelAr: 'المحفظة العقارية', labelEn: 'Portfolio Tracker', icon: Briefcase, descAr: 'إدارة وتتبع أملاكك وعقاراتك بذكاء', descEn: 'Smart tracking of your holdings' },
+    { id: 'indicators', labelAr: 'مؤشر الأسعار والمتر', labelEn: 'Price Index & Sqm', icon: ChartNoAxesColumnIncreasing, descAr: 'مؤشرات دقيقة لأسعار الصفقات الرسمية', descEn: 'Precise official transaction indices' },
+    { id: 'deals', labelAr: 'سجل الصفقات العقارية', labelEn: 'Real Estate Deals', icon: ReceiptText, descAr: 'صفقات وزارة العدل والسجل العقاري المباشرة', descEn: 'Ministry of Justice live registry deals' },
+    { id: 'portfolio', labelAr: 'المحفظة العقارية', labelEn: 'Portfolio Tracker', icon: BriefcaseBusiness, descAr: 'إدارة وتتبع أملاكك وعقاراتك بذكاء', descEn: 'Smart tracking of your holdings' },
     { id: 'calculator', labelAr: 'حاسبة التقييم والعوائد', labelEn: 'ROI & Yield Calculator', icon: Calculator, descAr: 'حساب العائد الإيجاري الصافي والأقساط', descEn: 'Calculate net rental yields and financing' },
-    { id: 'compare', labelAr: 'مقارنة الأحياء', labelEn: 'District Comparator', icon: GitCompare, descAr: 'مقارنة الأسعار والعوائد بين حيين', descEn: 'Compare prices and yields across 2 districts' },
-    { id: 'projects', labelAr: 'إحصائيات المشاريع', labelEn: 'Project Statistics', icon: Layers, descAr: 'إحصائيات المشاريع الكبرى بالرياض والمملكة', descEn: 'Key statistics on major KSA projects' },
+    { id: 'compare', labelAr: 'مقارنة الأحياء', labelEn: 'District Comparator', icon: GitCompareArrows, descAr: 'مقارنة الأسعار والعوائد بين حيين', descEn: 'Compare prices and yields across 2 districts' },
+    { id: 'projects', labelAr: 'إحصائيات المشاريع', labelEn: 'Project Statistics', icon: Layers3, descAr: 'إحصائيات المشاريع الكبرى بالرياض والمملكة', descEn: 'Key statistics on major KSA projects' },
     { id: 'advisor', labelAr: 'المستشار الذكي سيجام AI', labelEn: 'Sigam AI Advisor', icon: Bot, descAr: 'استشارات وتحليلات فورية مدعومة بالبيانات', descEn: 'Instant AI advisory backed by data' },
   ];
 
@@ -165,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 )}
               </button>
 
-              {/* سابقة الأعمال (Case Studies) */}
+              {/* أعمالنا (Our Work) */}
               <button
                 onClick={() => handleNavClick('case-studies')}
                 className={`relative h-full flex items-center text-sm font-bold transition-colors cursor-pointer ${
@@ -174,8 +177,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-slate-700 dark:text-slate-300 hover:text-blue-600'
                 }`}
               >
-                <span>{isAr ? 'سابقة الأعمال' : 'Case Studies'}</span>
+                <span>{isAr ? 'أعمالنا' : 'Our Work'}</span>
                 {activeSection === 'case-studies' && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-blue-600 rounded-t-full" />
+                )}
+              </button>
+
+              {/* شبكات البنية التحتية (Infrastructure Networks) */}
+              <button
+                onClick={() => handleNavClick('infrastructure-networks')}
+                className={`relative h-full flex items-center text-sm font-bold transition-colors cursor-pointer ${
+                  activeSection === 'infrastructure-networks'
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-blue-600'
+                }`}
+              >
+                <span>{isAr ? 'شبكات البنية التحتية' : 'Infrastructure Networks'}</span>
+                {activeSection === 'infrastructure-networks' && (
                   <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-blue-600 rounded-t-full" />
                 )}
               </button>
@@ -199,26 +217,47 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="relative h-full flex items-center" ref={servicesDropdownRef}>
                 <button
                   onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
-                  className={`relative h-full flex items-center gap-1 text-sm font-bold transition-colors cursor-pointer ${
+                  onKeyDown={(e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                      setServicesDropdownOpen(true);
+                    }
+                  }}
+                  className={`relative h-full flex items-center gap-1.5 text-sm font-bold transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-hidden rounded-lg px-2 py-1 ${
                     isServicesActive || servicesDropdownOpen
                       ? 'text-blue-600 dark:text-blue-400'
                       : 'text-slate-700 dark:text-slate-300 hover:text-blue-600'
                   }`}
                   aria-expanded={servicesDropdownOpen}
+                  aria-haspopup="true"
                 >
                   <span>{isAr ? 'الخدمات' : 'Services'}</span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-250 ${servicesDropdownOpen ? 'rotate-180 text-blue-600' : ''}`} />
                   {isServicesActive && (
                     <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-blue-600 rounded-t-full" />
                   )}
                 </button>
 
-                {/* Services Flyout Menu */}
+                {/* Services Flyout Menu - Compact, High-contrast, RTL-aligned */}
                 {servicesDropdownOpen && (
-                  <div className="absolute top-[80%] right-0 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                    <div className="text-[11px] font-bold text-slate-400 px-3 py-1.5 border-b border-slate-100 dark:border-slate-800 mb-1">
-                      {isAr ? 'خدمات وحلول عين سيجام' : 'Ain Sigam Platform Services'}
+                  <div 
+                    role="menu"
+                    aria-label={isAr ? 'قائمة الخدمات العقارية' : 'Services Menu'}
+                    className={`absolute top-[calc(100%+8px)] ${isAr ? 'right-0' : 'left-0'} w-84 sm:w-92 max-h-[min(460px,calc(100vh-100px))] overflow-y-auto overscroll-contain bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200 motion-reduce:transition-none`}
+                  >
+                    {/* Header */}
+                    <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 dark:border-slate-800 mb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-blue-600" />
+                        <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                          {isAr ? 'خدمات عين سيجام (8 خدمات)' : 'Ain Sijam Services (8)'}
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-mono font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-md">
+                        {isAr ? 'رقمية معتمدة' : 'Official'}
+                      </span>
                     </div>
+
+                    {/* Services Items List */}
                     <div className="space-y-1">
                       {servicesList.map((service) => {
                         const Icon = service.icon;
@@ -226,25 +265,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                         return (
                           <button
                             key={service.id}
+                            role="menuitem"
                             onClick={() => handleNavClick(service.id)}
-                            className={`w-full flex items-start gap-2.5 p-2 rounded-xl text-start transition-colors cursor-pointer group ${
+                            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-start transition-all duration-200 cursor-pointer group border ${
                               isCurrent
-                                ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300'
-                                : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200'
-                            }`}
+                                ? 'bg-blue-50/90 dark:bg-blue-950/50 border-blue-200 dark:border-blue-800/80 text-blue-700 dark:text-blue-300 rtl:border-r-3 ltr:border-l-3 rtl:border-r-blue-600 ltr:border-l-blue-600 shadow-xs'
+                                : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:border-slate-200/60 dark:hover:border-slate-700/60 text-slate-800 dark:text-slate-200'
+                            } focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-hidden`}
                           >
-                            <div className={`p-1.5 rounded-lg shrink-0 mt-0.5 ${
+                            <div className={`w-9 h-9 rounded-xl shrink-0 flex items-center justify-center transition-colors duration-200 ${
                               isCurrent
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 group-hover:bg-blue-600 group-hover:text-white transition-colors'
+                                ? 'bg-blue-600 text-white shadow-xs'
+                                : 'bg-blue-50/90 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/60'
                             }`}>
-                              <Icon className="w-4 h-4" />
+                              <Icon className="w-[18px] h-[18px] stroke-[1.8]" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <div className="text-xs font-bold leading-tight">
-                                {isAr ? service.labelAr : service.labelEn}
+                              <div className="text-xs sm:text-[13px] font-bold text-slate-900 dark:text-white leading-tight flex items-center justify-between">
+                                <span className="truncate">{isAr ? service.labelAr : service.labelEn}</span>
+                                {isCurrent && (
+                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />
+                                )}
                               </div>
-                              <p className="text-[10px] text-slate-400 leading-tight mt-0.5 truncate">
+                              <p className="text-[11px] font-medium text-slate-600 dark:text-slate-300 leading-tight mt-0.5 truncate">
                                 {isAr ? service.descAr : service.descEn}
                               </p>
                             </div>
@@ -256,9 +299,24 @@ export const Navbar: React.FC<NavbarProps> = ({
                 )}
               </div>
 
+              {/* منهجية العمل (Work Methodology) */}
+              <button
+                onClick={() => handleNavClick('methodology')}
+                className={`relative h-full flex items-center text-sm font-bold transition-colors cursor-pointer ${
+                  activeSection === 'methodology'
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-blue-600'
+                }`}
+              >
+                <span>{isAr ? 'منهجية العمل' : 'Work Methodology'}</span>
+                {activeSection === 'methodology' && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-blue-600 rounded-t-full" />
+                )}
+              </button>
+
               {/* عن عين سيجام (About Ain Sigam) */}
               <button
-                onClick={() => setActiveSection('about')}
+                onClick={() => setActiveSection?.('about')}
                 className={`relative h-full flex items-center text-sm font-bold transition-colors cursor-pointer ${
                   activeSection === 'about'
                     ? 'text-blue-600 dark:text-blue-400 font-extrabold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-600'
@@ -270,7 +328,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* تواصل معنا (Contact Us) */}
               <button
-                onClick={() => setActiveSection('contact')}
+                onClick={() => setActiveSection?.('contact')}
                 className={`relative h-full flex items-center text-sm font-bold transition-colors cursor-pointer ${
                   activeSection === 'contact'
                     ? 'text-blue-600 dark:text-blue-400 font-extrabold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-600'
@@ -282,10 +340,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             </nav>
 
-            {/* 3. Left side: Eng 🌐 and AT Avatar Badge */}
+            {/* 3. Left side: English and AT Avatar Badge */}
             <div className="flex items-center gap-3 sm:gap-4 shrink-0">
               
-              {/* Language Switcher: Eng 🌐 */}
+              {/* Language Switcher: Eng */}
               <button
                 onClick={toggleLang}
                 className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors cursor-pointer"
@@ -317,7 +375,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </div>
                       <div className="min-w-0">
                         <div className="text-xs font-bold text-slate-900 dark:text-white truncate">Ahmed Tamam</div>
-                        <a href="mailto:support@ainsigam.sa" className="block text-[10px] text-slate-400 truncate hover:text-blue-500">support@ainsigam.sa</a>
+                        <div className="text-[10px] text-slate-400 truncate">ahmed.tamam.cairo48@gmail.com</div>
                       </div>
                     </div>
 
@@ -385,7 +443,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   activeSection === 'case-studies' ? 'text-blue-600 bg-blue-50/50 dark:bg-blue-950/30' : 'text-slate-800 dark:text-slate-200'
                 }`}
               >
-                {isAr ? 'سابقة الأعمال' : 'Case Studies'}
+                {isAr ? 'أعمالنا' : 'Our Work'}
               </button>
 
               <button
@@ -397,27 +455,89 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {isAr ? 'الأسعار' : 'Pricing'}
               </button>
 
-              <div className="py-2 px-3">
-                <div className="text-xs font-bold text-slate-400 mb-2">{isAr ? 'الخدمات:' : 'Services:'}</div>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {servicesList.map((service) => (
-                    <button
-                      key={service.id}
-                      onClick={() => handleNavClick(service.id)}
-                      className={`p-2 rounded-lg text-start text-xs font-semibold ${
-                        activeSection === service.id ? 'bg-blue-600 text-white' : 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-                      }`}
-                    >
-                      {isAr ? service.labelAr : service.labelEn}
-                    </button>
-                  ))}
-                </div>
+              {/* Mobile Services Accordion */}
+              <div className="py-1 px-1">
+                <button
+                  type="button"
+                  onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-600" />
+                    <span>{isAr ? 'خدمات المنصة (8 خدمات)' : 'Platform Services (8)'}</span>
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                </button>
+
+                {mobileServicesOpen && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 pt-1 animate-in fade-in duration-150">
+                    {servicesList.map((service) => {
+                      const Icon = service.icon;
+                      const isCurrent = activeSection === service.id;
+                      return (
+                        <button
+                          key={service.id}
+                          onClick={() => handleNavClick(service.id)}
+                          className={`flex items-center gap-3 p-2.5 rounded-xl text-start transition-all cursor-pointer border ${
+                            isCurrent
+                              ? 'bg-blue-50 dark:bg-blue-950/60 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300 shadow-xs'
+                              : 'bg-white dark:bg-slate-800/60 border-slate-100 dark:border-slate-800 text-slate-800 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700'
+                          }`}
+                        >
+                          <div className={`w-9 h-9 rounded-xl shrink-0 flex items-center justify-center ${
+                            isCurrent
+                              ? 'bg-blue-600 text-white shadow-xs'
+                              : 'bg-blue-50/90 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400'
+                          }`}>
+                            <Icon className="w-[18px] h-[18px] stroke-[1.8]" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
+                              {isAr ? service.labelAr : service.labelEn}
+                            </div>
+                            <p className="text-[11px] font-medium text-slate-600 dark:text-slate-300 leading-tight mt-0.5 line-clamp-1">
+                              {isAr ? service.descAr : service.descEn}
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
 
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  setActiveSection('about');
+                  handleNavClick('infrastructure-networks');
+                }}
+                className={`p-3 rounded-xl text-start font-bold text-sm ${
+                  activeSection === 'infrastructure-networks'
+                    ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400'
+                    : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                {isAr ? 'شبكات البنية التحتية' : 'Infrastructure Networks'}
+              </button>
+
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleNavClick('methodology');
+                }}
+                className={`p-3 rounded-xl text-start font-bold text-sm ${
+                  activeSection === 'methodology'
+                    ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400'
+                    : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                {isAr ? 'منهجية العمل' : 'Work Methodology'}
+              </button>
+
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setActiveSection?.('about');
                 }}
                 className={`p-3 rounded-xl text-start font-bold text-sm ${
                   activeSection === 'about'
@@ -431,7 +551,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  setActiveSection('contact');
+                  setActiveSection?.('contact');
                 }}
                 className={`p-3 rounded-xl text-start font-bold text-sm ${
                   activeSection === 'contact'
@@ -517,7 +637,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                   <Mail className="w-4 h-4 text-blue-600" />
-                  <a href="mailto:support@ainsigam.sa" className="font-mono hover:text-blue-600">support@ainsigam.sa</a>
+                  <span className="font-mono">ahmed.tamam.cairo48@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                   <Phone className="w-4 h-4 text-blue-600" />

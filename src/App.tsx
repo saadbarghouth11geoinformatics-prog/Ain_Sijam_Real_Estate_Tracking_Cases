@@ -23,11 +23,13 @@ import { MegaProjectsMap } from './components/MegaProjectsMap';
 import { DigitalTwin360Section } from './components/DigitalTwin360Section';
 import { UrbanEvolutionSection } from './components/UrbanEvolutionSection';
 import { LandSuitabilitySection } from './components/LandSuitabilitySection';
-import { InfrastructureNetworks } from './components/InfrastructureNetworks';
+import { ConstructionSiteManager } from './components/ConstructionSiteManager';
 import { SigamEngineeringAdvisor } from './components/SigamEngineeringAdvisor';
 import { AboutAinSigamPage } from './components/AboutAinSigamPage';
 import { ContactUsPage } from './components/ContactUsPage';
 import { CaseStudiesPage } from './components/case-studies/CaseStudiesPage';
+import { MethodologyPage } from './components/MethodologyPage';
+import { InfrastructureNetworksPage } from './components/InfrastructureNetworksPage';
 import { SubscriptionModal } from './components/SubscriptionModal';
 import { Footer } from './components/Footer';
 
@@ -48,10 +50,13 @@ export default function App() {
     if (path === 'case-studies') {
       return 'case-studies';
     }
+    if (path === 'methodology') {
+      return 'methodology';
+    }
     if (PAGES_DATA.some(p => p.id === path)) {
       return path;
     }
-    if (hash && (hash === 'case-studies' || PAGES_DATA.some(p => p.id === hash))) {
+    if (hash && (hash === 'case-studies' || hash === 'methodology' || PAGES_DATA.some(p => p.id === hash))) {
       return hash;
     }
     return 'home';
@@ -68,6 +73,22 @@ export default function App() {
   // Engineering advisor incoming prompt
   const [advisorInitialPrompt, setAdvisorInitialPrompt] = useState<string>('');
 
+  // Project Monitoring & Live Map synchronization state
+  const [focusedProjectId, setFocusedProjectId] = useState<string | null>(null);
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
+
+  const handleNavigateToProject = useCallback((projectId: string) => {
+    setFocusedProjectId(projectId);
+    setCurrentPageId('map');
+    window.location.hash = 'map';
+    setTimeout(() => {
+      const mapEl = document.getElementById('saudi-kingdom-map-section');
+      if (mapEl) {
+        mapEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 120);
+  }, []);
+
   // Handle URL hash changes and in-page anchor scrolling
   useEffect(() => {
     const handleLocationChange = () => {
@@ -77,9 +98,11 @@ export default function App() {
       let target: string | null = null;
       if (path === 'case-studies') {
         target = 'case-studies';
+      } else if (path === 'methodology') {
+        target = 'methodology';
       } else if (PAGES_DATA.some(p => p.id === path)) {
         target = path;
-      } else if (hash && (hash === 'case-studies' || PAGES_DATA.some(p => p.id === hash))) {
+      } else if (hash && (hash === 'case-studies' || hash === 'methodology' || PAGES_DATA.some(p => p.id === hash))) {
         target = hash;
       }
 
@@ -132,6 +155,14 @@ export default function App() {
     if (targetId === 'case-studies') {
       if (window.location.pathname !== '/case-studies') {
         window.history.pushState(null, '', '/case-studies');
+      }
+    } else if (targetId === 'methodology') {
+      if (window.location.pathname !== '/methodology') {
+        window.history.pushState(null, '', '/methodology');
+      }
+    } else if (targetId === 'infrastructure-networks') {
+      if (window.location.pathname !== '/infrastructure-networks') {
+        window.history.pushState(null, '', '/infrastructure-networks');
       }
     } else {
       const newUrl = `/#${targetId}`;
@@ -236,6 +267,20 @@ export default function App() {
             </div>
           )}
 
+          {/* DEDICATED PAGE: منهجية العمل (Work Methodology) */}
+          {currentPageId === 'methodology' && (
+            <div className="space-y-6">
+              <MethodologyPage onNavigate={handleNavigate} />
+            </div>
+          )}
+
+          {/* DEDICATED PAGE: ذكاء شبكات البنية التحتية (Infrastructure Networks Intelligence) */}
+          {currentPageId === 'infrastructure-networks' && (
+            <div className="space-y-6">
+              <InfrastructureNetworksPage onNavigate={handleNavigate} />
+            </div>
+          )}
+
           {/* 2. DEDICATED PAGE: الخريطة العقارية */}
           {currentPageId === 'map' && (
             <div className="space-y-6">
@@ -248,8 +293,23 @@ export default function App() {
                 onToggleViewMode={handleToggleViewMode}
               />
               <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 space-y-8">
-                <SaudiInteractiveKingdomMap />
-                <ProjectStatistics onNavigate={handleNavigate} />
+                <div id="saudi-kingdom-map-section">
+                  <SaudiInteractiveKingdomMap 
+                    selectedCity={selectedCity}
+                    selectedCategory={selectedCategoryFilter}
+                    onSelectCategory={setSelectedCategoryFilter}
+                    focusedProjectId={focusedProjectId}
+                    onSelectProject={(proj) => setFocusedProjectId(proj.id)}
+                  />
+                </div>
+                <ProjectStatistics 
+                  onNavigate={handleNavigate}
+                  onNavigateToProject={handleNavigateToProject}
+                  selectedCity={selectedCity}
+                  selectedCategory={selectedCategoryFilter}
+                  onSelectCategory={setSelectedCategoryFilter}
+                  focusedProjectId={focusedProjectId}
+                />
               </div>
             </div>
           )}
@@ -351,7 +411,14 @@ export default function App() {
                 onToggleViewMode={handleToggleViewMode}
               />
               <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-                <ProjectStatistics onNavigate={handleNavigate} />
+                <ProjectStatistics 
+                  onNavigate={handleNavigate}
+                  onNavigateToProject={handleNavigateToProject}
+                  selectedCity={selectedCity}
+                  selectedCategory={selectedCategoryFilter}
+                  onSelectCategory={setSelectedCategoryFilter}
+                  focusedProjectId={focusedProjectId}
+                />
               </div>
             </div>
           )}
@@ -368,7 +435,11 @@ export default function App() {
                 onToggleViewMode={handleToggleViewMode}
               />
               <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-                <BaseetaAdvisorPaseet initialPrompt={advisorInitialPrompt} />
+                <BaseetaAdvisorPaseet
+                  initialPrompt={advisorInitialPrompt}
+                  onNavigate={handleNavigate}
+                  selectedCity={selectedCity}
+                />
               </div>
             </div>
           )}
@@ -471,7 +542,7 @@ export default function App() {
             </div>
           )}
 
-          {currentPageId === 'infrastructure' && (
+          {currentPageId === 'equipment-fleet' && (
             <div className="space-y-6">
               <PageHeaderBanner
                 currentPage={currentPageInfo}
@@ -482,11 +553,19 @@ export default function App() {
                 onToggleViewMode={handleToggleViewMode}
               />
               <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-                <InfrastructureNetworks
+                <ConstructionSiteManager
                   selectedCity={selectedCity}
-                  onConsultAI={handleConsultEngineering}
+                  isSubscriber={isSubscriber}
+                  onRequestSubscription={handleRequestSubscription}
+                  onConsultEngineering={handleConsultEngineering}
                 />
               </div>
+            </div>
+          )}
+
+          {currentPageId === 'infrastructure' && (
+            <div className="space-y-6">
+              <InfrastructureNetworksPage onNavigate={handleNavigate} />
             </div>
           )}
 
@@ -525,7 +604,7 @@ export default function App() {
           )}
 
           {/* Quick jump grid at bottom for dedicated pages */}
-          {currentPageId !== 'home' && currentPageId !== 'case-studies' && (
+          {currentPageId !== 'home' && currentPageId !== 'case-studies' && currentPageId !== 'methodology' && (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-6">
               <div className="bg-slate-50 dark:bg-slate-900/60 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800">
                 <PagesDirectoryGrid
@@ -553,11 +632,30 @@ export default function App() {
             }}
           />
 
-          <SaudiInteractiveKingdomMap />
-          <ProjectStatistics onNavigate={handleNavigate} />
+          <div id="saudi-kingdom-map-section">
+            <SaudiInteractiveKingdomMap 
+              selectedCity={selectedCity}
+              selectedCategory={selectedCategoryFilter}
+              onSelectCategory={setSelectedCategoryFilter}
+              focusedProjectId={focusedProjectId}
+              onSelectProject={(proj) => setFocusedProjectId(proj.id)}
+            />
+          </div>
+          <ProjectStatistics 
+            onNavigate={handleNavigate}
+            onNavigateToProject={handleNavigateToProject}
+            selectedCity={selectedCity}
+            selectedCategory={selectedCategoryFilter}
+            onSelectCategory={setSelectedCategoryFilter}
+            focusedProjectId={focusedProjectId}
+          />
           <BaseetaPriceIndex />
           <BaseetaPortfolio />
-          <BaseetaAdvisorPaseet initialPrompt={advisorInitialPrompt} />
+          <BaseetaAdvisorPaseet
+            initialPrompt={advisorInitialPrompt}
+            onNavigate={handleNavigate}
+            selectedCity={selectedCity}
+          />
           <BaseetaDealsTable />
           <BaseetaCalculator />
           <BaseetaDistrictComparator />

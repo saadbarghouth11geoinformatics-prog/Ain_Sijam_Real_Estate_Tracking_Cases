@@ -126,8 +126,33 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = ({ onNavigate }) => {
     <div className="w-full space-y-12 pb-16" dir={isAr ? 'rtl' : 'ltr'}>
 
       {/* 1. HERO SPOTLIGHT: Support & Consultation Hub */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border border-slate-800 text-white p-8 sm:p-12 lg:p-16 shadow-2xl">
-        <div className="absolute inset-0 bg-[radial-gradient(#0A3254_1px,transparent_1px)] [background-size:28px_28px] opacity-30 pointer-events-none" />
+      <section className="relative overflow-hidden rounded-3xl bg-slate-950 border border-slate-800 text-white p-8 sm:p-12 lg:p-16 shadow-2xl group">
+        {/* Real Saudi Architectural & Spatial Engineering Hub Background Image */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <img
+            src="/images/drive-banners/drive_banner_02.png"
+            alt={isAr ? 'مركز الاستشارات والذكاء المكاني عين سيجام' : 'Ain Sijam Spatial Engineering & Advisory Hub'}
+            className="w-full h-full object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+            style={{ objectPosition: 'center 40%' }}
+          />
+          {/* Gentle ambient gradient (only 25-45% opacity) so the clear background image shines through vividly */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: isAr
+                ? 'linear-gradient(to left, rgba(7, 14, 30, 0.60) 0%, rgba(7, 14, 30, 0.25) 50%, rgba(7, 14, 30, 0.50) 100%)'
+                : 'linear-gradient(to right, rgba(7, 14, 30, 0.60) 0%, rgba(7, 14, 30, 0.25) 50%, rgba(7, 14, 30, 0.50) 100%)',
+            }}
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(7, 14, 30, 0.50) 0%, transparent 20%, transparent 80%, rgba(7, 14, 30, 0.85) 100%)',
+            }}
+          />
+        </div>
+
+        <div className="absolute inset-0 bg-[radial-gradient(#0A3254_1px,transparent_1px)] [background-size:28px_28px] opacity-25 pointer-events-none" />
         <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-blue-600/15 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-emerald-600/15 blur-3xl pointer-events-none" />
 
@@ -210,11 +235,13 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = ({ onNavigate }) => {
             </div>
             <div>
               <div className="text-xs font-semibold text-slate-500">{isAr ? 'البريد الإلكتروني المعتمد' : 'Verified Email'}</div>
-              <a href="mailto:support@ainsigam.sa" className="block text-sm font-black text-slate-900 dark:text-white font-mono mt-0.5 truncate hover:text-emerald-600" title="support@ainsigam.sa">support@ainsigam.sa</a>
+              <div className="text-sm font-black text-slate-900 dark:text-white font-mono mt-0.5 truncate" title="ahmed.tamam.cairo48@gmail.com">
+                ahmed.tamam.cairo48@gmail.com
+              </div>
               <div className="text-[11px] text-slate-500 mt-1">{isAr ? 'للاستشارات الهندسية والشراكات' : 'Advisory & Partnerships'}</div>
             </div>
             <button
-              onClick={() => handleCopy('support@ainsigam.sa', 'email')}
+              onClick={() => handleCopy('ahmed.tamam.cairo48@gmail.com', 'email')}
               className="w-full py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               {copiedKey === 'email' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}

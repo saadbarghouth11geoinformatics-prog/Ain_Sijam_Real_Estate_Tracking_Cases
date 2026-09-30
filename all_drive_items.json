@@ -1,0 +1,196 @@
+{
+  "original": [
+    {
+      "id": "1aTvVA7594DOPpjWtupEgRQynvX3VK41h",
+      "name": "hdphoto1.wdp",
+      "mime": "image/tiff"
+    },
+    {
+      "id": "1Ongp2lONKfFT5-anaqGBfRqZNXHbGHdb",
+      "name": "hdphoto2.wdp",
+      "mime": "image/tiff"
+    },
+    {
+      "id": "1t4bDObW5Q3k_s79gzUlB4-7oacXWczc5",
+      "name": "image1.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "1lzTTUNA9AqOHvlJ9mQRjIxFEAsnRVjRZ",
+      "name": "image7.PNG",
+      "mime": "image/png"
+    },
+    {
+      "id": "13Paw7UVLXj59fyHISGo6lrTCOLPYwBIe",
+      "name": "image8.PNG",
+      "mime": "image/png"
+    },
+    {
+      "id": "1k8vNOoNm08YFIEvOuf7iZIbHVXJNyx3o",
+      "name": "image9.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "1K6IbIvhsT9sLUovT-B_16aXADv3U9Qn2",
+      "name": "image11.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "11hY-p-R7fEp6bF4bH4U8zujixyXaYP_M",
+      "name": "image12.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1fvomoUJfhfvsGmuL2N9AeE3Q_RsnaMdZ",
+      "name": "image13.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "10AgVZ5hcuUlgAUpNZgkMdz19KkUBxj3V",
+      "name": "image14.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1FJcxRBA5dpz75PBvDQdfk0y-pAd4wd_C",
+      "name": "image15.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1r5sT983pk3Y56HLzCWarb8IB_AUBGbLB",
+      "name": "image16.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "13HBt3VOh4qZI3cBx7BfMXe9rfdOJD340",
+      "name": "image17.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1odAhreTFKaLw8ZzXgquVcBVLDC354zfg",
+      "name": "image18.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1GIMu4Gwe19zmtGW8ck2hPOO2YYbaouyY",
+      "name": "image19.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1PQnk2aT3BT6j36L_egf7QUwMixUq0uh-",
+      "name": "image20.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1BNc5q1B3woeTtL6cTxnXxw56o5U5pljo",
+      "name": "image21.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1s8A5M8cWlnwJh6n-JX0rsT4mEZ4LX6XI",
+      "name": "image22.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1k6zjfJFfoUhVpFdlGKj8dTelHTUghzEM",
+      "name": "image23.jpeg",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "1FFeUOeRqcX6KJh-WHRWGlmjiwTa9kW75",
+      "name": "image24.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1ndjddRynt9pL9Sy44Y1RVdcEQ7Rz8AqY",
+      "name": "image25.jpeg",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "1t9z86lYlbv8OXwzwCEWLZY739ak56EmN",
+      "name": "image26.jpeg",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "1X3c5kyocKWfXrD-G6ykxn-pHLL4nApYL",
+      "name": "image27.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1MGsnL2wLS7hqtfbo1VnOZUXNWYb2hiu-",
+      "name": "image28.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1E9H1KWtcdVnkOK4nj-aMX0ixoNnZlkeq",
+      "name": "image29.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1qBpZNsbPD-B4MHQHvzjOm7pdp7GHrUhb",
+      "name": "image30.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1fZwu2GSvpalO9216G1X-y24L1Vd8rLsz",
+      "name": "image31.jpeg",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "1smSttWzUGmOip3uO1C8zKob_JqjQqv2d",
+      "name": "image32.jpeg",
+      "mime": "image/jpeg"
+    }
+  ],
+  "slides": [
+    {
+      "id": "1jFkYE15OPzLaH4RjKx2LsO3MhxeBf55s",
+      "name": "slide-1.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1AjKvkHjNJiQajjJFBVY9fFbAcCYp0SB0",
+      "name": "slide-2.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1HJLXLUfS4hc-V5eelRygACQuQBHu5l83",
+      "name": "slide-3.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1jEa7QsL3Y-OnF4BlIT_qj7FINLZMxvoX",
+      "name": "slide-4.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1nrpQxh3p6i7ReJxU-j8KJwS1A9wspRV_",
+      "name": "slide-5.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1maulkXJE4i8AbP-lO_28WVitsFo40YWX",
+      "name": "slide-6.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1iSlyaFFl0Q8MfVnrjFetuU_kSes6SXS7",
+      "name": "slide-7.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1IttykaoVCw0mtGknESwQFpDMTE-tEH2f",
+      "name": "slide-8.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1bnSAypLklCdLsw2uSl-Rjy5u0V411H-v",
+      "name": "slide-9.png",
+      "mime": "image/png"
+    },
+    {
+      "id": "1Ph0LiFTnN4vNXoOE0tVsRYuQ8S680wLK",
+      "name": "slide-10.png",
+      "mime": "image/png"
+    }
+  ]
+}

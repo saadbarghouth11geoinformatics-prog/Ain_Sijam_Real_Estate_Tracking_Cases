@@ -69,8 +69,10 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss(), aistudioMediaPlugin()],
     resolve: {
       alias: {
+        '@/assets': path.resolve(__dirname, 'src/assets'),
         '@': path.resolve(__dirname, '.'),
       },
+      dedupe: ['react', 'react-dom'],
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

@@ -59,7 +59,7 @@ export const PageHeaderBanner: React.FC<PageHeaderBannerProps> = ({
       dir={isAr ? 'rtl' : 'ltr'}
       id="page-header-banner"
     >
-      {/* Real High-Resolution Architectural & Land Planning Background Image - Crystal Clear */}
+      {/* Real High-Resolution Architectural & Land Planning Background Image - Crystal Clear & Transparently Overlaid */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <img
           src={heroImageSrc}
@@ -67,9 +67,22 @@ export const PageHeaderBanner: React.FC<PageHeaderBannerProps> = ({
           className="w-full h-full object-cover object-center scale-100 transition-transform duration-700"
           style={{ objectPosition: 'center 35%' }}
         />
-        {/* Subtle Dark Gradient Overlay: Keeps the architectural image clear while providing high contrast for text */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/50 to-slate-950/80" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/50" />
+        {/* Gentle ambient gradient (only 25-45% opacity) so the clear background image shines through vividly */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: isAr
+              ? 'linear-gradient(to left, rgba(7, 14, 30, 0.55) 0%, rgba(7, 14, 30, 0.20) 50%, rgba(7, 14, 30, 0.45) 100%)'
+              : 'linear-gradient(to right, rgba(7, 14, 30, 0.55) 0%, rgba(7, 14, 30, 0.20) 50%, rgba(7, 14, 30, 0.45) 100%)',
+          }}
+        />
+        {/* Soft edge blend for smooth integration */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(7, 14, 30, 0.45) 0%, transparent 20%, transparent 80%, rgba(7, 14, 30, 0.75) 100%)',
+          }}
+        />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-4">
