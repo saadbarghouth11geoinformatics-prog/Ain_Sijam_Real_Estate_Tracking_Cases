@@ -1,94 +1,32 @@
 import React from 'react';
-import { ArrowLeft, CheckCircle2, ClipboardCheck, MapPinned, Route, Satellite } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, CheckCircle2, ClipboardCheck, FileCheck2, MapPinned, Radar, Route, Ruler, Satellite, ScanLine, ShieldCheck, Sparkles } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
-interface MethodologyPageProps {
-  onNavigate: (pageId: string) => void;
-}
-
-const steps = [
-  {
-    icon: MapPinned,
-    ar: 'تحديد نطاق الأصل',
-    en: 'Define the asset scope',
-    detailAr: 'نربط الموقع بالحدود والبيانات التنظيمية ومصادر الخرائط المعتمدة.',
-    detailEn: 'We connect the location to verified boundaries, planning data, and map sources.',
-  },
-  {
-    icon: Satellite,
-    ar: 'التحقق الفضائي والميداني',
-    en: 'Satellite and field validation',
-    detailAr: 'نقارن المشاهدات الزمنية بالتوثيق الميداني لمتابعة التغيرات بوضوح.',
-    detailEn: 'We compare time-based imagery with field evidence to track changes clearly.',
-  },
-  {
-    icon: ClipboardCheck,
-    ar: 'تحليل قابل للتنفيذ',
-    en: 'Actionable analysis',
-    detailAr: 'نحوّل البيانات إلى مؤشرات وتقارير مختصرة تدعم القرار دون تعقيد.',
-    detailEn: 'We turn data into concise indicators and reports that support decisions.',
-  },
+interface MethodologyPageProps { onNavigate: (pageId: string) => void; }
+type Stage = { icon: React.ElementType; ar: string; en: string; purposeAr: string; purposeEn: string; evidenceAr: string; evidenceEn: string; outputAr: string; outputEn: string; };
+const stages: Stage[] = [
+  { icon: MapPinned, ar: 'تحديد النطاق', en: 'Scope definition', purposeAr: 'نحدد الأصل والحدود والسؤال الذي يحتاج إلى قرار.', purposeEn: 'We define the asset, its boundaries, and the decision to be made.', evidenceAr: 'موقع، صك أو مخطط معتمد، ومتطلبات العميل.', evidenceEn: 'Location, approved deed or plan, and client requirements.', outputAr: 'نطاق عمل واضح وخريطة بداية.', outputEn: 'A clear scope and starting map.' },
+  { icon: Satellite, ar: 'جمع البيانات', en: 'Data collection', purposeAr: 'نجمع طبقات الموقع والبيانات التنظيمية والمشاهدات الزمنية.', purposeEn: 'We collect site layers, planning data, and time-based observations.', evidenceAr: 'خرائط، صور فضائية، وسجلات متاحة للموقع.', evidenceEn: 'Maps, satellite imagery, and available site records.', outputAr: 'قاعدة بيانات مكانية موحّدة.', outputEn: 'A unified spatial data set.' },
+  { icon: ScanLine, ar: 'التحقق المكاني', en: 'Spatial validation', purposeAr: 'نراجع الاتساق بين الحدود والواقع والطبقات المرجعية.', purposeEn: 'We check consistency across boundaries, reality, and reference layers.', evidenceAr: 'مقارنة إحداثيات ومشاهدات وصور حديثة.', evidenceEn: 'Coordinate, observation, and recent-imagery comparison.', outputAr: 'ملاحظات موثقة ونقاط تحتاج تأكيداً.', outputEn: 'Documented notes and points requiring confirmation.' },
+  { icon: Ruler, ar: 'المراجعة التخطيطية', en: 'Planning review', purposeAr: 'نربط الموقع بضوابط الاستعمال والاشتراطات ذات الصلة.', purposeEn: 'We connect the site to relevant land-use controls and requirements.', evidenceAr: 'مخططات تنظيمية وبيانات الاستعمال المتاحة.', evidenceEn: 'Planning maps and available land-use data.', outputAr: 'قراءة أولية للملاءمة والقيود.', outputEn: 'An initial suitability and constraints readout.' },
+  { icon: Radar, ar: 'الرصد والتحليل', en: 'Monitoring & analysis', purposeAr: 'نحلل التغيرات والمؤشرات المؤثرة على القرار.', purposeEn: 'We analyse changes and decision-relevant indicators.', evidenceAr: 'تسلسل زمني، قياسات، ومقارنات مكانية.', evidenceEn: 'Time series, measurements, and spatial comparisons.', outputAr: 'مؤشرات مختصرة قابلة للتنفيذ.', outputEn: 'Concise, actionable indicators.' },
+  { icon: FileCheck2, ar: 'التقرير والمتابعة', en: 'Report & follow-up', purposeAr: 'نحوّل النتائج إلى توصية يمكن الرجوع إليها ومتابعتها.', purposeEn: 'We turn findings into a traceable recommendation and next steps.', evidenceAr: 'نتائج موثقة وروابط واضحة بين الدليل والقرار.', evidenceEn: 'Documented results with clear links from evidence to decision.', outputAr: 'تقرير قرار وخطوات متابعة محددة.', outputEn: 'A decision report and defined follow-up steps.' },
 ];
+const Bullet = ({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) => <li className={`flex gap-2 text-sm leading-6 ${dark ? 'text-slate-300' : 'text-slate-600 dark:text-slate-300'}`}><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-blue-600" />{children}</li>;
 
 export const MethodologyPage: React.FC<MethodologyPageProps> = ({ onNavigate }) => {
   const { t, isAr } = useLanguage();
-
-  return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12" dir={isAr ? 'rtl' : 'ltr'}>
-      <section className="relative overflow-hidden rounded-[2rem] border border-blue-100 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 px-6 py-10 sm:px-12 sm:py-14 text-white shadow-2xl shadow-blue-950/15">
-        <div className="absolute -top-24 -left-20 h-64 w-64 rounded-full bg-cyan-400/15 blur-3xl" />
-        <div className="absolute -bottom-28 -right-20 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
-        <div className="relative max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1.5 text-xs font-bold text-cyan-200">
-            <Route className="h-4 w-4" />
-            {t('منهجية عمل واضحة وقابلة للتتبع', 'A clear, traceable methodology')}
-          </div>
-          <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">
-            {t('من التخطيط إلى قرار عقاري أوضح', 'From planning to clearer real-estate decisions')}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-            {t(
-              'نجمع البيانات المكانية، الرصد الفضائي، والتحقق الميداني في مسار واحد مختصر يساعد فرق التطوير والملاك على رؤية حالة الأصل بثقة.',
-              'We bring spatial data, satellite monitoring, and field verification into one concise workflow for confident asset decisions.'
-            )}
-          </p>
-          <button
-            type="button"
-            onClick={() => onNavigate('map')}
-            className="mt-7 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-cyan-300"
-          >
-            <MapPinned className="h-4 w-4" />
-            {t('استكشف الخريطة العقارية', 'Explore the real-estate map')}
-            <ArrowLeft className={`h-4 w-4 ${isAr ? '' : 'rotate-180'}`} />
-          </button>
-        </div>
-      </section>
-
-      <section className="mt-10 grid gap-5 md:grid-cols-3">
-        {steps.map((step, index) => {
-          const Icon = step.icon;
-          return (
-            <article key={step.ar} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex items-center justify-between">
-                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-cyan-300"><Icon className="h-5 w-5" /></span>
-                <span className="text-sm font-black text-slate-300 dark:text-slate-600">0{index + 1}</span>
-              </div>
-              <h2 className="mt-5 text-lg font-black text-slate-900 dark:text-white">{t(step.ar, step.en)}</h2>
-              <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{t(step.detailAr, step.detailEn)}</p>
-            </article>
-          );
-        })}
-      </section>
-
-      <section className="mt-8 rounded-3xl border border-emerald-100 bg-emerald-50/70 p-6 dark:border-emerald-900/50 dark:bg-emerald-950/20">
-        <div className="flex items-start gap-3">
-          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
-          <div>
-            <h2 className="font-black text-slate-900 dark:text-white">{t('ما الذي تحصل عليه؟', 'What you receive')}</h2>
-            <p className="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{t('ملخص واضح للحالة، الأدلة المرتبطة بالموقع، وخطوات عملية للمتابعة دون تكرار خدمات إدارة المواقع أو الأساطيل.', 'A clear status summary, location-linked evidence, and practical follow-up steps without duplicating site or fleet management services.')}</p>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+  return <main dir={isAr ? 'rtl' : 'ltr'} className="overflow-x-hidden bg-slate-50 pb-16 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <section className="border-b border-slate-800 bg-[#061225] text-white"><div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <div className="mb-7 flex flex-wrap gap-x-5 gap-y-2 border-y border-white/10 py-3 text-[11px] font-bold tracking-wide text-slate-300"><span className="inline-flex items-center gap-2 text-cyan-300"><span className="h-2 w-2 rounded-full bg-emerald-400" />{t('المسار التشغيلي المعتمد', 'Verified operating route')}</span><span>{t('6 مراحل مترابطة', '6 connected phases')}</span><span>{t('دليل قبل كل توصية', 'Evidence before every recommendation')}</span></div>
+      <div className="grid items-end gap-7 lg:grid-cols-[1fr_auto]"><div className="max-w-3xl"><div className="inline-flex items-center gap-2 text-xs font-bold text-cyan-300"><Route className="h-4 w-4" />{t('منهجية عين سيجام', 'AIN SIJAM METHODOLOGY')}</div><h1 className="mt-4 break-words text-3xl font-black leading-[1.18] sm:text-5xl">{t('قرار عقاري أوضح، يبدأ بدليل مكاني.', 'A clearer real-estate decision, grounded in spatial evidence.')}</h1><p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">{t('مسار مهني يجمع قراءة الموقع والبيانات والتحقق والتحليل في ملف واحد قابل للمراجعة — من أول سؤال إلى الخطوة التالية.', 'A professional route that brings site reading, data, validation, and analysis into one reviewable dossier—from the first question to the next step.')}</p></div><button type="button" onClick={() => onNavigate('map')} className="inline-flex min-h-11 items-center justify-center gap-2 border border-cyan-300/50 bg-cyan-400/10 px-5 py-3 text-sm font-bold text-cyan-100 transition hover:bg-cyan-300 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-cyan-300"><MapPinned className="h-4 w-4" />{t('استكشف الخريطة', 'Explore the map')}<ArrowLeft className={`h-4 w-4 ${isAr ? '' : 'rotate-180'}`} /></button></div>
+    </div></section>
+    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8"><header className="max-w-2xl border-s-4 border-blue-600 ps-4"><p className="text-xs font-black tracking-[0.16em] text-blue-600">{t('خريطة العمل', 'WORK ROUTE')}</p><h2 className="mt-2 break-words text-2xl font-black sm:text-3xl">{t('ست مراحل، وكل مرحلة تترك أثراً يمكن الرجوع إليه.', 'Six phases, each leaving a traceable record.')}</h2></header>
+      <div className="mt-9 grid gap-10 lg:grid-cols-[minmax(0,1fr)_330px] lg:items-start"><ol className="relative space-y-4 before:absolute before:bottom-5 before:start-5 before:top-5 before:w-px before:bg-blue-200 dark:before:bg-slate-700">{stages.map((stage, index) => { const Icon = stage.icon; return <li key={stage.en} className="relative grid grid-cols-[40px_minmax(0,1fr)] gap-4 sm:grid-cols-[56px_minmax(0,1fr)] sm:gap-5"><div className="relative z-10 flex h-10 w-10 items-center justify-center border border-blue-200 bg-white text-blue-700 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-cyan-300 sm:h-14 sm:w-14"><Icon className="h-5 w-5" /></div><article className="min-w-0 border-b border-slate-200 pb-5 dark:border-slate-800"><div className="flex flex-wrap items-baseline justify-between gap-2"><h3 className="break-words text-lg font-black sm:text-xl">{t(stage.ar, stage.en)}</h3><span className="font-mono text-xs font-bold text-blue-600">{String(index + 1).padStart(2, '0')}</span></div><p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{t(stage.purposeAr, stage.purposeEn)}</p><div className="mt-3 grid gap-2 text-xs leading-6 sm:grid-cols-2"><p className="border-s-2 border-cyan-400 bg-cyan-50 px-3 py-2 text-slate-700 dark:bg-cyan-950/30 dark:text-slate-200"><b>{t('الدليل: ', 'Evidence: ')}</b>{t(stage.evidenceAr, stage.evidenceEn)}</p><p className="border-s-2 border-blue-600 bg-blue-50 px-3 py-2 text-slate-700 dark:bg-blue-950/30 dark:text-slate-200"><b>{t('المخرج: ', 'Output: ')}</b>{t(stage.outputAr, stage.outputEn)}</p></div></article></li>; })}</ol>
+      <aside className="border border-slate-200 bg-[#f8fbff] p-5 shadow-[8px_8px_0_0_#dbeafe] dark:border-slate-800 dark:bg-slate-900 dark:shadow-[8px_8px_0_0_#172554] lg:sticky lg:top-6"><div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-700"><span className="text-xs font-black tracking-wider text-blue-700 dark:text-cyan-300">{t('لوحة الدليل', 'EVIDENCE PANEL')}</span><ClipboardCheck className="h-5 w-5 text-blue-600" /></div><h3 className="mt-5 text-xl font-black">{t('لا نعتمد نتيجة بلا مصدر واضح.', 'No finding stands without a clear source.')}</h3><p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{t('كل توصية في التقرير ترتبط بالموقع أو المعلومة أو الملاحظة التي بُنيت عليها، لتبقى المناقشة دقيقة وشفافة.', 'Every recommendation ties back to the site, information, or observation it was built upon.')}</p><div className="mt-5 space-y-2 border-t border-slate-200 pt-4 text-xs font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300">{[t('طبقات مكانية مرجعية', 'Reference spatial layers'), t('مشاهدات زمنية قابلة للمقارنة', 'Comparable time-based observations'), t('سجل قرار ومتابعة', 'Decision and follow-up log')].map(item => <div key={item} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />{item}</div>)}</div></aside></div>
+    </section>
+    <section className="border-y border-slate-200 bg-white py-10 dark:border-slate-800 dark:bg-slate-900/40"><div className="mx-auto grid max-w-7xl gap-px overflow-hidden border border-slate-200 bg-slate-200 sm:grid-cols-2 dark:border-slate-700 dark:bg-slate-700"><div className="bg-white p-6 dark:bg-slate-950 sm:p-8"><p className="text-xs font-black tracking-[0.14em] text-blue-600">{t('مدخلاتنا', 'INPUTS')}</p><h2 className="mt-2 text-2xl font-black">{t('ما نبدأ به', 'What we begin with')}</h2><ul className="mt-5 space-y-3"><Bullet>{t('موقع أو نطاق واضح للدراسة', 'A clear study location or area')}</Bullet><Bullet>{t('هدف القرار والأولوية الزمنية', 'Decision objective and timing priority')}</Bullet><Bullet>{t('الوثائق والبيانات المتاحة لدى العميل', 'Client-held documents and available data')}</Bullet></ul></div><div className="bg-[#061225] p-6 text-white sm:p-8"><p className="text-xs font-black tracking-[0.14em] text-cyan-300">{t('مخرجاتك', 'DELIVERABLES')}</p><h2 className="mt-2 text-2xl font-black">{t('ما تتسلمه', 'What you receive')}</h2><ul className="mt-5 space-y-3"><Bullet dark>{t('ملخص قرار مرتبط بالدليل', 'An evidence-linked decision summary')}</Bullet><Bullet dark>{t('خرائط وملاحظات قابلة للمراجعة', 'Reviewable maps and observations')}</Bullet><Bullet dark>{t('خطوات متابعة محددة وواضحة', 'Clear, defined follow-up steps')}</Bullet></ul></div></div></section>
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"><div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center"><div><p className="text-xs font-black tracking-[0.14em] text-blue-600">{t('معاييرنا المهنية', 'PROFESSIONAL STANDARDS')}</p><h2 className="mt-2 break-words text-2xl font-black sm:text-3xl">{t('وضوح في المسار، وشفافية في النتيجة.', 'Clarity in the route. Transparency in the result.')}</h2></div><ul className="space-y-4">{[[ShieldCheck, t('نوضح حدود التحليل وما يحتاج إلى تحقق إضافي.', 'We state the limits of analysis and what needs further validation.')], [ClipboardCheck, t('نفصل بين الدليل والملاحظة والتوصية.', 'We distinguish evidence, observation, and recommendation.')], [CheckCircle2, t('نحافظ على سجل يمكن للفريق الرجوع إليه في كل مرحلة.', 'We maintain a record the team can revisit at every phase.')]].map(([Icon, copy], i) => { const ItemIcon = Icon as React.ElementType; return <li key={i} className="flex gap-3 border-s-2 border-blue-600 ps-4 text-sm leading-7 text-slate-700 dark:text-slate-300"><ItemIcon className="mt-1 h-5 w-5 shrink-0 text-blue-600" />{copy as string}</li>; })}</ul></div></section>
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="border-s-4 border-cyan-400 bg-[#061225] px-6 py-8 text-white sm:flex sm:items-center sm:justify-between sm:gap-8 sm:px-9"><div><h2 className="text-2xl font-black">{t('ابدأ من موقعك، وليس من الافتراضات.', 'Start with your site, not assumptions.')}</h2><p className="mt-2 text-sm leading-6 text-slate-300">{t('افتح الخريطة وحدد المنطقة التي تريد فهمها أولاً.', 'Open the map and define the area you want to understand first.')}</p></div><button type="button" onClick={() => onNavigate('map')} className="mt-5 inline-flex min-h-11 items-center gap-2 bg-blue-600 px-5 py-3 text-sm font-bold transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-cyan-300 sm:mt-0"><MapPinned className="h-4 w-4" />{t('انتقل إلى الخريطة', 'Go to the map')}<ArrowUpRight className="h-4 w-4" /></button></div></section>
+  </main>;
 };

@@ -151,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* 2. Middle Navigation Links (Exactly as in the reference image) */}
-            <nav className="hidden md:flex items-center gap-6 lg:gap-8 h-full">
+            <nav className="hidden lg:flex items-center gap-6 lg:gap-8 h-full">
               
               {/* الرئيسية (Home) with blue underline when active */}
               <button
@@ -415,7 +415,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Mobile Menu Hamburger */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-blue-600 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+                className="lg:hidden p-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-blue-600 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
                 aria-label="Toggle Navigation Menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -427,7 +427,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Mobile Drawer */}
           {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2 bg-white dark:bg-slate-900 animate-in slide-in-from-top-2 duration-150">
+            <div className="lg:hidden py-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2 bg-white dark:bg-slate-900 animate-in slide-in-from-top-2 duration-150">
               <button
                 onClick={() => handleNavClick('home')}
                 className={`p-3 rounded-xl text-start font-bold text-sm ${
