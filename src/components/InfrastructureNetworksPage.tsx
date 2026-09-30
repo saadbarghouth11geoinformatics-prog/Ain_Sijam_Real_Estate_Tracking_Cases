@@ -57,58 +57,6 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
   // Fullscreen / Zoom Lightbox State
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle?: string } | null>(null);
   const [lightboxZoom, setLightboxZoom] = useState<number>(1);
-  const [activeEvidenceFilter, setActiveEvidenceFilter] = useState<'all' | 'survey' | 'utilities' | 'decisions'>('all');
-  const [activeEvidenceIndex, setActiveEvidenceIndex] = useState<number | null>(null);
-  const [activeEvidenceCollection, setActiveEvidenceCollection] = useState<'field' | 'dashboards'>('field');
-
-  const evidenceGroups = [
-    {
-      id: 'survey' as const,
-      label: isAr ? 'الرفع والتحقق الميداني' : 'Field survey & validation',
-      shortLabel: isAr ? 'ميداني' : 'Field',
-      filenames: [
-        '01-gnss-field-survey.png', '05-quality-control-field-inspection.png', '16-mobile-gis-data-collection.png',
-        '21-gnss-network-survey.png', '23-qaqc-site-review.png', '27-field-utility-verification-team.jpg',
-        '31-gnss-network-survey-team.jpg', '33-field-mapping-and-asset-review.jpg', '35-gnss-site-survey.jpg'
-      ],
-      captionsAr: ['رفع مساحي GNSS للموقع', 'فحص جودة التنفيذ ميدانياً', 'جمع بيانات الأصول عبر GIS المتنقل', 'تثبيت نقاط الشبكة المساحية', 'مراجعة الجودة والامتثال في الموقع', 'فريق التحقق من عناصر المرافق', 'مسح GNSS لمسارات الشبكة', 'مراجعة طبقات الأصول والرفع الميداني', 'توثيق المسح الموقعي'],
-      captionsEn: ['GNSS site survey', 'Field quality inspection', 'Mobile GIS asset collection', 'Network control survey', 'QA/QC site review', 'Utility verification team', 'GNSS network survey', 'Field mapping and asset review', 'Site survey documentation']
-    },
-    {
-      id: 'utilities' as const,
-      label: isAr ? 'فحص المرافق والأصول تحت السطح' : 'Underground utilities & assets',
-      shortLabel: isAr ? 'مرافق' : 'Utilities',
-      filenames: [
-        '02-water-valve-field-inspection.png', '03-gpr-underground-utility-scan.png', '04-wastewater-manhole-inspection.png',
-        '06-electrical-network-documentation.png', '13-water-station-and-reservoirs.png', '14-gpr-utilities-detection.jpeg',
-        '15-water-valve-and-irrigation-assets.png', '22-sewer-inspection-terrain.png', '28-wastewater-manhole-inspection.jpg',
-        '30-wastewater-asset-field-check.jpg', '32-water-valve-chamber-inspection.jpg'
-      ],
-      captionsAr: ['فحص غرفة محبس مياه', 'مسح راداري للمرافق المدفونة', 'معاينة غرفة تفتيش الصرف', 'توثيق عناصر الشبكة الكهربائية', 'محطة مياه وخزانات تشغيلية', 'كشف مسارات المرافق بالرادار الأرضي', 'أصول محابس المياه والري', 'فحص مسار الصرف في التضاريس', 'توثيق غرفة تفتيش الصرف', 'تحقق ميداني من أصل صرف صحي', 'فحص غرفة محبس مياه'],
-      captionsEn: ['Water valve inspection', 'Ground-penetrating radar survey', 'Wastewater manhole inspection', 'Electrical network documentation', 'Water station and reservoirs', 'GPR utility detection', 'Water and irrigation assets', 'Sewer terrain inspection', 'Wastewater manhole record', 'Wastewater asset check', 'Water valve chamber inspection']
-    },
-    {
-      id: 'decisions' as const,
-      label: isAr ? 'المخططات ولوحات القرار الفني' : 'Plans, dashboards & technical decisions',
-      shortLabel: isAr ? 'قرارات فنية' : 'Decisions',
-      filenames: [
-        '07-utility-network-gis-map.png', '09-land-parcel-utility-conflict-context.jpg', '10-utility-conflict-engineering-plan.png',
-        '11-urban-utility-network-masterplan.png', '19-utility-conflict-study-plan.png', '20-technical-readiness-report.png',
-        '24-infrastructure-network-map-dashboard-illustrative.png', '25-asset-verification-dashboard-illustrative.png',
-        '26-land-and-utility-conflict-dashboard-illustrative.png', '29-gas-network-map-dashboard.jpg', '34-infrastructure-asset-coordination.jpg'
-      ],
-      captionsAr: ['خريطة GIS لشبكات المرافق', 'سياق تعارض القطع مع مسارات المرافق', 'مخطط هندسي لمعالجة التعارضات', 'المخطط العام لشبكات المدينة', 'مخطط دراسة تعارضات المرافق', 'تقرير الجاهزية الفنية', 'لوحة خريطة شبكات البنية التحتية', 'لوحة التحقق من الأصول', 'لوحة تعارضات الأراضي والمرافق', 'لوحة متابعة شبكة الغاز', 'تنسيق أصول البنية التحتية'],
-      captionsEn: ['Utility network GIS map', 'Parcel and utility conflict context', 'Utility conflict engineering plan', 'Urban utility masterplan', 'Utility conflict study plan', 'Technical readiness report', 'Infrastructure map dashboard', 'Asset verification dashboard', 'Land and utility conflict dashboard', 'Gas network dashboard', 'Infrastructure asset coordination']
-    }
-  ];
-  const documentFilenames = [
-    'Screenshot 2026-09-29 134604.png', 'Screenshot 2026-09-29 134629.png', 'Screenshot 2026-09-29 134712.png',
-    'Screenshot 2026-09-29 134757.png', 'Screenshot 2026-09-29 134828.png', 'Screenshot 2026-09-29 134839.png',
-    'Screenshot 2026-09-29 134904.png', 'Screenshot 2026-09-29 134914.png', 'Screenshot 2026-09-29 134939.png',
-    'Screenshot 2026-09-29 134946.png', 'Screenshot 2026-09-29 134953.png', 'Screenshot 2026-09-29 135010.png',
-    'Screenshot 2026-09-29 135018.png', 'Screenshot 2026-09-29 135033.png', 'Screenshot 2026-09-29 135051.png',
-    'Screenshot 2026-09-29 135114.png', 'Screenshot 2026-09-29 135132.png'
-  ];
   // These dashboard references are deliberately used only in existing viewers.
   const dashboardViews = [
     { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134604.png')}`, label: isAr ? 'مسار بنفسجي مع لوحة خصائص جانبية' : 'Purple alignment with property panel' },
@@ -124,36 +72,6 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 135114.png')}`, label: isAr ? 'لوحة متابعة نطاقات وطبقات' : 'Coverage and layer monitoring board' },
     { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134712.png')}`, label: isAr ? 'عرض مسار وطبقات تشغيلية' : 'Alignment and operational layers view' },
   ];
-  const evidenceItems = evidenceGroups.flatMap(group => group.filenames.map((filename, index) => ({
-    id: `${group.id}-${index + 1}`,
-    group: group.id,
-    src: `/images/infrastructure-network/${encodeURIComponent(filename)}`,
-    title: isAr ? group.captionsAr[index] : group.captionsEn[index],
-    category: group.shortLabel,
-    contain: group.id === 'decisions'
-  })));
-  const documentItems = documentFilenames.map((filename, index) => ({
-    id: `document-${index + 1}`,
-    group: 'documents' as const,
-    src: `/images/infrastructure-network/${encodeURIComponent(filename)}`,
-    title: isAr ? `وثيقة عرض فنية ${index + 1}` : `Presentation document ${index + 1}`,
-    category: isAr ? 'وثائق العرض' : 'Presentation documents',
-    contain: true
-  }));
-  const galleryItems = activeEvidenceFilter === 'all' ? evidenceItems : evidenceItems.filter(item => item.group === activeEvidenceFilter);
-  const lightboxItems = activeEvidenceCollection === 'dashboards' ? documentItems : galleryItems;
-
-  useEffect(() => {
-    if (activeEvidenceIndex === null) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setActiveEvidenceIndex(null);
-      if (event.key === 'ArrowRight') setActiveEvidenceIndex(index => index === null ? null : (index + 1) % lightboxItems.length);
-      if (event.key === 'ArrowLeft') setActiveEvidenceIndex(index => index === null ? null : (index - 1 + lightboxItems.length) % lightboxItems.length);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [activeEvidenceIndex, lightboxItems.length]);
-
   // =========================================================================
   // 1. HERO SECTION (network-04 as main, network-03 and network-02 as previews)
   // =========================================================================
@@ -1610,39 +1528,6 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION G — VISUAL EVIDENCE GALLERY                                      */}
-      {/* ========================================================================= */}
-      <section id="visual-evidence-gallery" className="w-full py-16 md:py-24 bg-slate-950 text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div>
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
-              <div>
-                <p className="text-xs font-bold tracking-[0.16em] text-cyan-300 uppercase">{isAr ? 'ملاحظات ووثائق فنية' : 'Technical notes & documents'}</p>
-                <h3 className="mt-1 text-2xl sm:text-3xl font-black text-white">{isAr ? 'لوحات التحكم والقرارات المكانية' : 'Dashboards & spatial decisions'}</h3>
-              </div>
-              <p className="text-sm text-slate-300">{isAr ? '١٧ لوحة ووثيقة قابلة للعرض الكامل' : '17 readable dashboards and documents'}</p>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-              {documentItems.map((item, index) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => { setActiveEvidenceCollection('dashboards'); setActiveEvidenceIndex(index); }}
-                  className="group relative aspect-[4/3] overflow-hidden border border-slate-600 bg-slate-800 p-1 text-start hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                  aria-label={`${isAr ? 'فتح لوحة' : 'Open dashboard'}: ${item.title}`}
-                >
-                  <img src={item.src} alt={item.title} loading="lazy" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.025]" />
-                  <div className="absolute inset-x-0 bottom-0 p-2 bg-slate-950/90 border-t border-white/10">
-                    <span className="block text-[11px] sm:text-xs font-bold text-white truncate">{item.title}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
       {/* SECTION H — FINAL CLOSING SECTION (network-17 main, network-16 preview)   */}
       {/* ========================================================================= */}
       <section className="w-full py-16 md:py-24 bg-gradient-to-b from-blue-50/50 via-white to-slate-50 dark:from-slate-900/40 dark:via-slate-950 dark:to-slate-900">
@@ -1732,35 +1617,6 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
           </div>
         </div>
       </section>
-
-      {activeEvidenceIndex !== null && lightboxItems[activeEvidenceIndex] && (
-        <div
-          className="fixed inset-0 z-[60] bg-slate-950/95 backdrop-blur-sm p-3 sm:p-6 flex flex-col"
-          role="dialog"
-          aria-modal="true"
-          aria-label={lightboxItems[activeEvidenceIndex].title}
-          dir={isAr ? 'rtl' : 'ltr'}
-        >
-          <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/10 text-white">
-            <div className="min-w-0">
-              <p className="text-xs text-cyan-300 font-bold">{lightboxItems[activeEvidenceIndex].category} · {activeEvidenceIndex + 1} / {lightboxItems.length}</p>
-              <h3 className="text-base sm:text-lg font-bold truncate">{lightboxItems[activeEvidenceIndex].title}</h3>
-            </div>
-            <button type="button" onClick={() => setActiveEvidenceIndex(null)} className="p-2 border border-slate-600 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'إغلاق المعرض' : 'Close gallery'}>
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="relative flex-1 min-h-0 flex items-center justify-center py-4">
-            <img src={lightboxItems[activeEvidenceIndex].src} alt={lightboxItems[activeEvidenceIndex].title} className="max-w-full max-h-full object-contain" />
-            <button type="button" onClick={() => setActiveEvidenceIndex((activeEvidenceIndex - 1 + lightboxItems.length) % lightboxItems.length)} className="absolute start-0 sm:start-3 p-2.5 bg-slate-900/90 border border-slate-600 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'الصورة السابقة' : 'Previous image'}>
-              {isAr ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
-            </button>
-            <button type="button" onClick={() => setActiveEvidenceIndex((activeEvidenceIndex + 1) % lightboxItems.length)} className="absolute end-0 sm:end-3 p-2.5 bg-slate-900/90 border border-slate-600 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'الصورة التالية' : 'Next image'}>
-              {isAr ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* ========================================================================= */}
       {/* LIGHTBOX / FULLSCREEN IMAGE VIEWER MODAL                                  */}
