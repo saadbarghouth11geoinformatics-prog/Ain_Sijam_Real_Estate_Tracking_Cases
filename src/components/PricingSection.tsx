@@ -184,7 +184,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
         </div>
 
         {/* Subscription Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 pt-4 items-stretch">
           {sigamSubscriptionPlans.map((plan: SubscriptionPlan) => {
             const isFree = plan.id === 'free_demo';
             const price = billingCycle === 'annual' ? plan.annualPriceSAR : plan.monthlyPriceSAR;
@@ -198,14 +198,14 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             return (
               <div
                 key={plan.id}
-                className={`rounded-3xl p-6 flex flex-col justify-between transition-all relative border ${
+                className={`min-w-0 h-full rounded-3xl p-5 sm:p-6 pt-7 flex flex-col justify-between transition-all relative border ${
                   plan.highlight
                     ? 'bg-white dark:bg-slate-900 border-sky-400 dark:border-sky-500 shadow-xl shadow-sky-500/10 ring-2 ring-sky-400/30'
                     : 'bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 hover:border-sky-300 dark:hover:border-sky-700 shadow-sm'
                 }`}
               >
                 {plan.badge && (
-                  <div className={`absolute -top-3.5 ${isAr ? 'right-6' : 'left-6'} bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-[10px] font-black px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md`}>
+                  <div className={`absolute top-0 -translate-y-1/2 ${isAr ? 'right-5 sm:right-6' : 'left-5 sm:left-6'} z-10 whitespace-nowrap bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-[10px] font-black px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md`}>
                     {isAr ? plan.badge : (plan.id === 'engineering_office' ? 'MOST POPULAR' : 'BEST VALUE')}
                   </div>
                 )}

@@ -1,16 +1,14 @@
 import React from 'react';
-import { Compass, HardHat, Layers, ShieldCheck, Truck, Radio, Eye } from 'lucide-react';
+import { Compass, HardHat, Layers, ShieldCheck, Radio, Eye } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
 interface MarketTickerProps {
   onOpenEvolution?: () => void;
-  onOpenConstruction?: () => void;
   onOpenPlots?: () => void;
 }
 
 export const MarketTicker: React.FC<MarketTickerProps> = ({ 
   onOpenEvolution,
-  onOpenConstruction,
   onOpenPlots,
 }) => {
   const { t, isAr } = useLanguage();
@@ -56,20 +54,6 @@ export const MarketTicker: React.FC<MarketTickerProps> = ({
               </div>
               <div className="text-sm font-black text-slate-900 dark:text-white font-mono mt-0.5">
                 68.4% <span className="text-[10px] font-normal text-slate-500 dark:text-slate-400">({t('رقعة العمران', 'Urban Footprint')})</span>
-              </div>
-            </a>
-
-            {/* Machinery on site */}
-            <a 
-              href="#equipment-fleet"
-              className="bg-white dark:bg-slate-800/90 border border-emerald-100 dark:border-slate-700/70 hover:border-emerald-300 dark:hover:border-emerald-500 rounded-xl p-2 cursor-pointer transition-all shadow-xs"
-            >
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                <span>{t('أسطول المعدات بالمواقع', 'On-Site Equipment')}</span>
-                <Truck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <div className="text-sm font-black text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
-                1,645 <span className="text-[10px] font-normal text-slate-500 dark:text-slate-400">{t('معدة نشطة', 'active units')}</span>
               </div>
             </a>
 

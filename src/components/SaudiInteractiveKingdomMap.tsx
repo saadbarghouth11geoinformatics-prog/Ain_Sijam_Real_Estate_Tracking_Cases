@@ -69,6 +69,8 @@ export const SaudiInteractiveKingdomMap: React.FC = () => {
   const userMarkerGroupRef = useRef<L.LayerGroup | null>(null);
   const projectsMarkerGroupRef = useRef<L.LayerGroup | null>(null);
   const projectMarkersMapRef = useRef<Record<string, L.Marker>>({});
+  const mouseFrameRef = useRef<number | null>(null);
+  const pendingMouseCoordsRef = useRef<{ lat: number; lng: number } | null>(null);
 
   // Geolocation Hook
   const {
@@ -108,6 +110,12 @@ export const SaudiInteractiveKingdomMap: React.FC = () => {
       maxZoom: 18,
       zoomControl: false,
       attributionControl: false,
+      preferCanvas: true,
+      zoomAnimation: true,
+      fadeAnimation: false,
+      markerZoomAnimation: false,
+      inertia: true,
+      inertiaDeceleration: 2600,
     });
 
     // 1. Esri World Imagery (Satellite)
@@ -116,6 +124,8 @@ export const SaudiInteractiveKingdomMap: React.FC = () => {
       {
         maxZoom: 19,
         attribution: 'Esri, Maxar, Earthstar Geographics',
+        updateWhenIdle: true,
+        keepBuffer: 3,
       }
     );
     satelliteLayerRef.current = satLayer;
@@ -125,6 +135,8 @@ export const SaudiInteractiveKingdomMap: React.FC = () => {
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
       {
         maxZoom: 19,
+        updateWhenIdle: true,
+        keepBuffer: 3,
       }
     );
     topoLayerRef.current = topoLayer;
@@ -135,6 +147,8 @@ export const SaudiInteractiveKingdomMap: React.FC = () => {
       {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors',
+        updateWhenIdle: true,
+        keepBuffer: 3,
       }
     );
     streetLayerRef.current = streetLayer;
@@ -145,6 +159,8 @@ export const SaudiInteractiveKingdomMap: React.FC = () => {
       'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
       {
         maxZoom: 19,
+        updateWhenIdle: true,
+        keepBuffer: 3,
       }
     );
     labelsLayerRef.current = labelsLayer;
@@ -158,12 +174,21 @@ export const SaudiInteractiveKingdomMap: React.FC = () => {
     projectsMarkerGroupRef.current = projectsGroup;
 
     // Mouse Move Coordinates Tracking
-    map.on('mousemove', (e: L.LeafletMouseEvent) => {
-      setMouseCoords({
+    const handleMouseMove = (e: L.LeafletMouseEvent) => {
+      pendingMouseCoordsRef.current = {
         lat: Number(e.latlng.lat.toFixed(4)),
         lng: Number(e.latlng.lng.toFixed(4)),
+      };
+
+      if (mouseFrameRef.current !== null) return;
+      mouseFrameRef.current = requestAnimationFrame(() => {
+        if (pendingMouseCoordsRef.current) {
+          setMouseCoords(pendingMouseCoordsRef.current);
+        }
+        mouseFrameRef.current = null;
       });
-    });
+    };
+    map.on('mousemove', handleMouseMove);
 
     map.on('zoomend', () => {
       setCurrentZoom(map.getZoom());
@@ -176,6 +201,8 @@ export const SaudiInteractiveKingdomMap: React.FC = () => {
     }, 250);
 
     return () => {
+      map.off('mousemove', handleMouseMove);
+      if (mouseFrameRef.current !== null) cancelAnimationFrame(mouseFrameRef.current);
       map.remove();
       mapInstanceRef.current = null;
     };

@@ -105,7 +105,7 @@ export const VisualBannersShowcase: React.FC<VisualBannersShowcaseProps> = ({ on
       actionLabelAr: 'إدارة أسطول المواقع الميدانية',
       actionLabelEn: 'Manage Field Fleet'
     }
-  ];
+  ].filter((card) => card.routeId !== 'equipment-fleet');
 
   return (
     <div className="space-y-8 py-4" dir={isAr ? 'rtl' : 'ltr'}>

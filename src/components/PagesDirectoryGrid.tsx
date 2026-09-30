@@ -69,7 +69,6 @@ export const PagesDirectoryGrid: React.FC<PagesDirectoryGridProps> = ({
   const liveMapPage = getPage('live-projects-map');
   const evolutionPage = getPage('evolution');
   const projectsStatsPage = getPage('projects');
-  const equipmentFleetPage = getPage('equipment-fleet');
 
   // 3. Land & Planning (Image-backed tile + compact rows)
   const digitalTwinPage = getPage('digital-twin-360');
@@ -369,7 +368,7 @@ export const PagesDirectoryGrid: React.FC<PagesDirectoryGridProps> = ({
                 })()}
 
                 {/* Secondary Compact Service Rows */}
-                {[evolutionPage, projectsStatsPage, equipmentFleetPage].filter(Boolean).map((page) => {
+                {[evolutionPage, projectsStatsPage].filter(Boolean).map((page) => {
                   if (!page) return null;
                   const PageIcon = page.icon;
                   const isCurrent = currentPageId === page.id;

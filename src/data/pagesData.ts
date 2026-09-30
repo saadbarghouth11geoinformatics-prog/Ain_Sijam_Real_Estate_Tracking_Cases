@@ -455,4 +455,4 @@ export const PAGES_DATA: PageInfo[] = [
     categoryEn: 'Support',
     heroImage: '/images/drive-banners/drive_banner_02.png'
   }
-];
+].filter((page) => page.id !== 'equipment-fleet');

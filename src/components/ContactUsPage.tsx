@@ -210,13 +210,11 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = ({ onNavigate }) => {
             </div>
             <div>
               <div className="text-xs font-semibold text-slate-500">{isAr ? 'البريد الإلكتروني المعتمد' : 'Verified Email'}</div>
-              <div className="text-sm font-black text-slate-900 dark:text-white font-mono mt-0.5 truncate" title="ahmed.tamam.cairo48@gmail.com">
-                ahmed.tamam.cairo48@gmail.com
-              </div>
+              <a href="mailto:support@ainsigam.sa" className="block text-sm font-black text-slate-900 dark:text-white font-mono mt-0.5 truncate hover:text-emerald-600" title="support@ainsigam.sa">support@ainsigam.sa</a>
               <div className="text-[11px] text-slate-500 mt-1">{isAr ? 'للاستشارات الهندسية والشراكات' : 'Advisory & Partnerships'}</div>
             </div>
             <button
-              onClick={() => handleCopy('ahmed.tamam.cairo48@gmail.com', 'email')}
+              onClick={() => handleCopy('support@ainsigam.sa', 'email')}
               className="w-full py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               {copiedKey === 'email' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}

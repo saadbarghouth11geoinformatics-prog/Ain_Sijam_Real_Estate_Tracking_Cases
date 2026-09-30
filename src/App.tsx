@@ -23,7 +23,6 @@ import { MegaProjectsMap } from './components/MegaProjectsMap';
 import { DigitalTwin360Section } from './components/DigitalTwin360Section';
 import { UrbanEvolutionSection } from './components/UrbanEvolutionSection';
 import { LandSuitabilitySection } from './components/LandSuitabilitySection';
-import { ConstructionSiteManager } from './components/ConstructionSiteManager';
 import { InfrastructureNetworks } from './components/InfrastructureNetworks';
 import { SigamEngineeringAdvisor } from './components/SigamEngineeringAdvisor';
 import { AboutAinSigamPage } from './components/AboutAinSigamPage';
@@ -463,27 +462,6 @@ export default function App() {
               />
               <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
                 <LandSuitabilitySection
-                  selectedCity={selectedCity}
-                  isSubscriber={isSubscriber}
-                  onRequestSubscription={handleRequestSubscription}
-                  onConsultEngineering={handleConsultEngineering}
-                />
-              </div>
-            </div>
-          )}
-
-          {currentPageId === 'equipment-fleet' && (
-            <div className="space-y-6">
-              <PageHeaderBanner
-                currentPage={currentPageInfo}
-                onNavigate={handleNavigate}
-                selectedCity={selectedCity}
-                onSelectCity={setSelectedCity}
-                viewMode={viewMode}
-                onToggleViewMode={handleToggleViewMode}
-              />
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-                <ConstructionSiteManager
                   selectedCity={selectedCity}
                   isSubscriber={isSubscriber}
                   onRequestSubscription={handleRequestSubscription}
