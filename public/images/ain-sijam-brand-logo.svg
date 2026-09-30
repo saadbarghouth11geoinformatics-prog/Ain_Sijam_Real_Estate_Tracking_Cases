@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" width="100%" height="100%" fill="none">
+  <!-- Brand Color Definitions -->
+  <!-- Emerald Green Pin: #036853 -->
+  <!-- Deep Blue Eye Contour: #0A3254 -->
+  <!-- Skyline Bars: Left Green #036853, Center Deep Blue #0A3254, Right Gold #BFA16F -->
+  <!-- Arabic Wordmark "عين سيجام": Deep Blue #0A3254 -->
+  <!-- English Wordmark "AIN SIJAM": AIN in Deep Blue #0A3254, SIJAM in Emerald Green #036853 -->
+
+  <!-- EMBLEM GROUP (Pin + Eye + Skyline) -->
+  <g transform="translate(40, 20)">
+    <!-- Eye Contour (Navy Blue Outer Arc) -->
+    <!-- Left corner at (20, 160), Right corner at (320, 160) -->
+    <path 
+      d="M 20 160 C 70 82 270 82 320 160 C 270 238 70 238 20 160 Z" 
+      fill="#0A3254" 
+    />
+    <!-- Cutout inner eye to reveal background behind pin -->
+    <path 
+      d="M 68 160 C 95 106 245 106 272 160 C 245 214 95 214 68 160 Z" 
+      fill="#0B0F19" 
+    />
+
+    <!-- Emerald Green Location Pin Silhouette -->
+    <!-- Top rounded head at (170, 40) down to bottom point at (170, 310) -->
+    <path 
+      d="M 170 40 
+         C 228 40 275 87 275 145 
+         C 275 200 215 258 170 308 
+         C 125 258 65 200 65 145 
+         C 65 87 112 40 170 40 Z" 
+      fill="#036853" 
+    />
+
+    <!-- Inner Circle Cutout of Pin (Creates the Ring) -->
+    <circle cx="170" cy="145" r="74" fill="#0B0F19" />
+
+    <!-- Center Architectural Skyline (3 Building Bars inside the Pin Ring) -->
+    <!-- Left Building Bar: Emerald Green -->
+    <path 
+      d="M 124 200 L 124 158 L 148 136 L 148 200 Z" 
+      fill="#036853" 
+    />
+
+    <!-- Center Building Bar: Deep Navy Blue (Tallest tower with peaked apex) -->
+    <path 
+      d="M 154 200 L 154 115 L 170 98 L 186 115 L 186 200 Z" 
+      fill="#0A3254" 
+    />
+
+    <!-- Right Building Bar: Warm Architectural Gold / Champagne -->
+    <path 
+      d="M 192 200 L 192 142 L 216 160 L 216 200 Z" 
+      fill="#BFA16F" 
+    />
+  </g>
+
+  <!-- TYPOGRAPHY GROUP (Arabic Title + English Subtitle) -->
+  <g transform="translate(420, 20)">
+    <!-- Main Arabic Wordmark: "عين سـجام" -->
+    <!-- Using heavy modern geometric Kufic glyph paths exactly matching the image -->
+    
+    <!-- Word 1: "عين" (Right side in Arabic reading) -->
+    <g fill="#0A3254">
+      <!-- 'Ain head + connecting tooth + Ya + Nun basin -->
+      <!-- We render high fidelity text matching the precise styling and dots -->
+      <text 
+        x="540" 
+        y="170" 
+        text-anchor="end" 
+        font-family="'Cairo', 'Tajawal', 'IBM Plex Sans Arabic', system-ui, sans-serif" 
+        font-weight="900" 
+        font-size="128" 
+        letter-spacing="-1px"
+        fill="#0A3254"
+      >عين سجـام</text>
+
+      <!-- Subtitle in English: "AIN SIJAM" -->
+      <!-- AIN in Deep Blue #0A3254, SIJAM in Emerald Green #036853 -->
+      <text 
+        x="0" 
+        y="255" 
+        font-family="'Montserrat', 'Inter', system-ui, sans-serif" 
+        font-weight="800" 
+        font-size="52" 
+        letter-spacing="16px"
+        fill="#0A3254"
+      >AIN <tspan fill="#036853">SIJAM</tspan></text>
+    </g>
+  </g>
+</svg>
