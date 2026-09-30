@@ -73,8 +73,9 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
   // Fullscreen / Zoom Lightbox State
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle?: string } | null>(null);
   const [lightboxZoom, setLightboxZoom] = useState<number>(1);
-  const [activeEvidenceFilter, setActiveEvidenceFilter] = useState<'all' | 'survey' | 'utilities' | 'decisions' | 'documents'>('all');
+  const [activeEvidenceFilter, setActiveEvidenceFilter] = useState<'all' | 'survey' | 'utilities' | 'decisions'>('all');
   const [activeEvidenceIndex, setActiveEvidenceIndex] = useState<number | null>(null);
+  const [activeEvidenceCollection, setActiveEvidenceCollection] = useState<'field' | 'dashboards'>('field');
 
   const evidenceGroups = [
     {
@@ -140,20 +141,19 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     category: isAr ? 'وثائق العرض' : 'Presentation documents',
     contain: true
   }));
-  const galleryItems = activeEvidenceFilter === 'documents'
-    ? documentItems
-    : activeEvidenceFilter === 'all' ? evidenceItems : evidenceItems.filter(item => item.group === activeEvidenceFilter);
+  const galleryItems = activeEvidenceFilter === 'all' ? evidenceItems : evidenceItems.filter(item => item.group === activeEvidenceFilter);
+  const lightboxItems = activeEvidenceCollection === 'dashboards' ? documentItems : galleryItems;
 
   useEffect(() => {
     if (activeEvidenceIndex === null) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setActiveEvidenceIndex(null);
-      if (event.key === 'ArrowRight') setActiveEvidenceIndex(index => index === null ? null : (index + 1) % galleryItems.length);
-      if (event.key === 'ArrowLeft') setActiveEvidenceIndex(index => index === null ? null : (index - 1 + galleryItems.length) % galleryItems.length);
+      if (event.key === 'ArrowRight') setActiveEvidenceIndex(index => index === null ? null : (index + 1) % lightboxItems.length);
+      if (event.key === 'ArrowLeft') setActiveEvidenceIndex(index => index === null ? null : (index - 1 + lightboxItems.length) % lightboxItems.length);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [activeEvidenceIndex, galleryItems.length]);
+  }, [activeEvidenceIndex, lightboxItems.length]);
 
   // =========================================================================
   // 1. HERO SECTION (network-04 as main, network-03 and network-02 as previews)
@@ -1597,8 +1597,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
           <div className="flex flex-wrap gap-2 border-y border-white/10 py-4 mb-6" role="tablist" aria-label={isAr ? 'تصنيف معرض الصور' : 'Image gallery categories'}>
             {[
               { id: 'all' as const, label: isAr ? 'كل الأدلة' : 'All evidence', count: evidenceItems.length },
-              ...evidenceGroups.map(group => ({ id: group.id, label: group.label, count: group.filenames.length })),
-              { id: 'documents' as const, label: isAr ? 'وثائق العرض' : 'Presentation documents', count: documentItems.length }
+              ...evidenceGroups.map(group => ({ id: group.id, label: group.label, count: group.filenames.length }))
             ].map(tab => (
               <button
                 key={tab.id}
@@ -1613,18 +1612,12 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
             ))}
           </div>
 
-          {activeEvidenceFilter === 'documents' && (
-            <div className="mb-5 border-s-2 border-cyan-300 ps-4 text-sm text-slate-300">
-              {isAr ? 'هذه الوثائق محفوظة في مجموعة مستقلة وليست أدلة ميدانية.' : 'These documents are kept separately and are not featured as field evidence.'}
-            </div>
-          )}
-
           <div className="columns-2 md:columns-3 xl:columns-4 gap-3 [column-fill:_balance]" role="tabpanel">
             {galleryItems.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
-                onClick={() => setActiveEvidenceIndex(index)}
+                onClick={() => { setActiveEvidenceCollection('field'); setActiveEvidenceIndex(index); }}
                 className="group relative block w-full mb-3 break-inside-avoid text-start overflow-hidden border border-slate-700 bg-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-300"
                 aria-label={`${isAr ? 'فتح الصورة' : 'Open image'}: ${item.title}`}
               >
@@ -1642,6 +1635,32 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                 </div>
               </button>
             ))}
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-cyan-300/30">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
+              <div>
+                <p className="text-xs font-bold tracking-[0.16em] text-cyan-300 uppercase">{isAr ? 'وثائق العرض الفنية' : 'Technical presentation records'}</p>
+                <h3 className="mt-1 text-2xl sm:text-3xl font-black text-white">{isAr ? 'لوحات التحكم والقرارات المكانية' : 'Dashboards & spatial decisions'}</h3>
+              </div>
+              <p className="text-sm text-slate-300">{isAr ? '١٧ لوحة ووثيقة قابلة للعرض الكامل' : '17 readable dashboards and documents'}</p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+              {documentItems.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => { setActiveEvidenceCollection('dashboards'); setActiveEvidenceIndex(index); }}
+                  className="group relative aspect-[4/3] overflow-hidden border border-slate-600 bg-slate-800 p-1 text-start hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                  aria-label={`${isAr ? 'فتح لوحة' : 'Open dashboard'}: ${item.title}`}
+                >
+                  <img src={item.src} alt={item.title} loading="lazy" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.025]" />
+                  <div className="absolute inset-x-0 bottom-0 p-2 bg-slate-950/90 border-t border-white/10">
+                    <span className="block text-[11px] sm:text-xs font-bold text-white truncate">{item.title}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -1737,29 +1756,29 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
         </div>
       </section>
 
-      {activeEvidenceIndex !== null && galleryItems[activeEvidenceIndex] && (
+      {activeEvidenceIndex !== null && lightboxItems[activeEvidenceIndex] && (
         <div
           className="fixed inset-0 z-[60] bg-slate-950/95 backdrop-blur-sm p-3 sm:p-6 flex flex-col"
           role="dialog"
           aria-modal="true"
-          aria-label={galleryItems[activeEvidenceIndex].title}
+          aria-label={lightboxItems[activeEvidenceIndex].title}
           dir={isAr ? 'rtl' : 'ltr'}
         >
           <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/10 text-white">
             <div className="min-w-0">
-              <p className="text-xs text-cyan-300 font-bold">{galleryItems[activeEvidenceIndex].category} · {activeEvidenceIndex + 1} / {galleryItems.length}</p>
-              <h3 className="text-base sm:text-lg font-bold truncate">{galleryItems[activeEvidenceIndex].title}</h3>
+              <p className="text-xs text-cyan-300 font-bold">{lightboxItems[activeEvidenceIndex].category} · {activeEvidenceIndex + 1} / {lightboxItems.length}</p>
+              <h3 className="text-base sm:text-lg font-bold truncate">{lightboxItems[activeEvidenceIndex].title}</h3>
             </div>
             <button type="button" onClick={() => setActiveEvidenceIndex(null)} className="p-2 border border-slate-600 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'إغلاق المعرض' : 'Close gallery'}>
               <X className="w-5 h-5" />
             </button>
           </div>
           <div className="relative flex-1 min-h-0 flex items-center justify-center py-4">
-            <img src={galleryItems[activeEvidenceIndex].src} alt={galleryItems[activeEvidenceIndex].title} className="max-w-full max-h-full object-contain" />
-            <button type="button" onClick={() => setActiveEvidenceIndex((activeEvidenceIndex - 1 + galleryItems.length) % galleryItems.length)} className="absolute start-0 sm:start-3 p-2.5 bg-slate-900/90 border border-slate-600 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'الصورة السابقة' : 'Previous image'}>
+            <img src={lightboxItems[activeEvidenceIndex].src} alt={lightboxItems[activeEvidenceIndex].title} className="max-w-full max-h-full object-contain" />
+            <button type="button" onClick={() => setActiveEvidenceIndex((activeEvidenceIndex - 1 + lightboxItems.length) % lightboxItems.length)} className="absolute start-0 sm:start-3 p-2.5 bg-slate-900/90 border border-slate-600 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'الصورة السابقة' : 'Previous image'}>
               {isAr ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
             </button>
-            <button type="button" onClick={() => setActiveEvidenceIndex((activeEvidenceIndex + 1) % galleryItems.length)} className="absolute end-0 sm:end-3 p-2.5 bg-slate-900/90 border border-slate-600 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'الصورة التالية' : 'Next image'}>
+            <button type="button" onClick={() => setActiveEvidenceIndex((activeEvidenceIndex + 1) % lightboxItems.length)} className="absolute end-0 sm:end-3 p-2.5 bg-slate-900/90 border border-slate-600 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'الصورة التالية' : 'Next image'}>
               {isAr ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
             </button>
           </div>

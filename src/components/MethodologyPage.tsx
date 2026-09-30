@@ -102,6 +102,76 @@ interface CinemaSlide {
   descEn: string;
 }
 
+type WorkGalleryCategory = 'aerial' | 'execution' | 'equipment' | 'technical';
+
+interface WorkGalleryItem {
+  src: string;
+  category: WorkGalleryCategory;
+  captionAr: string;
+  captionEn: string;
+  preserveDetail?: boolean;
+}
+
+const WORK_GALLERY_ITEMS: WorkGalleryItem[] = [
+  ['01-site-preparation-satellite.jpg','aerial','خط أساس جغرافي للموقع قبل البدء','Geospatial baseline before mobilisation',true],
+  ['02-roadworks-site-preparation.jpg','execution','تهيئة مسار الحركة وأعمال التسوية','Access corridor preparation and grading'],
+  ['03-construction-progress-aerial.jpg','aerial','رصد تقدّم الأعمال من منظور جوي','Aerial progress verification'],
+  ['04-equipment-and-cranes-aerial.jpg','equipment','توزيع المعدات والرافعات في الموقع','Plant and crane deployment'],
+  ['05-advanced-construction-satellite.jpg','aerial','قراءة مراحل التطوير العمراني المتقدمة','Advanced development footprint review',true],
+  ['06-generated-saudi-construction-equipment.png','equipment','مرجع بصري لمنظومة المعدات الثقيلة','Heavy equipment reference overview'],
+  ['07-generated-land-planning-green-corridor.png','aerial','تصور تخطيطي للممرات واستخدامات الأرض','Land-use and corridor planning study',true],
+  ['08-unsplash-aerial-materials.jpg','execution','توثيق ساحات المواد والخدمات اللوجستية','Materials yard and logistics audit'],
+  ['09-real-road-roller-and-excavator.jpg','equipment','دمك طبقات الطريق وتجهيز التربة','Road-base compaction operations'],
+  ['10-real-heavy-equipment-overview.jpg','equipment','انتشار الأسطول في نطاق الأعمال','Heavy fleet deployment overview'],
+  ['11-real-excavators-roadworks.jpg','equipment','حفر وتجهيز قطاع البنية التحتية','Excavation and corridor preparation'],
+  ['12-real-site-preparation-machinery.jpg','equipment','جاهزية معدات التجهيز الميداني','Site preparation plant readiness'],
+  ['13-real-road-construction.jpg','execution','تشكيل محاور الحركة داخل المشروع','Internal road construction sequence'],
+  ['14-real-completed-residential-green-space.jpg','execution','نموذج للأصل العمراني المكتمل','Completed urban asset benchmark'],
+  ['15-real-urban-construction-progress.jpg','execution','قياس الاندماج مع النسيج الحضري','Urban integration progress review'],
+  ['16-real-concrete-tower-under-construction.jpg','execution','صعود الهيكل الخرساني الرأسي','Vertical concrete frame progress'],
+  ['17-real-high-rise-construction-crane.jpg','equipment','تشغيل الرافعات للأعمال الشاهقة','High-rise crane operations'],
+  ['18-real-tower-crane-building-progress.jpg','execution','تقدم الواجهة والهيكل في الموقع','Structure and envelope progression'],
+  ['19-real-construction-site-road-access.jpg','execution','التحقق من مداخل ومخارج الموقع','Site access verification'],
+  ['20-real-urban-construction-and-traffic.jpg','execution','تأثير التنفيذ على الحركة المحيطة','Construction interface with traffic'],
+  ['21-real-crane-structure-progress.jpg','equipment','تزامن الرافعة مع مراحل الهيكل','Crane-supported structural sequence'],
+  ['22-real-highway-and-construction-site.jpg','aerial','صلة المشروع بشبكة الطرق الإقليمية','Regional highway connectivity'],
+  ['23-real-rural-site-monitoring.jpg','aerial','توثيق المحيط والموقع المفتوح','Open-site perimeter observation'],
+  ['24-real-building-and-tower-crane.jpg','equipment','متابعة أعمال الرفع بجوار المبنى','Building-adjacent lifting activity'],
+  ['25-real-crane-and-concrete-structure.jpg','execution','فحص مراحل التنفيذ الخرساني','Concrete works inspection'],
+  ['image1.jpg','technical','لقطة ميدانية ضمن ملف التوثيق','Field record from the evidence set'],
+  ['image7.PNG','technical','مستند مرئي للتحقق الفني','Visual technical verification record',true],
+  ['image8.PNG','technical','إثبات متابعة ضمن سجل المشروع','Project monitoring evidence',true],
+  ['image9.jpg','technical','توثيق تفصيلي لحالة الموقع','Detailed site condition record'],
+  ['image11.png','technical','لوحة مرجعية للبيانات الفنية','Technical data reference board',true],
+  ['image12.png','technical','مرجع بصري للمراجعة الهندسية','Engineering review reference',true],
+  ['image13.png','technical','مخرج توثيقي ضمن ملف المتابعة','Monitoring dossier exhibit',true],
+  ['image14.png','technical','دليل مرئي لدعم القرار','Decision-support visual evidence',true],
+  ['image15.png','technical','سجل فني لقراءة حالة الأصل','Asset condition technical record',true],
+  ['image16.png','technical','مادة توثيقية للمراجعة المكانية','Spatial review documentation',true],
+  ['image17.png','technical','مرجع تدقيق ضمن دورة التنفيذ','Execution audit reference',true],
+  ['image18.png','technical','ملحق بصري لتقرير التحقق','Verification report visual annex',true],
+  ['image19.png','technical','قرينة فنية من أرشيف المشروع','Technical exhibit from the project archive',true],
+  ['image20.png','technical','مادة داعمة للتوثيق التنفيذي','Execution documentation support',true],
+  ['image21.png','technical','شاهد بصري ضمن قراءة الموقع','Site-reading visual evidence',true],
+  ['image22.png','technical','مستند متابعة قابل للمراجعة','Review-ready monitoring document',true],
+  ['image23.jpeg','technical','لقطة توثيقية لمسار العمل','Workstream documentation frame'],
+  ['image24.png','technical','لوحة فنية ضمن حزمة الأدلة','Technical board in the evidence pack',true],
+  ['image25.jpeg','technical','صورة تحقق من بيئة التنفيذ','Execution environment verification'],
+  ['image26.jpeg','technical','توثيق سياق الموقع والعمليات','Site context and operations record'],
+  ['image27.png','technical','مادة فنية مساندة لملف المشروع','Supporting technical project material',true],
+  ['image28.png','technical','إثبات بصري للمراجعة المتخصصة','Specialist review visual proof',true],
+  ['image29.png','technical','سجل مرئي لمرحلة التقييم','Assessment-stage visual record',true],
+  ['image30.png','technical','ملحق للتحقق من معطيات الموقع','Site-data verification annex',true],
+  ['image31.jpeg','technical','توثيق ميداني ضمن سلسلة المتابعة','Field documentation in the monitoring series'],
+  ['image32.jpeg','technical','صورة ختامية من أرشيف الأدلة','Closing frame from the evidence archive'],
+].map(([filename, category, captionAr, captionEn, preserveDetail]) => ({
+  src: `/images/work/${filename}`,
+  category: category as WorkGalleryCategory,
+  captionAr: captionAr as string,
+  captionEn: captionEn as string,
+  preserveDetail: Boolean(preserveDetail),
+}));
+
 // ----------------------------------------------------------------------
 // 1. SEVEN STAGES DATA
 // ----------------------------------------------------------------------
@@ -896,12 +966,33 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
   const [cinemaIndex, setCinemaIndex] = useState<number>(0);
   const currentCinemaSlide = CINEMA_SLIDES[cinemaIndex];
 
+  // --- Methodology evidence library state ---
+  const [workGalleryCategory, setWorkGalleryCategory] = useState<WorkGalleryCategory | 'all'>('all');
+  const [workGalleryLightboxIndex, setWorkGalleryLightboxIndex] = useState<number | null>(null);
+  const visibleWorkGalleryItems = WORK_GALLERY_ITEMS.filter(
+    (item) => workGalleryCategory === 'all' || item.category === workGalleryCategory,
+  );
+
   // --- Lightbox Modal State ---
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle?: string } | null>(null);
 
   // Handle keyboard navigation for cinema & lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (workGalleryLightboxIndex !== null) {
+        if (e.key === 'Escape') setWorkGalleryLightboxIndex(null);
+        if (e.key === 'ArrowLeft') {
+          setWorkGalleryLightboxIndex((current) =>
+            current === null ? null : (current - 1 + visibleWorkGalleryItems.length) % visibleWorkGalleryItems.length,
+          );
+        }
+        if (e.key === 'ArrowRight') {
+          setWorkGalleryLightboxIndex((current) =>
+            current === null ? null : (current + 1) % visibleWorkGalleryItems.length,
+          );
+        }
+        return;
+      }
       if (lightboxImage) {
         if (e.key === 'Escape') setLightboxImage(null);
         return;
@@ -922,7 +1013,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxImage, isAr]);
+  }, [lightboxImage, isAr, visibleWorkGalleryItems.length, workGalleryLightboxIndex]);
 
   // Handle Before/After drag
   const handleSliderMove = useCallback((clientX: number) => {
@@ -2327,6 +2418,123 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
 
         </div>
       </section>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* 7. METHODOLOGY EVIDENCE LIBRARY                                  */}
+      {/* ---------------------------------------------------------------- */}
+      <section className="overflow-x-hidden bg-[#f7f5ef] py-14 sm:py-20" aria-labelledby="work-evidence-title">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="border-y border-slate-900/15 py-5 sm:flex sm:items-end sm:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-[11px] font-black uppercase tracking-[0.22em] text-cyan-800">
+                {isAr ? 'مكتبة الأدلة الميدانية' : 'Methodology Evidence Library'}
+              </p>
+              <h2 id="work-evidence-title" className="mt-2 text-2xl font-black tracking-tight text-slate-950 sm:text-4xl">
+                {isAr ? 'سجل بصري لمسار العمل' : 'A visual record of the workstream'}
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {isAr
+                  ? 'أدلة منتقاة من مراحل التخطيط والتنفيذ والتحقق؛ كل سجل معروض مرة واحدة ضمن تصنيف واضح.'
+                  : 'A curated record across planning, delivery, equipment, and verification — each item appears once.'}
+              </p>
+            </div>
+            <div className="mt-4 border-s-4 border-cyan-700 ps-3 text-xs font-bold text-slate-600 sm:mt-0">
+              <span className="block text-lg font-black text-slate-950">{WORK_GALLERY_ITEMS.length}</span>
+              {isAr ? 'دليلاً بصرياً' : 'visual records'}
+            </div>
+          </div>
+
+          <div className="mt-6 flex gap-2 overflow-x-auto pb-2" role="tablist" aria-label={isAr ? 'تصنيفات الأدلة' : 'Evidence categories'}>
+            {([
+              ['all', isAr ? 'الكل' : 'All'],
+              ['aerial', isAr ? 'جوي وتخطيط الموقع' : 'Aerial & Planning'],
+              ['execution', isAr ? 'التنفيذ والإنشاء' : 'Execution & Construction'],
+              ['equipment', isAr ? 'المعدات والآليات' : 'Equipment & Machinery'],
+              ['technical', isAr ? 'ملاحظات ووثائق فنية' : 'Technical Records'],
+            ] as const).map(([id, label]) => {
+              const count = id === 'all' ? WORK_GALLERY_ITEMS.length : WORK_GALLERY_ITEMS.filter((item) => item.category === id).length;
+              const active = workGalleryCategory === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => {
+                    setWorkGalleryCategory(id);
+                    setWorkGalleryLightboxIndex(null);
+                  }}
+                  className={`shrink-0 border px-3 py-2 text-xs font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 ${
+                    active
+                      ? 'border-slate-950 bg-slate-950 text-cyan-200 shadow-sm'
+                      : 'border-slate-300 bg-white/60 text-slate-700 hover:border-cyan-700 hover:text-cyan-900'
+                  }`}
+                >
+                  {label} <span className="ms-1 font-mono text-[10px] opacity-75">{count}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4" role="tabpanel">
+            {visibleWorkGalleryItems.map((item, index) => (
+              <button
+                key={item.src}
+                type="button"
+                onClick={() => setWorkGalleryLightboxIndex(index)}
+                className={`group relative min-w-0 overflow-hidden border border-slate-900/10 bg-slate-200 text-start shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-cyan-700 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 ${
+                  index % 11 === 0 ? 'sm:col-span-2 sm:row-span-2' : index % 7 === 0 ? 'sm:row-span-2' : ''
+                }`}
+              >
+                <div className={`relative ${index % 11 === 0 ? 'aspect-[4/3] sm:h-full' : index % 7 === 0 ? 'aspect-[3/4]' : 'aspect-[4/3]'}`}>
+                  <img
+                    src={item.src}
+                    alt={isAr ? item.captionAr : item.captionEn}
+                    loading="lazy"
+                    className={`h-full w-full transition duration-500 group-hover:scale-[1.03] ${item.preserveDetail ? 'bg-slate-100 object-contain p-1.5' : 'object-cover'}`}
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-transparent px-2.5 pb-2 pt-9 text-white">
+                    <p className="line-clamp-2 text-[11px] font-bold leading-4 sm:text-xs">{isAr ? item.captionAr : item.captionEn}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {workGalleryLightboxIndex !== null && visibleWorkGalleryItems[workGalleryLightboxIndex] && (() => {
+        const activeItem = visibleWorkGalleryItems[workGalleryLightboxIndex];
+        const advance = (direction: number) =>
+          setWorkGalleryLightboxIndex((index) =>
+            index === null ? null : (index + direction + visibleWorkGalleryItems.length) % visibleWorkGalleryItems.length,
+          );
+        return (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={isAr ? 'عارض الأدلة المرئية' : 'Visual evidence viewer'}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/95 p-2 sm:p-6"
+            onClick={() => setWorkGalleryLightboxIndex(null)}
+          >
+            <div className="relative flex h-full w-full max-w-6xl flex-col overflow-hidden border border-white/15 bg-slate-900 shadow-2xl sm:h-auto sm:max-h-[92vh]" onClick={(event) => event.stopPropagation()}>
+              <header className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 text-white">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-bold">{isAr ? activeItem.captionAr : activeItem.captionEn}</p>
+                  <p className="mt-0.5 font-mono text-[11px] text-cyan-300">{workGalleryLightboxIndex + 1} / {visibleWorkGalleryItems.length}</p>
+                </div>
+                <button type="button" onClick={() => setWorkGalleryLightboxIndex(null)} className="grid h-9 w-9 shrink-0 place-items-center border border-white/20 text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300" aria-label={isAr ? 'إغلاق' : 'Close'}><X className="h-4 w-4" /></button>
+              </header>
+              <div className="relative flex min-h-0 flex-1 items-center justify-center bg-black p-3">
+                <img src={activeItem.src} alt={isAr ? activeItem.captionAr : activeItem.captionEn} className="max-h-full max-w-full object-contain" />
+                <button type="button" onClick={() => advance(isAr ? 1 : -1)} className="absolute start-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center border border-white/20 bg-slate-950/70 text-white hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300" aria-label={isAr ? 'السابق' : 'Previous'}>{isAr ? <ChevronRight /> : <ChevronLeft />}</button>
+                <button type="button" onClick={() => advance(isAr ? -1 : 1)} className="absolute end-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center border border-white/20 bg-slate-950/70 text-white hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300" aria-label={isAr ? 'التالي' : 'Next'}>{isAr ? <ChevronLeft /> : <ChevronRight />}</button>
+              </div>
+              <footer className="border-t border-white/10 px-4 py-2 text-center text-[11px] text-slate-400">{isAr ? 'استخدم الأسهم للتنقل، و Esc للإغلاق' : 'Use arrow keys to navigate, Esc to close'}</footer>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ---------------------------------------------------------------- */}
       {/* LIGHTBOX MODAL (Full Resolution Image Viewer)                    */}
