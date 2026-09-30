@@ -109,6 +109,21 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     'Screenshot 2026-09-29 135018.png', 'Screenshot 2026-09-29 135033.png', 'Screenshot 2026-09-29 135051.png',
     'Screenshot 2026-09-29 135114.png', 'Screenshot 2026-09-29 135132.png'
   ];
+  // These dashboard references are deliberately used only in existing viewers.
+  const dashboardViews = [
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134604.png')}`, label: isAr ? 'مسار بنفسجي مع لوحة خصائص جانبية' : 'Purple alignment with property panel' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134828.png')}`, label: isAr ? 'خريطة قطع وطبقات باللون البرتقالي' : 'Orange parcel and layer map' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134939.png')}`, label: isAr ? 'مضلعات أصول ملوّنة مع مؤشرات جانبية' : 'Coloured asset polygons with side metrics' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134904.png')}`, label: isAr ? 'تغطية خضراء ضمن نطاق الخريطة' : 'Green coverage within map extent' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 135033.png')}`, label: isAr ? 'نطاقات مقارنة باللونين الأحمر والأزرق' : 'Comparative red and blue coverage map' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 135051.png')}`, label: isAr ? 'نطاق مكاني وخيارات طبقات' : 'Spatial extent with layer controls' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 135132.png')}`, label: isAr ? 'نطاق تشغيل أخضر مع لوحة مؤشرات' : 'Green operational extent with metrics panel' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134757.png')}`, label: isAr ? 'نطاق زمني للتنفيذ مع مجال مكاني' : 'Execution timeline with spatial scope' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134914.png')}`, label: isAr ? 'طبقات قطع ضمن نطاق موحّد' : 'Parcel layers in a unified extent' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134946.png')}`, label: isAr ? 'مؤشرات أصول ضمن خريطة تشغيلية' : 'Asset metrics in an operational map' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 135114.png')}`, label: isAr ? 'لوحة متابعة نطاقات وطبقات' : 'Coverage and layer monitoring board' },
+    { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134712.png')}`, label: isAr ? 'عرض مسار وطبقات تشغيلية' : 'Alignment and operational layers view' },
+  ];
   const evidenceItems = evidenceGroups.flatMap(group => group.filenames.map((filename, index) => ({
     id: `${group.id}-${index + 1}`,
     group: group.id,
@@ -325,6 +340,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     caption: string;
     badge: string;
     callout: string;
+    dashboard?: { src: string; label: string };
   }> = [
     {
       id: '01',
@@ -333,7 +349,8 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       src: field01,
       caption: isAr ? 'عرض موحد للطبقات' : 'Unified Layer View',
       badge: isAr ? 'الرصد الأولي' : 'Initial Capture',
-      callout: isAr ? 'نقطة رصد إحداثيات الأصل' : 'Geodetic Survey Anchor'
+      callout: isAr ? 'نقطة رصد إحداثيات الأصل' : 'Geodetic Survey Anchor',
+      dashboard: dashboardViews[7]
     },
     {
       id: '02',
@@ -351,7 +368,8 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       src: field05,
       caption: isAr ? 'تحليل تشغيلي مرئي' : 'Operational Visual Analysis',
       badge: isAr ? 'تدقيق الجودة' : 'Quality Audit',
-      callout: isAr ? 'مراجعة معايير السلامة والتشغيل' : 'Operational Clearance Verified'
+      callout: isAr ? 'مراجعة معايير السلامة والتشغيل' : 'Operational Clearance Verified',
+      dashboard: dashboardViews[8]
     },
     {
       id: '04',
@@ -360,7 +378,8 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       src: field07,
       caption: isAr ? 'قراءة مكانية متكاملة' : 'Integrated Spatial Mapping',
       badge: isAr ? 'الربط المكاني' : 'Spatial Corroboration',
-      callout: isAr ? 'تقاطع المسار والربط بالبنية التحتية' : 'Corridor Interconnection Node'
+      callout: isAr ? 'تقاطع المسار والربط بالبنية التحتية' : 'Corridor Interconnection Node',
+      dashboard: dashboardViews[9]
     },
     {
       id: '05',
@@ -369,7 +388,8 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       src: field10,
       caption: isAr ? 'قراءة مكانية متكاملة' : 'Integrated Spatial Mapping',
       badge: isAr ? 'مخرج القرار' : 'Decision Readiness',
-      callout: isAr ? 'خريطة جاهزية الموقع والممرات' : 'Site Readiness Overview'
+      callout: isAr ? 'خريطة جاهزية الموقع والممرات' : 'Site Readiness Overview',
+      dashboard: dashboardViews[10]
     }
   ];
 
@@ -388,6 +408,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       caption: isAr ? 'عرض موحد للطبقات' : 'Unified Layer View',
       main: field08,
       thumbnails: [
+        { ...dashboardViews[3] },
         { src: field07, label: isAr ? 'فهرس العناصر الجغرافية' : 'Spatial Feature Index' },
         { src: field09, label: isAr ? 'سياق شبكات البنية الحضرية' : 'Urban Corridor Extent' },
         { src: field11, label: isAr ? 'لوحة المراقبة الفضائية' : 'Central Spatial View' }
@@ -399,6 +420,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       caption: isAr ? 'عرض موحد للطبقات' : 'Unified Layer View',
       main: field07,
       thumbnails: [
+        { ...dashboardViews[4] },
         { src: field06, label: isAr ? 'شبكة التوزيع والمحولات' : 'Power Distribution' },
         { src: field03, label: isAr ? 'طبقات التمديد الأرضي' : 'Underground Ducts' },
         { src: field10, label: isAr ? 'تحليل حرم المسارات' : 'Buffer Reserves' }
@@ -410,6 +432,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       caption: isAr ? 'مراجعة عناصر الشبكة' : 'Network Asset Review',
       main: field08,
       thumbnails: [
+        { ...dashboardViews[11] },
         { src: field02, label: isAr ? 'تحليل حالة الأصول' : 'Asset Condition' },
         { src: field04, label: isAr ? 'أعماق المسارات الميدانية' : 'Depth & Elevation' },
         { src: field14, label: isAr ? 'سجل توزيع الأصول' : 'Asset Registry' }
@@ -421,6 +444,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       caption: isAr ? 'قراءة مكانية متكاملة' : 'Integrated Spatial Mapping',
       main: field11,
       thumbnails: [
+        { ...dashboardViews[5] },
         { src: field09, label: isAr ? 'معاينة الموقع الميداني' : 'Field Site Overview' },
         { src: field10, label: isAr ? 'سياق التطور التراكمي' : 'Cumulative Evolution' },
         { src: field07, label: isAr ? 'سياق الأقمار الصناعية' : 'Satellite Spatial Context' }
@@ -432,6 +456,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       caption: isAr ? 'تحليل تشغيلي مرئي' : 'Operational Visual Analysis',
       main: field19,
       thumbnails: [
+        { ...dashboardViews[6] },
         { src: field11, label: isAr ? 'اللوحة المركزية الكبرى' : 'Master Dashboard' },
         { src: field08, label: isAr ? 'مؤشرات التوزيع الشبكي' : 'Grid Indicators' },
         { src: field19, label: isAr ? 'الرؤية النهائية الشاملة' : 'Final Network View' }
@@ -1017,6 +1042,21 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                       </div>
                     </div>
 
+                    {currentStep.dashboard && (
+                      <button
+                        type="button"
+                        onClick={() => setLightboxImage({ src: currentStep.dashboard!.src, title: currentStep.dashboard!.label, subtitle: currentStep.title })}
+                        className="flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-2 text-start transition-colors hover:border-blue-400 dark:border-slate-700 dark:bg-slate-950"
+                      >
+                        <img src={currentStep.dashboard.src} alt={currentStep.dashboard.label} className="h-12 w-20 shrink-0 rounded-lg border border-slate-200 bg-slate-950 object-contain dark:border-slate-700" loading="lazy" />
+                        <span className="min-w-0">
+                          <span className="block text-[10px] font-bold text-blue-600 dark:text-blue-400">{isAr ? 'سياق لوحة المقارنة' : 'Dashboard comparison context'}</span>
+                          <span className="block truncate text-xs font-bold text-slate-700 dark:text-slate-200">{currentStep.dashboard.label}</span>
+                        </span>
+                        <Maximize2 className="ms-auto h-4 w-4 shrink-0 text-slate-400" />
+                      </button>
+                    )}
+
                     <div className="text-xs text-slate-400 font-semibold text-start">
                       {isAr ? 'المرحلة' : 'Step'} {activeStoryStep + 1} {isAr ? 'من' : 'of'} 5 — {currentStep.caption}
                     </div>
@@ -1206,7 +1246,10 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                   return (
                     <button
                       key={tIdx}
-                      onClick={() => setActiveViewerImage(tItem.src)}
+                      onClick={() => {
+                        setActiveViewerImage(tItem.src);
+                        setActiveViewerCaption(tItem.label);
+                      }}
                       className={`flex items-center gap-2 p-1.5 rounded-xl border shrink-0 transition-all cursor-pointer ${
                         isCur 
                           ? 'bg-blue-900/60 border-blue-500 shadow-sm' 
@@ -1407,6 +1450,15 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                   {isAr ? 'قراءة مكانية متكاملة' : 'Integrated Spatial Mapping'}
                 </div>
 
+              </div>
+
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {dashboardViews.slice(0, 3).map((view) => (
+                  <button key={view.src} type="button" onClick={() => setLightboxImage({ src: view.src, title: view.label, subtitle: isAr ? 'سياق مقارنة للمسارات' : 'Route comparison context' })} className="group flex items-center gap-2.5 rounded-xl border border-slate-200 bg-white p-2 text-start shadow-xs transition-all hover:border-blue-400 dark:border-slate-700 dark:bg-slate-800">
+                    <img src={view.src} alt={view.label} className="h-10 w-14 shrink-0 rounded-lg border border-slate-200 bg-slate-950 object-contain dark:border-slate-700" loading="lazy" />
+                    <span className="min-w-0 truncate text-xs font-bold text-slate-700 group-hover:text-blue-600 dark:text-slate-200">{view.label}</span>
+                  </button>
+                ))}
               </div>
 
               {/* Three Supporting Items */}
