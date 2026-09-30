@@ -749,7 +749,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       {/* ========================================================================= */}
       {/* SECTION B — INTERACTIVE NETWORK EXPLORER (Exact Required Mapping)          */}
       {/* ========================================================================= */}
-      <section id="network-explorer" className="w-full py-16 md:py-24 bg-white dark:bg-slate-950 border-b border-slate-150 dark:border-slate-800">
+      <section id="network-explorer" className="hidden" aria-hidden="true">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10 md:mb-14">
@@ -1562,69 +1562,10 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       {/* ========================================================================= */}
       <section id="visual-evidence-gallery" className="w-full py-16 md:py-24 bg-slate-950 text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 text-cyan-300 text-xs font-bold tracking-[0.16em] uppercase mb-3">
-                <Images className="w-4 h-4" />
-                {isAr ? 'سجل الأدلة البصرية' : 'Visual evidence register'}
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight">
-                {isAr ? 'كل صورة ميدانية في موضعها الصحيح' : 'Every field image, in its proper context'}
-              </h2>
-              <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-300">
-                {isAr ? 'سجل موحّد للرفع والتحقق وفحص الأصول والقرارات الفنية، دون تكرار للصور.' : 'A unified record for surveying, asset inspection, and technical decisions — with no repeated images.'}
-              </p>
-            </div>
-            <p className="text-sm text-cyan-200 font-semibold shrink-0">{isAr ? '٣١ دليلاً ميدانياً + ١٧ وثيقة عرض' : '31 field records + 17 presentation documents'}</p>
-          </div>
-
-          <div className="flex flex-wrap gap-2 border-y border-white/10 py-4 mb-6" role="tablist" aria-label={isAr ? 'تصنيف معرض الصور' : 'Image gallery categories'}>
-            {[
-              { id: 'all' as const, label: isAr ? 'كل الأدلة' : 'All evidence', count: evidenceItems.length },
-              ...evidenceGroups.map(group => ({ id: group.id, label: group.label, count: group.filenames.length }))
-            ].map(tab => (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={activeEvidenceFilter === tab.id}
-                onClick={() => { setActiveEvidenceFilter(tab.id); setActiveEvidenceIndex(null); }}
-                className={`px-3 py-2 text-xs sm:text-sm font-bold border transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-300 ${activeEvidenceFilter === tab.id ? 'bg-cyan-300 text-slate-950 border-cyan-300' : 'bg-slate-900 text-slate-200 border-slate-700 hover:border-cyan-300 hover:text-cyan-200'}`}
-              >
-                {tab.label} <span className="opacity-70">({tab.count})</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="columns-2 md:columns-3 xl:columns-4 gap-3 [column-fill:_balance]" role="tabpanel">
-            {galleryItems.map((item, index) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => { setActiveEvidenceCollection('field'); setActiveEvidenceIndex(index); }}
-                className="group relative block w-full mb-3 break-inside-avoid text-start overflow-hidden border border-slate-700 bg-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                aria-label={`${isAr ? 'فتح الصورة' : 'Open image'}: ${item.title}`}
-              >
-                <div className={`relative ${item.contain ? 'bg-slate-800 p-1' : 'bg-slate-900'}`}>
-                  <img
-                    src={item.src}
-                    alt={item.title}
-                    loading="lazy"
-                    className={`w-full max-h-72 ${item.contain ? 'object-contain' : 'object-cover'} transition-transform duration-500 group-hover:scale-[1.025]`}
-                  />
-                </div>
-                <div className="absolute inset-x-0 bottom-0 pt-10 p-3 bg-gradient-to-t from-slate-950 via-slate-950/75 to-transparent opacity-100">
-                  <span className="block text-[10px] text-cyan-300 font-bold mb-1">{item.category}</span>
-                  <span className="block text-xs sm:text-sm font-bold leading-snug text-white">{item.title}</span>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-cyan-300/30">
+          <div>
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
               <div>
-                <p className="text-xs font-bold tracking-[0.16em] text-cyan-300 uppercase">{isAr ? 'وثائق العرض الفنية' : 'Technical presentation records'}</p>
+                <p className="text-xs font-bold tracking-[0.16em] text-cyan-300 uppercase">{isAr ? 'ملاحظات ووثائق فنية' : 'Technical notes & documents'}</p>
                 <h3 className="mt-1 text-2xl sm:text-3xl font-black text-white">{isAr ? 'لوحات التحكم والقرارات المكانية' : 'Dashboards & spatial decisions'}</h3>
               </div>
               <p className="text-sm text-slate-300">{isAr ? '١٧ لوحة ووثيقة قابلة للعرض الكامل' : '17 readable dashboards and documents'}</p>
