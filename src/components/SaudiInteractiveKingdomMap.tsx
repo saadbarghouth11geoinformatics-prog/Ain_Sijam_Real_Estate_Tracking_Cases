@@ -256,6 +256,8 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
   const { t, isAr } = useLanguage();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  const mouseFrameRef = useRef<number | null>(null);
+  const pendingMouseCoordsRef = useRef<{ lat: number; lng: number } | null>(null);
   
   // Base Layer References
   const satelliteLayerRef = useRef<L.TileLayer | null>(null);
@@ -514,26 +516,32 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
       maxZoom: 18,
       zoomControl: false,
       attributionControl: false,
+      preferCanvas: true,
+      zoomAnimation: true,
+      fadeAnimation: false,
+      markerZoomAnimation: false,
+      inertia: true,
+      inertiaDeceleration: 2600,
     });
 
     // 1. Esri World Imagery (Satellite)
     const satLayer = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      { maxZoom: 19, attribution: 'Esri, Maxar' }
+      { maxZoom: 19, attribution: 'Esri, Maxar', updateWhenIdle: true, keepBuffer: 3 }
     );
     satelliteLayerRef.current = satLayer;
 
     // 2. Esri World Topo (Terrain)
     const topoLayer = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-      { maxZoom: 19 }
+      { maxZoom: 19, updateWhenIdle: true, keepBuffer: 3 }
     );
     topoLayerRef.current = topoLayer;
 
     // 3. OpenStreetMap (Clean Street Base)
     const streetLayer = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      { maxZoom: 19, attribution: '&copy; OpenStreetMap' }
+      { maxZoom: 19, attribution: '&copy; OpenStreetMap', updateWhenIdle: true, keepBuffer: 3 }
     );
     streetLayerRef.current = streetLayer;
     streetLayer.addTo(map);
@@ -541,7 +549,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     // 4. Esri Boundaries and Places
     const labelsLayer = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-      { maxZoom: 19 }
+      { maxZoom: 19, updateWhenIdle: true, keepBuffer: 3 }
     );
     labelsLayerRef.current = labelsLayer;
     labelsLayer.addTo(map);
@@ -553,12 +561,20 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     const modeGroup = L.layerGroup().addTo(map);
     modeMarkerGroupRef.current = modeGroup;
 
-    map.on('mousemove', (e: L.LeafletMouseEvent) => {
-      setMouseCoords({
+    const handleMouseMove = (e: L.LeafletMouseEvent) => {
+      pendingMouseCoordsRef.current = {
         lat: Number(e.latlng.lat.toFixed(4)),
         lng: Number(e.latlng.lng.toFixed(4)),
+      };
+      if (mouseFrameRef.current !== null) return;
+      mouseFrameRef.current = requestAnimationFrame(() => {
+        if (pendingMouseCoordsRef.current) {
+          setMouseCoords(pendingMouseCoordsRef.current);
+        }
+        mouseFrameRef.current = null;
       });
-    });
+    };
+    map.on('mousemove', handleMouseMove);
 
     map.on('zoomend', () => {
       setCurrentZoom(map.getZoom());
@@ -571,6 +587,11 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     }, 250);
 
     return () => {
+      map.off('mousemove', handleMouseMove);
+      if (mouseFrameRef.current !== null) {
+        cancelAnimationFrame(mouseFrameRef.current);
+        mouseFrameRef.current = null;
+      }
       map.remove();
       mapInstanceRef.current = null;
     };

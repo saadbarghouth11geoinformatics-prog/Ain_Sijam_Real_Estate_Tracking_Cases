@@ -375,7 +375,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </div>
                       <div className="min-w-0">
                         <div className="text-xs font-bold text-slate-900 dark:text-white truncate">Ahmed Tamam</div>
-                        <div className="text-[10px] text-slate-400 truncate">ahmed.tamam.cairo48@gmail.com</div>
+                        <a href="mailto:support@ainsigam.sa" className="block text-[10px] text-slate-400 truncate hover:text-blue-500">support@ainsigam.sa</a>
                       </div>
                     </div>
 
@@ -637,7 +637,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                   <Mail className="w-4 h-4 text-blue-600" />
-                  <span className="font-mono">ahmed.tamam.cairo48@gmail.com</span>
+                  <a href="mailto:support@ainsigam.sa" className="font-mono hover:text-blue-600">support@ainsigam.sa</a>
                 </div>
                 <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                   <Phone className="w-4 h-4 text-blue-600" />
