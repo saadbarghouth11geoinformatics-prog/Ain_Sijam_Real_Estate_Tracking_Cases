@@ -15,6 +15,9 @@ import {
   Sliders, 
   SlidersHorizontal,
   X,
+  ChevronLeft,
+  ChevronRight,
+  Images,
   CheckCircle2
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -70,6 +73,87 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
   // Fullscreen / Zoom Lightbox State
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle?: string } | null>(null);
   const [lightboxZoom, setLightboxZoom] = useState<number>(1);
+  const [activeEvidenceFilter, setActiveEvidenceFilter] = useState<'all' | 'survey' | 'utilities' | 'decisions' | 'documents'>('all');
+  const [activeEvidenceIndex, setActiveEvidenceIndex] = useState<number | null>(null);
+
+  const evidenceGroups = [
+    {
+      id: 'survey' as const,
+      label: isAr ? 'الرفع والتحقق الميداني' : 'Field survey & validation',
+      shortLabel: isAr ? 'ميداني' : 'Field',
+      filenames: [
+        '01-gnss-field-survey.png', '05-quality-control-field-inspection.png', '16-mobile-gis-data-collection.png',
+        '21-gnss-network-survey.png', '23-qaqc-site-review.png', '27-field-utility-verification-team.jpg',
+        '31-gnss-network-survey-team.jpg', '33-field-mapping-and-asset-review.jpg', '35-gnss-site-survey.jpg'
+      ],
+      captionsAr: ['رفع مساحي GNSS للموقع', 'فحص جودة التنفيذ ميدانياً', 'جمع بيانات الأصول عبر GIS المتنقل', 'تثبيت نقاط الشبكة المساحية', 'مراجعة الجودة والامتثال في الموقع', 'فريق التحقق من عناصر المرافق', 'مسح GNSS لمسارات الشبكة', 'مراجعة طبقات الأصول والرفع الميداني', 'توثيق المسح الموقعي'],
+      captionsEn: ['GNSS site survey', 'Field quality inspection', 'Mobile GIS asset collection', 'Network control survey', 'QA/QC site review', 'Utility verification team', 'GNSS network survey', 'Field mapping and asset review', 'Site survey documentation']
+    },
+    {
+      id: 'utilities' as const,
+      label: isAr ? 'فحص المرافق والأصول تحت السطح' : 'Underground utilities & assets',
+      shortLabel: isAr ? 'مرافق' : 'Utilities',
+      filenames: [
+        '02-water-valve-field-inspection.png', '03-gpr-underground-utility-scan.png', '04-wastewater-manhole-inspection.png',
+        '06-electrical-network-documentation.png', '13-water-station-and-reservoirs.png', '14-gpr-utilities-detection.jpeg',
+        '15-water-valve-and-irrigation-assets.png', '22-sewer-inspection-terrain.png', '28-wastewater-manhole-inspection.jpg',
+        '30-wastewater-asset-field-check.jpg', '32-water-valve-chamber-inspection.jpg'
+      ],
+      captionsAr: ['فحص غرفة محبس مياه', 'مسح راداري للمرافق المدفونة', 'معاينة غرفة تفتيش الصرف', 'توثيق عناصر الشبكة الكهربائية', 'محطة مياه وخزانات تشغيلية', 'كشف مسارات المرافق بالرادار الأرضي', 'أصول محابس المياه والري', 'فحص مسار الصرف في التضاريس', 'توثيق غرفة تفتيش الصرف', 'تحقق ميداني من أصل صرف صحي', 'فحص غرفة محبس مياه'],
+      captionsEn: ['Water valve inspection', 'Ground-penetrating radar survey', 'Wastewater manhole inspection', 'Electrical network documentation', 'Water station and reservoirs', 'GPR utility detection', 'Water and irrigation assets', 'Sewer terrain inspection', 'Wastewater manhole record', 'Wastewater asset check', 'Water valve chamber inspection']
+    },
+    {
+      id: 'decisions' as const,
+      label: isAr ? 'المخططات ولوحات القرار الفني' : 'Plans, dashboards & technical decisions',
+      shortLabel: isAr ? 'قرارات فنية' : 'Decisions',
+      filenames: [
+        '07-utility-network-gis-map.png', '09-land-parcel-utility-conflict-context.jpg', '10-utility-conflict-engineering-plan.png',
+        '11-urban-utility-network-masterplan.png', '19-utility-conflict-study-plan.png', '20-technical-readiness-report.png',
+        '24-infrastructure-network-map-dashboard-illustrative.png', '25-asset-verification-dashboard-illustrative.png',
+        '26-land-and-utility-conflict-dashboard-illustrative.png', '29-gas-network-map-dashboard.jpg', '34-infrastructure-asset-coordination.jpg'
+      ],
+      captionsAr: ['خريطة GIS لشبكات المرافق', 'سياق تعارض القطع مع مسارات المرافق', 'مخطط هندسي لمعالجة التعارضات', 'المخطط العام لشبكات المدينة', 'مخطط دراسة تعارضات المرافق', 'تقرير الجاهزية الفنية', 'لوحة خريطة شبكات البنية التحتية', 'لوحة التحقق من الأصول', 'لوحة تعارضات الأراضي والمرافق', 'لوحة متابعة شبكة الغاز', 'تنسيق أصول البنية التحتية'],
+      captionsEn: ['Utility network GIS map', 'Parcel and utility conflict context', 'Utility conflict engineering plan', 'Urban utility masterplan', 'Utility conflict study plan', 'Technical readiness report', 'Infrastructure map dashboard', 'Asset verification dashboard', 'Land and utility conflict dashboard', 'Gas network dashboard', 'Infrastructure asset coordination']
+    }
+  ];
+  const documentFilenames = [
+    'Screenshot 2026-09-29 134604.png', 'Screenshot 2026-09-29 134629.png', 'Screenshot 2026-09-29 134712.png',
+    'Screenshot 2026-09-29 134757.png', 'Screenshot 2026-09-29 134828.png', 'Screenshot 2026-09-29 134839.png',
+    'Screenshot 2026-09-29 134904.png', 'Screenshot 2026-09-29 134914.png', 'Screenshot 2026-09-29 134939.png',
+    'Screenshot 2026-09-29 134946.png', 'Screenshot 2026-09-29 134953.png', 'Screenshot 2026-09-29 135010.png',
+    'Screenshot 2026-09-29 135018.png', 'Screenshot 2026-09-29 135033.png', 'Screenshot 2026-09-29 135051.png',
+    'Screenshot 2026-09-29 135114.png', 'Screenshot 2026-09-29 135132.png'
+  ];
+  const evidenceItems = evidenceGroups.flatMap(group => group.filenames.map((filename, index) => ({
+    id: `${group.id}-${index + 1}`,
+    group: group.id,
+    src: `/images/infrastructure-network/${encodeURIComponent(filename)}`,
+    title: isAr ? group.captionsAr[index] : group.captionsEn[index],
+    category: group.shortLabel,
+    contain: group.id === 'decisions'
+  })));
+  const documentItems = documentFilenames.map((filename, index) => ({
+    id: `document-${index + 1}`,
+    group: 'documents' as const,
+    src: `/images/infrastructure-network/${encodeURIComponent(filename)}`,
+    title: isAr ? `وثيقة عرض فنية ${index + 1}` : `Presentation document ${index + 1}`,
+    category: isAr ? 'وثائق العرض' : 'Presentation documents',
+    contain: true
+  }));
+  const galleryItems = activeEvidenceFilter === 'documents'
+    ? documentItems
+    : activeEvidenceFilter === 'all' ? evidenceItems : evidenceItems.filter(item => item.group === activeEvidenceFilter);
+
+  useEffect(() => {
+    if (activeEvidenceIndex === null) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setActiveEvidenceIndex(null);
+      if (event.key === 'ArrowRight') setActiveEvidenceIndex(index => index === null ? null : (index + 1) % galleryItems.length);
+      if (event.key === 'ArrowLeft') setActiveEvidenceIndex(index => index === null ? null : (index - 1 + galleryItems.length) % galleryItems.length);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [activeEvidenceIndex, galleryItems.length]);
 
   // =========================================================================
   // 1. HERO SECTION (network-04 as main, network-03 and network-02 as previews)
@@ -1490,7 +1574,80 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION G — FINAL CLOSING SECTION (network-17 main, network-16 preview)   */}
+      {/* SECTION G — VISUAL EVIDENCE GALLERY                                      */}
+      {/* ========================================================================= */}
+      <section id="visual-evidence-gallery" className="w-full py-16 md:py-24 bg-slate-950 text-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 text-cyan-300 text-xs font-bold tracking-[0.16em] uppercase mb-3">
+                <Images className="w-4 h-4" />
+                {isAr ? 'سجل الأدلة البصرية' : 'Visual evidence register'}
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight">
+                {isAr ? 'كل صورة ميدانية في موضعها الصحيح' : 'Every field image, in its proper context'}
+              </h2>
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-300">
+                {isAr ? 'سجل موحّد للرفع والتحقق وفحص الأصول والقرارات الفنية، دون تكرار للصور.' : 'A unified record for surveying, asset inspection, and technical decisions — with no repeated images.'}
+              </p>
+            </div>
+            <p className="text-sm text-cyan-200 font-semibold shrink-0">{isAr ? '٣١ دليلاً ميدانياً + ١٧ وثيقة عرض' : '31 field records + 17 presentation documents'}</p>
+          </div>
+
+          <div className="flex flex-wrap gap-2 border-y border-white/10 py-4 mb-6" role="tablist" aria-label={isAr ? 'تصنيف معرض الصور' : 'Image gallery categories'}>
+            {[
+              { id: 'all' as const, label: isAr ? 'كل الأدلة' : 'All evidence', count: evidenceItems.length },
+              ...evidenceGroups.map(group => ({ id: group.id, label: group.label, count: group.filenames.length })),
+              { id: 'documents' as const, label: isAr ? 'وثائق العرض' : 'Presentation documents', count: documentItems.length }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={activeEvidenceFilter === tab.id}
+                onClick={() => { setActiveEvidenceFilter(tab.id); setActiveEvidenceIndex(null); }}
+                className={`px-3 py-2 text-xs sm:text-sm font-bold border transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-300 ${activeEvidenceFilter === tab.id ? 'bg-cyan-300 text-slate-950 border-cyan-300' : 'bg-slate-900 text-slate-200 border-slate-700 hover:border-cyan-300 hover:text-cyan-200'}`}
+              >
+                {tab.label} <span className="opacity-70">({tab.count})</span>
+              </button>
+            ))}
+          </div>
+
+          {activeEvidenceFilter === 'documents' && (
+            <div className="mb-5 border-s-2 border-cyan-300 ps-4 text-sm text-slate-300">
+              {isAr ? 'هذه الوثائق محفوظة في مجموعة مستقلة وليست أدلة ميدانية.' : 'These documents are kept separately and are not featured as field evidence.'}
+            </div>
+          )}
+
+          <div className="columns-2 md:columns-3 xl:columns-4 gap-3 [column-fill:_balance]" role="tabpanel">
+            {galleryItems.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveEvidenceIndex(index)}
+                className="group relative block w-full mb-3 break-inside-avoid text-start overflow-hidden border border-slate-700 bg-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                aria-label={`${isAr ? 'فتح الصورة' : 'Open image'}: ${item.title}`}
+              >
+                <div className={`relative ${item.contain ? 'bg-slate-800 p-1' : 'bg-slate-900'}`}>
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    loading="lazy"
+                    className={`w-full max-h-72 ${item.contain ? 'object-contain' : 'object-cover'} transition-transform duration-500 group-hover:scale-[1.025]`}
+                  />
+                </div>
+                <div className="absolute inset-x-0 bottom-0 pt-10 p-3 bg-gradient-to-t from-slate-950 via-slate-950/75 to-transparent opacity-100">
+                  <span className="block text-[10px] text-cyan-300 font-bold mb-1">{item.category}</span>
+                  <span className="block text-xs sm:text-sm font-bold leading-snug text-white">{item.title}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION H — FINAL CLOSING SECTION (network-17 main, network-16 preview)   */}
       {/* ========================================================================= */}
       <section className="w-full py-16 md:py-24 bg-gradient-to-b from-blue-50/50 via-white to-slate-50 dark:from-slate-900/40 dark:via-slate-950 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -1579,6 +1736,35 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
           </div>
         </div>
       </section>
+
+      {activeEvidenceIndex !== null && galleryItems[activeEvidenceIndex] && (
+        <div
+          className="fixed inset-0 z-[60] bg-slate-950/95 backdrop-blur-sm p-3 sm:p-6 flex flex-col"
+          role="dialog"
+          aria-modal="true"
+          aria-label={galleryItems[activeEvidenceIndex].title}
+          dir={isAr ? 'rtl' : 'ltr'}
+        >
+          <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/10 text-white">
+            <div className="min-w-0">
+              <p className="text-xs text-cyan-300 font-bold">{galleryItems[activeEvidenceIndex].category} · {activeEvidenceIndex + 1} / {galleryItems.length}</p>
+              <h3 className="text-base sm:text-lg font-bold truncate">{galleryItems[activeEvidenceIndex].title}</h3>
+            </div>
+            <button type="button" onClick={() => setActiveEvidenceIndex(null)} className="p-2 border border-slate-600 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'إغلاق المعرض' : 'Close gallery'}>
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="relative flex-1 min-h-0 flex items-center justify-center py-4">
+            <img src={galleryItems[activeEvidenceIndex].src} alt={galleryItems[activeEvidenceIndex].title} className="max-w-full max-h-full object-contain" />
+            <button type="button" onClick={() => setActiveEvidenceIndex((activeEvidenceIndex - 1 + galleryItems.length) % galleryItems.length)} className="absolute start-0 sm:start-3 p-2.5 bg-slate-900/90 border border-slate-600 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'الصورة السابقة' : 'Previous image'}>
+              {isAr ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+            </button>
+            <button type="button" onClick={() => setActiveEvidenceIndex((activeEvidenceIndex + 1) % galleryItems.length)} className="absolute end-0 sm:end-3 p-2.5 bg-slate-900/90 border border-slate-600 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label={isAr ? 'الصورة التالية' : 'Next image'}>
+              {isAr ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ========================================================================= */}
       {/* LIGHTBOX / FULLSCREEN IMAGE VIEWER MODAL                                  */}
