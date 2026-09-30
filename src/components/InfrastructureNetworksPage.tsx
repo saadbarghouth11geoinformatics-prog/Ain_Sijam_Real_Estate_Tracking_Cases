@@ -133,7 +133,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
   const [activeHeroThumb, setActiveHeroThumb] = useState<number>(0);
   const heroThumbnails = [
     {
-      src: field07,
+      src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 135018.png')}`,
       label: isAr ? 'لوحة المراقبة الفضائية المركزية' : 'Central Spatial Monitoring',
       desc: isAr ? 'رؤية موحدة لطبقات وشبكات المشروع' : 'Unified multi-layer network overview'
     },

@@ -192,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-slate-700 dark:text-slate-300 hover:text-blue-600'
                 }`}
               >
-                <span>{isAr ? 'شبكات البنية التحتية' : 'Infrastructure Networks'}</span>
+                <span>{isAr ? 'الشبكات' : 'Networks'}</span>
                 {activeSection === 'infrastructure-networks' && (
                   <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-blue-600 rounded-t-full" />
                 )}
@@ -517,7 +517,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
-                {isAr ? 'شبكات البنية التحتية' : 'Infrastructure Networks'}
+                {isAr ? 'الشبكات' : 'Networks'}
               </button>
 
               <button

@@ -102,7 +102,7 @@ interface CinemaSlide {
   descEn: string;
 }
 
-type WorkGalleryCategory = 'aerial' | 'execution' | 'equipment' | 'technical';
+type WorkGalleryCategory = 'aerial' | 'execution' | 'equipment';
 
 interface WorkGalleryItem {
   src: string;
@@ -138,32 +138,6 @@ const WORK_GALLERY_ITEMS: WorkGalleryItem[] = [
   ['23-real-rural-site-monitoring.jpg','aerial','توثيق المحيط والموقع المفتوح','Open-site perimeter observation'],
   ['24-real-building-and-tower-crane.jpg','equipment','متابعة أعمال الرفع بجوار المبنى','Building-adjacent lifting activity'],
   ['25-real-crane-and-concrete-structure.jpg','execution','فحص مراحل التنفيذ الخرساني','Concrete works inspection'],
-  ['image1.jpg','technical','لقطة ميدانية ضمن ملف التوثيق','Field record from the evidence set'],
-  ['image7.PNG','technical','مستند مرئي للتحقق الفني','Visual technical verification record',true],
-  ['image8.PNG','technical','إثبات متابعة ضمن سجل المشروع','Project monitoring evidence',true],
-  ['image9.jpg','technical','توثيق تفصيلي لحالة الموقع','Detailed site condition record'],
-  ['image11.png','technical','لوحة مرجعية للبيانات الفنية','Technical data reference board',true],
-  ['image12.png','technical','مرجع بصري للمراجعة الهندسية','Engineering review reference',true],
-  ['image13.png','technical','مخرج توثيقي ضمن ملف المتابعة','Monitoring dossier exhibit',true],
-  ['image14.png','technical','دليل مرئي لدعم القرار','Decision-support visual evidence',true],
-  ['image15.png','technical','سجل فني لقراءة حالة الأصل','Asset condition technical record',true],
-  ['image16.png','technical','مادة توثيقية للمراجعة المكانية','Spatial review documentation',true],
-  ['image17.png','technical','مرجع تدقيق ضمن دورة التنفيذ','Execution audit reference',true],
-  ['image18.png','technical','ملحق بصري لتقرير التحقق','Verification report visual annex',true],
-  ['image19.png','technical','قرينة فنية من أرشيف المشروع','Technical exhibit from the project archive',true],
-  ['image20.png','technical','مادة داعمة للتوثيق التنفيذي','Execution documentation support',true],
-  ['image21.png','technical','شاهد بصري ضمن قراءة الموقع','Site-reading visual evidence',true],
-  ['image22.png','technical','مستند متابعة قابل للمراجعة','Review-ready monitoring document',true],
-  ['image23.jpeg','technical','لقطة توثيقية لمسار العمل','Workstream documentation frame'],
-  ['image24.png','technical','لوحة فنية ضمن حزمة الأدلة','Technical board in the evidence pack',true],
-  ['image25.jpeg','technical','صورة تحقق من بيئة التنفيذ','Execution environment verification'],
-  ['image26.jpeg','technical','توثيق سياق الموقع والعمليات','Site context and operations record'],
-  ['image27.png','technical','مادة فنية مساندة لملف المشروع','Supporting technical project material',true],
-  ['image28.png','technical','إثبات بصري للمراجعة المتخصصة','Specialist review visual proof',true],
-  ['image29.png','technical','سجل مرئي لمرحلة التقييم','Assessment-stage visual record',true],
-  ['image30.png','technical','ملحق للتحقق من معطيات الموقع','Site-data verification annex',true],
-  ['image31.jpeg','technical','توثيق ميداني ضمن سلسلة المتابعة','Field documentation in the monitoring series'],
-  ['image32.jpeg','technical','صورة ختامية من أرشيف الأدلة','Closing frame from the evidence archive'],
 ].map(([filename, category, captionAr, captionEn, preserveDetail]) => ({
   src: `/images/work/${filename}`,
   category: category as WorkGalleryCategory,
@@ -2438,10 +2412,6 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                   : 'A curated record across planning, delivery, equipment, and verification — each item appears once.'}
               </p>
             </div>
-            <div className="mt-4 border-s-4 border-cyan-700 ps-3 text-xs font-bold text-slate-600 sm:mt-0">
-              <span className="block text-lg font-black text-slate-950">{WORK_GALLERY_ITEMS.length}</span>
-              {isAr ? 'دليلاً بصرياً' : 'visual records'}
-            </div>
           </div>
 
           <div className="mt-6 flex gap-2 overflow-x-auto pb-2" role="tablist" aria-label={isAr ? 'تصنيفات الأدلة' : 'Evidence categories'}>
@@ -2450,9 +2420,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
               ['aerial', isAr ? 'جوي وتخطيط الموقع' : 'Aerial & Planning'],
               ['execution', isAr ? 'التنفيذ والإنشاء' : 'Execution & Construction'],
               ['equipment', isAr ? 'المعدات والآليات' : 'Equipment & Machinery'],
-              ['technical', isAr ? 'ملاحظات ووثائق فنية' : 'Technical Records'],
             ] as const).map(([id, label]) => {
-              const count = id === 'all' ? WORK_GALLERY_ITEMS.length : WORK_GALLERY_ITEMS.filter((item) => item.category === id).length;
               const active = workGalleryCategory === id;
               return (
                 <button
@@ -2470,7 +2438,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                       : 'border-slate-300 bg-white/60 text-slate-700 hover:border-cyan-700 hover:text-cyan-900'
                   }`}
                 >
-                  {label} <span className="ms-1 font-mono text-[10px] opacity-75">{count}</span>
+                  {label}
                 </button>
               );
             })}

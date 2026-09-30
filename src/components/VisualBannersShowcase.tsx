@@ -132,8 +132,8 @@ export const VisualBannersShowcase: React.FC<VisualBannersShowcaseProps> = ({ on
         </div>
       </ScrollReveal>
 
-      {/* 4 Banners Responsive 2x2 Showcase with Scroll Reveal on Each Item */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+      {/* Three balanced feature banners: one row on desktop, then 2 / 1 columns as space narrows. */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
         {bannerCards.map((card, idx) => (
           <ScrollReveal 
             key={card.id} 
@@ -144,7 +144,7 @@ export const VisualBannersShowcase: React.FC<VisualBannersShowcaseProps> = ({ on
             <div 
               onMouseEnter={() => setActiveCardIndex(idx)}
               onMouseLeave={() => setActiveCardIndex(null)}
-              className="group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-900 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-blue-500/60 flex flex-col justify-end min-h-[380px] sm:min-h-[440px]"
+              className="group relative h-full min-h-[420px] sm:min-h-[460px] lg:min-h-[500px] overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-900 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-blue-500/60 flex flex-col justify-end"
             >
               
               {/* Background Image Container with Smooth Scale Effect on Hover */}
@@ -188,10 +188,10 @@ export const VisualBannersShowcase: React.FC<VisualBannersShowcaseProps> = ({ on
                 
                 {/* Title */}
                 <div>
-                  <h3 className="text-base sm:text-xl font-black text-white font-['Cairo'] tracking-tight group-hover:text-sky-300 transition-colors">
+                  <h3 className="min-w-0 break-words [overflow-wrap:anywhere] text-pretty text-base sm:text-lg lg:text-xl leading-snug font-black text-white font-['Cairo'] tracking-tight group-hover:text-sky-300 transition-colors">
                     {isAr ? card.titleAr : card.titleEn}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-200/90 leading-relaxed mt-1 line-clamp-2 sm:line-clamp-none font-medium">
+                  <p className="min-w-0 break-words [overflow-wrap:anywhere] text-xs sm:text-sm text-slate-200/90 leading-relaxed mt-1 font-medium">
                     {isAr ? card.descAr : card.descEn}
                   </p>
                 </div>
