@@ -15,6 +15,7 @@ import { useLanguage } from '../i18n/LanguageContext';
 interface SubscriptionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  reason?: string;
   reasonText?: string;
   customReason?: string;
   isSubscriber?: boolean;
@@ -25,6 +26,7 @@ interface SubscriptionModalProps {
 export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   isOpen,
   onClose,
+  reason,
   reasonText,
   customReason,
   isSubscriber = false,
@@ -38,7 +40,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
 
   if (!isOpen) return null;
 
-  const displayReason = reasonText || customReason;
+  const displayReason = reason || reasonText || customReason;
 
   const handleSelectAndActivate = (planId: string) => {
     if (onActivateSubscription) onActivateSubscription(planId);
@@ -81,9 +83,9 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm overflow-y-auto overscroll-contain">
       <div 
-        className="relative w-full max-w-4xl bg-white dark:bg-slate-900 border border-sky-100 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-8 text-slate-800 dark:text-slate-100 transition-colors"
+        className="relative w-full max-w-4xl max-h-[92dvh] flex flex-col bg-white dark:bg-slate-900 border border-sky-100 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-4 sm:my-6 text-slate-800 dark:text-slate-100 transition-colors"
         dir={isAr ? 'rtl' : 'ltr'}
       >
         {/* Success Alert Toast */}
@@ -95,7 +97,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
         )}
 
         {/* Top Header Strip */}
-        <div className="bg-gradient-to-r from-sky-50 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-950 p-6 border-b border-sky-100 dark:border-slate-800">
+        <div className="flex-shrink-0 bg-gradient-to-r from-sky-50 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-950 p-4 sm:p-6 border-b border-sky-100 dark:border-slate-800">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-emerald-500 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
@@ -137,7 +139,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-6">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 space-y-6">
           {/* Billing Cycle Toggle */}
           <div className="flex items-center justify-center">
             <div className="bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center gap-1 text-xs font-bold shadow-inner">
@@ -283,7 +285,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+        <div className="flex-shrink-0 p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-2">
             <span>{t('المدفوعات آمنة ومشفرة', 'Secure & Encrypted Transactions')}</span>
             <span>•</span>

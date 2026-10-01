@@ -27,15 +27,27 @@ import {
   Search,
   ExternalLink,
   Info,
-  ZoomIn,
-  ZoomOut,
-  RotateCcw,
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
 interface MethodologyPageProps {
   onNavigate: (targetId: string) => void;
 }
+
+const FIXED_VISUAL_PRESENTATION_SCALE = 0.7;
+
+// This is deliberately a workflow comparison, not a fabricated before/after claim.
+// The field capture and its GIS review are two connected records in the same survey process.
+const SURVEY_WORKFLOW_COMPARISON = {
+  fieldImage: '/images/infrastructure-network/01-gnss-field-survey.png',
+  mapImage: '/images/infrastructure-network/07-utility-network-gis-map.png',
+  fieldLabelAr: 'المسح الميداني GNSS',
+  fieldLabelEn: 'GNSS Field Survey',
+  mapLabelAr: 'ربط الرفع بخريطة الشبكات',
+  mapLabelEn: 'Network GIS Review',
+  explanationAr: 'نفس مسار العمل: توثيق النقاط في الموقع ثم مراجعتها وربطها بطبقات الشبكات في خريطة GIS.',
+  explanationEn: 'One workflow: capture surveyed points on site, then validate and connect them to network layers in GIS.',
+} as const;
 
 // ----------------------------------------------------------------------
 // DATA TYPES & CONSTANTS
@@ -154,7 +166,7 @@ const SEVEN_STAGES: StageInfo[] = [
     id: 1,
     titleAr: 'الأصل والأرض',
     titleEn: 'Land & Asset Foundation',
-    dominantImage: '/assets/methodology/01-site-preparation-satellite.jpg',
+    dominantImage: '/images/infrastructure-network/01-gnss-field-survey.png',
     explanationAr: 'تحديد إحداثيات ومساحة الأرض، وتوثيق خط الأساس الطبوغرافي والحدود النظامية للأصل قبل بدء أي نشاط.',
     explanationEn: 'Establishing exact spatial boundaries, topographic baseline, and legal zoning before any field activity begins.',
     whatWeKnowAr: [
@@ -169,21 +181,21 @@ const SEVEN_STAGES: StageInfo[] = [
     ],
     stripImages: [
       {
-        src: '/assets/methodology/07-generated-land-planning-green-corridor.png',
-        captionAr: 'مخطط استخدامات الأراضي والممرات المعتمدة',
-        captionEn: 'Land use plan and urban corridors',
+        src: '/images/infrastructure-network/35-gnss-site-survey.jpg',
+        captionAr: 'إعداد جهاز GNSS قبل الرفع الميداني',
+        captionEn: 'GNSS setup before field capture',
         type: 'supporting',
       },
       {
-        src: '/assets/methodology/19-real-construction-site-road-access.jpg',
-        captionAr: 'محاور الوصول ومداخل الموقع الميدانية',
-        captionEn: 'Field access roads and perimeter entry',
+        src: '/images/infrastructure-network/31-gnss-network-survey-team.jpg',
+        captionAr: 'فريق الرفع وتثبيت نقاط الرصد',
+        captionEn: 'Survey team establishing control points',
         type: 'supporting',
       },
       {
-        src: '/assets/methodology/23-real-rural-site-monitoring.jpg',
-        captionAr: 'توثيق المحيط البيئي والجغرافي للأصل',
-        captionEn: 'Environmental perimeter documentation',
+        src: '/images/infrastructure-network/33-field-mapping-and-asset-review.jpg',
+        captionAr: 'مراجعة الأصول المسجلة بعد الرفع',
+        captionEn: 'Recorded asset review after field capture',
         type: 'supporting',
       },
     ],
@@ -853,74 +865,9 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
   // --- Hero Hotspots State ---
   const [activeHeroHotspot, setActiveHeroHotspot] = useState<number | null>(null);
 
-  // --- Visual presentation scale & Journey State ---
+  // --- Journey State ---
   const [activeStageId, setActiveStageId] = useState<number>(1);
   const activeStage = SEVEN_STAGES.find((s) => s.id === activeStageId) || SEVEN_STAGES[0];
-  // Keep interchangeable imagery comfortably inside its canvas by default.
-  const [pageScale, setPageScale] = useState<number>(0.7);
-
-  const renderScaleController = (customLabel?: string) => (
-    <div className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50/95 px-3 py-1 text-xs shadow-xs backdrop-blur-xs">
-      <ZoomOut className="h-3.5 w-3.5 text-sky-700 shrink-0" />
-      <span className="font-semibold text-slate-700 text-[11px] sm:text-xs">
-        {customLabel || (isAr ? 'مقياس وضوح العناصر:' : 'Element Scale:')}
-      </span>
-
-      {/* Quick Presets */}
-      <div className="flex items-center gap-1 ms-1">
-        {[
-          { scale: 0.7, label: isAr ? '70% (موصى به)' : '70% (Recommended)' },
-          { scale: 0.85, label: '85%' },
-          { scale: 1.0, label: '100%' },
-        ].map((p) => (
-          <button
-            key={p.scale}
-            type="button"
-            onClick={() => setPageScale(p.scale)}
-            className={`rounded-md px-2 py-0.5 text-[11px] font-bold transition-all cursor-pointer ${
-              pageScale === p.scale
-                ? 'bg-sky-700 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
-            }`}
-          >
-            {p.label}
-          </button>
-        ))}
-
-        {/* Manual Zoom Buttons */}
-        <div className="flex items-center gap-0.5 border-s border-slate-300 ps-1.5 ms-1">
-          <button
-            type="button"
-            onClick={() => setPageScale((prev) => Math.max(0.65, Number((prev - 0.05).toFixed(2))))}
-            className="rounded p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors cursor-pointer"
-            title={isAr ? 'تصغير العناصر (-)' : 'Zoom Out (-)'}
-          >
-            <ZoomOut className="h-3 w-3" />
-          </button>
-          <span className="font-mono text-[11px] font-bold text-sky-800 min-w-[32px] text-center">
-            {Math.round(pageScale * 100)}%
-          </span>
-          <button
-            type="button"
-            onClick={() => setPageScale((prev) => Math.min(1.15, Number((prev + 0.05).toFixed(2))))}
-            className="rounded p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors cursor-pointer"
-            title={isAr ? 'تكبير العناصر (+)' : 'Zoom In (+)'}
-          >
-            <ZoomIn className="h-3 w-3" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setPageScale(0.7)}
-            className="rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-800 transition-colors cursor-pointer"
-            title={isAr ? 'إعادة ضبط المقياس' : 'Reset Scale'}
-          >
-            <RotateCcw className="h-3 w-3" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
   // --- Evidence Section State ---
   const [activeEvidenceStageIndex, setActiveEvidenceStageIndex] = useState<number>(0);
   const [isBeforeAfterMode, setIsBeforeAfterMode] = useState<boolean>(false);
@@ -1366,10 +1313,6 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 : 'Tracking every transition from pre-purchase land checks to tenant occupancy.'}
             </p>
 
-            {/* Element Zoom-Out & Scale Controller Bar */}
-            <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-              {renderScaleController()}
-            </div>
           </div>
 
           {/* Journey controls stay at their normal size; only the switched visual is scaled. */}
@@ -1472,7 +1415,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                         src={activeStage.dominantImage}
                         alt={isAr ? activeStage.titleAr : activeStage.titleEn}
                         className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
-                        style={{ transform: `scale(${pageScale})` }}
+                        style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
                         loading="eager"
                         decoding="async"
                       />
@@ -1694,7 +1637,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                       : 'Back to Timeline'
                     : isAr
                     ? 'مقارنة قبل وبعد (سلايدر)'
-                    : 'Before / After Slider'}
+                      : 'Field Survey ↔ Network Map'}
                 </span>
               </button>
             </div>
@@ -1711,7 +1654,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                   {isBeforeAfterMode
                     ? isAr
                       ? 'مقارنة حية: خط الأساس (01) مقابل المرحلة المتقدمة (05)'
-                      : 'Live Drag Slider: Baseline (01) vs Advanced Stage (05)'
+                      : 'One documented workflow: field capture versus network-layer review'
                     : isAr
                     ? activeEvidence.timeframeAr
                     : activeEvidence.timeframeEn}
@@ -1742,19 +1685,19 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                   onClick={() =>
                     setLightboxImage({
                       src: isBeforeAfterMode
-                        ? '/assets/methodology/05-advanced-construction-satellite.jpg'
+                        ? SURVEY_WORKFLOW_COMPARISON.mapImage
                         : activeEvidence.image,
                       title: isBeforeAfterMode
                         ? isAr
                           ? 'مقارنة التطور الزمني'
-                          : 'Temporal Comparison'
+                          : 'From Field Survey to Network Map'
                         : isAr
                         ? activeEvidence.labelAr
                         : activeEvidence.labelEn,
                       subtitle: isBeforeAfterMode
                         ? isAr
                           ? 'تطور الموقع من خط الأساس إلى مرحلة البناء المتقدمة'
-                          : 'Site evolution from ground baseline to advanced construction'
+                          : SURVEY_WORKFLOW_COMPARISON.explanationEn
                         : isAr
                         ? activeEvidence.timeframeAr
                         : activeEvidence.timeframeEn,
@@ -1789,16 +1732,16 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                   onTouchMove={handleTouchMove}
                   className="relative aspect-16/10 w-full cursor-ew-resize select-none overflow-hidden bg-slate-950 sm:aspect-16/9"
                 >
-                  {/* Underneath image (After: 05 Advanced Construction) */}
+                  {/* GIS review is the second, connected step after field capture. */}
                   <img
-                    src="/assets/methodology/05-advanced-construction-satellite.jpg"
-                    alt="After"
+                    src={SURVEY_WORKFLOW_COMPARISON.mapImage}
+                    alt={isAr ? SURVEY_WORKFLOW_COMPARISON.mapLabelAr : SURVEY_WORKFLOW_COMPARISON.mapLabelEn}
                     className="absolute inset-0 h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out"
-                    style={{ transform: `scale(${pageScale})` }}
+                    style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
                     draggable={false}
                   />
 
-                  {/* Overlaid clipped image (Before: 01 Site Preparation Satellite) */}
+                  {/* The clipped layer is the preceding on-site GNSS survey. */}
                   <div
                     className="absolute inset-0 overflow-hidden"
                     style={{
@@ -1808,22 +1751,31 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                     }}
                   >
                     <img
-                      src="/assets/methodology/01-site-preparation-satellite.jpg"
-                      alt="Before"
+                      src={SURVEY_WORKFLOW_COMPARISON.fieldImage}
+                      alt={isAr ? SURVEY_WORKFLOW_COMPARISON.fieldLabelAr : SURVEY_WORKFLOW_COMPARISON.fieldLabelEn}
                       className="absolute inset-0 h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out"
-                      style={{ transform: `scale(${pageScale})` }}
+                      style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
                       draggable={false}
                     />
 
-                    {/* Left/Before Label Badge */}
-                    <div className="absolute top-4 left-4 rounded-md bg-slate-950/80 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-md border border-white/10">
+                    {/* Superseded label retained only for source compatibility. */}
+                    <div className="hidden">
                       {isAr ? 'قبل: خط الأساس الفضائي (01)' : 'Before: Baseline (01)'}
                     </div>
                   </div>
 
-                  {/* Right/After Label Badge */}
-                  <div className="absolute top-4 right-4 rounded-md bg-sky-900/90 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-md border border-white/10">
+                  {/* Superseded label retained only for source compatibility. */}
+                  <div className="hidden">
                     {isAr ? 'بعد: مرحلة البناء المتقدمة (05)' : 'After: Advanced Works (05)'}
+                  </div>
+
+                  <div className="pointer-events-none absolute inset-x-4 top-4 z-20 flex items-start justify-between gap-3 text-xs font-bold text-white">
+                    <span className="max-w-[42%] rounded-md border border-white/10 bg-slate-950/85 px-2.5 py-1 text-start backdrop-blur-md">
+                      {isAr ? SURVEY_WORKFLOW_COMPARISON.fieldLabelAr : SURVEY_WORKFLOW_COMPARISON.fieldLabelEn}
+                    </span>
+                    <span className="max-w-[42%] rounded-md border border-white/10 bg-sky-900/90 px-2.5 py-1 text-end backdrop-blur-md">
+                      {isAr ? SURVEY_WORKFLOW_COMPARISON.mapLabelAr : SURVEY_WORKFLOW_COMPARISON.mapLabelEn}
+                    </span>
                   </div>
 
                   {/* Draggable Handle Divider */}
@@ -1834,6 +1786,12 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                     <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-sky-600 text-white shadow-xl">
                       <Sliders className="h-4 w-4" />
                     </div>
+                  </div>
+
+                  <div className="pointer-events-none absolute bottom-12 inset-x-0 z-20 flex justify-center px-4">
+                    <p className="max-w-xl rounded-md border border-sky-300/30 bg-slate-950/80 px-3 py-1.5 text-center text-[11px] font-medium leading-4 text-slate-100 backdrop-blur-md">
+                      {isAr ? SURVEY_WORKFLOW_COMPARISON.explanationAr : SURVEY_WORKFLOW_COMPARISON.explanationEn}
+                    </p>
                   </div>
 
                   {/* Bottom Drag Instruction */}
@@ -1851,7 +1809,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                     src={activeEvidence.image}
                     alt={isAr ? activeEvidence.labelAr : activeEvidence.labelEn}
                     className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
-                    style={{ transform: `scale(${isEvidenceZoomed ? Math.max(pageScale, 1.25) : pageScale})` }}
+                    style={{ transform: `scale(${isEvidenceZoomed ? 1.25 : FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
                     loading="eager"
                     decoding="async"
                   />
@@ -1970,10 +1928,6 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 : 'No theoretical estimates; we track tangible elements that prove execution and safeguard asset value.'}
             </p>
 
-            {/* Element Zoom-Out & Scale Controller Bar */}
-            <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-              {renderScaleController()}
-            </div>
           </div>
 
           {/* Keep controls readable; apply the visibility scale to the active visual only. */}
@@ -2044,7 +1998,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                       src={activeDimension.image}
                       alt={isAr ? activeDimension.titleAr : activeDimension.titleEn}
                       className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
-                      style={{ transform: `scale(${pageScale})` }}
+                      style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
                       loading="eager"
                       decoding="async"
                     />
@@ -2184,7 +2138,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                   src={currentCinemaSlide.image}
                   alt={isAr ? currentCinemaSlide.labelAr : currentCinemaSlide.labelEn}
                   className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
-                  style={{ transform: `scale(${pageScale})` }}
+                  style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
                   loading="eager"
                   decoding="async"
                 />

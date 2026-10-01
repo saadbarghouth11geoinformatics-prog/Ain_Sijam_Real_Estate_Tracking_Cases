@@ -1,4 +1,5 @@
-import React from 'react';
+﻿import React from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export interface AinSigamLogoProps {
   variant?: 'horizontal' | 'mark-only' | 'stacked';
@@ -15,6 +16,7 @@ export const AinSigamLogo: React.FC<AinSigamLogoProps> = ({
   theme = 'auto',
   showSubtitle = true,
 }) => {
+  const { isAr } = useLanguage();
   // Dimensions for responsive scaling
   const dimensions = {
     sm: { markW: 34, markH: 34, title: 'text-base font-extrabold', sub: 'text-[9px] tracking-[3px]' },
@@ -114,18 +116,27 @@ export const AinSigamLogo: React.FC<AinSigamLogoProps> = ({
       {/* 2. Typographic Wordmark & Subtitle */}
       {variant !== 'mark-only' && (
         <div className={`flex ${variant === 'stacked' ? 'flex-col items-center text-center' : 'flex-col'} leading-tight`}>
-          {/* Main Title: عين سجـام */}
+          {/* Main Title: Arabic wordmark in AR mode, English wordmark in EN mode */}
           <div className="flex items-center gap-2">
-            <span 
-              className={`tracking-tight font-['Cairo'] text-[#0A3254] dark:text-white ${dimensions.title}`}
-              style={{ letterSpacing: '-0.5px' }}
-            >
-              عين سجـام
-            </span>
+            {isAr ? (
+              <span
+                className={`tracking-tight font-['Cairo'] text-[#0A3254] dark:text-white ${dimensions.title}`}
+                style={{ letterSpacing: '-0.5px' }}
+              >
+                عين سجـام
+              </span>
+            ) : (
+              <span
+                className={`flex items-baseline gap-1 font-['Cairo',sans-serif] ${dimensions.title}`}
+                style={{ letterSpacing: '-0.5px' }}
+              >
+                <span className="text-[#0A3254] dark:text-blue-300">Ain</span>
+                <span className="text-[#036853] dark:text-emerald-400">Sijam</span>
+              </span>
+            )}
           </div>
-
-          {/* Subtitle in English: AIN SIJAM with exact dual-tone branding */}
-          {showSubtitle && (
+          {/* English AIN SIJAM subtitle lockup: shown only in Arabic mode */}
+          {showSubtitle && isAr && (
             <div className="flex items-center gap-1 mt-0.5 font-bold font-['Cairo',sans-serif] uppercase text-[10px] sm:text-[11px]">
               <span className="text-[#0A3254] dark:text-blue-300 tracking-[3px] font-black">
                 AIN

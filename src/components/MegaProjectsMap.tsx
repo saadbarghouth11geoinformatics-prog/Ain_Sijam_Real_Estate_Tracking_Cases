@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { 
   MapPin, 
   Compass, 
@@ -36,8 +36,8 @@ export const MegaProjectsMap: React.FC<MegaProjectsMapProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortByProximity, setSortByProximity] = useState<boolean>(true);
 
-  // Compute distances for projects
-  const projectsWithDistances = megaProjectsData.map(p => {
+  // Compute distances for projects (memoized: rebuilt only when user location changes)
+  const projectsWithDistances = useMemo(() => megaProjectsData.map(p => {
     let distanceKm = 0;
     if (userCoords) {
       distanceKm = calculateHaversineDistanceKm(userCoords.lat, userCoords.lng, p.realGps.lat, p.realGps.lng);
@@ -48,25 +48,30 @@ export const MegaProjectsMap: React.FC<MegaProjectsMapProps> = ({
       distanceFormattedAr: formatDistance(distanceKm, true),
       distanceFormattedEn: formatDistance(distanceKm, false),
     };
-  });
+  }), [userCoords]);
 
   const selectedProject = projectsWithDistances.find(p => p.id === selectedProjectId) || projectsWithDistances[0];
 
-  let filteredProjects = projectsWithDistances.filter(p => {
-    if (activeRegion !== 'الكل' && p.region !== activeRegion) return false;
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      const matchName = p.name.toLowerCase().includes(q) || (p.nameEn && p.nameEn.toLowerCase().includes(q));
-      const matchCity = p.city.toLowerCase().includes(q);
-      const matchId = `site ${p.objectId}`.includes(q) || `${p.objectId}` === q || p.code.toLowerCase().includes(q);
-      return matchName || matchCity || matchId;
+  const filteredProjects = useMemo(() => {
+    let list = projectsWithDistances.filter(p => {
+      if (activeRegion !== 'الكل' && p.region !== activeRegion) return false;
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchName = p.name.toLowerCase().includes(q) || (p.nameEn && p.nameEn.toLowerCase().includes(q));
+        const matchCity = p.city.toLowerCase().includes(q);
+        const matchId = `site ${p.objectId}`.includes(q) || `${p.objectId}` === q || p.code.toLowerCase().includes(q);
+        return matchName || matchCity || matchId;
+      }
+      return true;
+    });
+    if (sortByProximity && userCoords) {
+      list = [...list].sort((a, b) => a.distanceKm - b.distanceKm);
     }
-    return true;
-  });
+    return list;
+  }, [projectsWithDistances, activeRegion, searchQuery, sortByProximity, userCoords]);
 
-  if (sortByProximity && userCoords) {
-    filteredProjects = [...filteredProjects].sort((a, b) => a.distanceKm - b.distanceKm);
-  }
+  // Stable callback so the map does not rebuild all markers on every parent render
+  const handleSelectSite = useCallback((id: string) => setSelectedProjectId(id), []);
 
   const closestProject = userCoords ? [...projectsWithDistances].sort((a, b) => a.distanceKm - b.distanceKm)[0] : null;
 
@@ -214,7 +219,7 @@ export const MegaProjectsMap: React.FC<MegaProjectsMapProps> = ({
                 <SaudiGisSatelliteMap
                   sites={filteredProjects}
                   selectedSiteId={selectedProjectId}
-                  onSelectSite={(id) => setSelectedProjectId(id)}
+                  onSelectSite={handleSelectSite}
                   isAr={isAr}
                   userCoords={userCoords}
                 />

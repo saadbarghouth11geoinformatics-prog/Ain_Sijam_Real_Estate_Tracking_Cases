@@ -41,6 +41,13 @@ export const SaudiGisSatelliteMap: React.FC<SaudiGisSatelliteMapProps> = ({
   const [showLabels, setShowLabels] = useState<boolean>(true);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
+  // Keep the latest parent callback in a ref so the marker effect below does not
+  // re-create every Leaflet marker on each parent render (caused visible lag while scrolling).
+  const onSelectSiteRef = useRef(onSelectSite);
+  useEffect(() => {
+    onSelectSiteRef.current = onSelectSite;
+  }, [onSelectSite]);
+
   // Default Saudi Arabia center & zoom (matches the exact view in user screenshot)
   const defaultCenter: [number, number] = [24.2, 44.5];
   const defaultZoom = 5;
@@ -231,13 +238,13 @@ export const SaudiGisSatelliteMap: React.FC<SaudiGisSatelliteMapProps> = ({
       );
 
       marker.on('click', () => {
-        onSelectSite(site.id);
+        onSelectSiteRef.current(site.id);
       });
 
       marker.addTo(map);
       markersRef.current[site.id] = marker;
     });
-  }, [sites, selectedSiteId, isAr, onSelectSite]);
+  }, [sites, selectedSiteId, isAr]);
 
   // Update User Location Marker if available
   useEffect(() => {

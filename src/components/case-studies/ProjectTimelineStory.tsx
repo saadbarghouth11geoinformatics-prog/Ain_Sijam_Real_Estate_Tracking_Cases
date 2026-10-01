@@ -20,6 +20,8 @@ interface ProjectTimelineStoryProps {
   className?: string;
 }
 
+const FIXED_VISUAL_PRESENTATION_SCALE = 0.7;
+
 export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
   stages,
   projectName,
@@ -148,7 +150,7 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
         
         {/* Animated Visual Stage with transition */}
         <div className="w-full h-full flex items-center justify-center">
-          <div className="h-full w-full transition-[transform,opacity] duration-500 ease-out animate-in fade-in" style={{ transform: 'scale(0.7)' }}>
+          <div className="h-full w-full transition-[transform,opacity] duration-500 ease-out animate-in fade-in" style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}>
             <ImageViewerWithZoom
               src={currentStage.imagePath}
               fallbackSrc={currentStage.fallbackAliasPath}

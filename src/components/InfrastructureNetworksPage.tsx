@@ -50,6 +50,8 @@ import field20 from '@/assets/infrastructure-networks-field/35-gnss-site-survey.
 import irrigationNetworkMap from '@/assets/irrigation-network/irrigation-network-map.png';
 import irrigationValvesDashboard from '@/assets/irrigation-network/irrigation-valves-dashboard.png';
 
+const FIXED_VISUAL_PRESENTATION_SCALE = 0.7;
+
 interface InfrastructureNetworksPageProps {
   onNavigate: (pageId: string) => void;
 }
@@ -372,7 +374,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
   const [activeViewerTab, setActiveViewerTab] = useState<number>(0);
   const [activeViewerImage, setActiveViewerImage] = useState<string>(field08);
   const [activeViewerCaption, setActiveViewerCaption] = useState<string>(isAr ? 'عرض موحد للطبقات' : 'Unified Layer View');
-  const [dashboardZoom, setDashboardZoom] = useState<number>(1);
+  const [dashboardZoom, setDashboardZoom] = useState<number>(FIXED_VISUAL_PRESENTATION_SCALE);
 
   const viewerTabs = [
     {
@@ -495,7 +497,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     const cur = viewerTabs[activeViewerTab];
     setActiveViewerImage(cur.main);
     setActiveViewerCaption(cur.caption);
-    setDashboardZoom(1);
+    setDashboardZoom(FIXED_VISUAL_PRESENTATION_SCALE);
   }, [activeViewerTab]);
 
   // =========================================================================
@@ -1179,11 +1181,11 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                   <ZoomOut className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => setDashboardZoom(1)}
+                  onClick={() => setDashboardZoom(FIXED_VISUAL_PRESENTATION_SCALE)}
                   className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer text-xs font-mono px-2"
                   title={isAr ? 'إعادة ضبط' : 'Reset Zoom'}
                 >
-                  {Math.round(dashboardZoom * 100)}%
+                  <RotateCcw className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setLightboxImage({
@@ -1206,7 +1208,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                 src={activeViewerImage}
                 alt={activeViewerCaption}
                 className="w-full h-full object-contain transition-transform duration-200"
-                style={{ transform: `scale(${dashboardZoom})` }}
+                style={{ transform: `scale(${dashboardZoom})`, transformOrigin: 'center' }}
                 loading="lazy"
               />
             </div>
@@ -1484,6 +1486,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                   src={field09}
                   alt={isAr ? 'سياق شبكات البنية' : 'Corridor Context'}
                   className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                  style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
                   loading="lazy"
                 />
 
@@ -1500,6 +1503,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                     src={comparisonTarget === 'plan1' ? field10 : field07}
                     alt={isAr ? 'التحليل المكاني' : 'Spatial Analysis'}
                     className="w-full h-full object-contain"
+                    style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
                     loading="lazy"
                   />
                 </div>
