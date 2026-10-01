@@ -1329,7 +1329,8 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="auto"
+                  poster={dashboardViews[7].src}
                   aria-label={operationalVideos[0].title}
                   onPlay={() => setOperationalVideoPlaying((previous) => previous.map((value, index) => index === 0 ? true : value))}
                   onPause={() => setOperationalVideoPlaying((previous) => previous.map((value, index) => index === 0 ? false : value))}
@@ -1368,7 +1369,8 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                         muted
                         loop
                         playsInline
-                        preload="metadata"
+                        preload="auto"
+                        poster={videoIndex === 1 ? dashboardViews[2].src : dashboardViews[6].src}
                         aria-label={video.title}
                         onPlay={() => setOperationalVideoPlaying((previous) => previous.map((value, itemIndex) => itemIndex === videoIndex ? true : value))}
                         onPause={() => setOperationalVideoPlaying((previous) => previous.map((value, itemIndex) => itemIndex === videoIndex ? false : value))}
