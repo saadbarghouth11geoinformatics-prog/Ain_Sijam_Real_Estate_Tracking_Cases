@@ -18,7 +18,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Images,
-  CheckCircle2
+  CheckCircle2,
+  Play,
+  Pause,
+  Activity
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
@@ -57,6 +60,58 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
   // Fullscreen / Zoom Lightbox State
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; subtitle?: string } | null>(null);
   const [lightboxZoom, setLightboxZoom] = useState<number>(1);
+  const operationalVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [operationalVideoPlaying, setOperationalVideoPlaying] = useState<boolean[]>([true, true, true]);
+
+  const operationalVideos = [
+    {
+      src: '/videos/infrastructure-network/network-overview.mp4',
+      title: isAr ? 'استعراض الشبكات' : 'Network overview',
+      description: isAr ? 'قراءة موحدة للموقع ومسارات المرافق قبل بدء المراجعة التفصيلية.' : 'A unified reading of the site and utility corridors before detailed review.'
+    },
+    {
+      src: '/videos/infrastructure-network/network-analysis.mp4',
+      title: isAr ? 'تحليل الطبقات' : 'Layer analysis',
+      description: isAr ? 'تتبّع الطبقات والعناصر المرتبطة بها ضمن سياق مكاني واحد.' : 'Trace layers and related assets within one spatial context.'
+    },
+    {
+      src: '/videos/infrastructure-network/network-delivery.mp4',
+      title: isAr ? 'متابعة التنفيذ' : 'Delivery tracking',
+      description: isAr ? 'تحويل المراجعة المكانية إلى متابعة واضحة قابلة للتنفيذ.' : 'Turn spatial review into clear, actionable delivery tracking.'
+    }
+  ];
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      operationalVideoRefs.current.forEach((video) => video?.pause());
+      setOperationalVideoPlaying([false, false, false]);
+      return;
+    }
+
+    operationalVideoRefs.current.forEach((video, index) => {
+      if (!video) return;
+      video.play().then(() => {
+        setOperationalVideoPlaying((previous) => previous.map((value, itemIndex) => itemIndex === index ? true : value));
+      }).catch(() => {
+        setOperationalVideoPlaying((previous) => previous.map((value, itemIndex) => itemIndex === index ? false : value));
+      });
+    });
+  }, []);
+
+  const toggleOperationalVideo = (index: number) => {
+    const video = operationalVideoRefs.current[index];
+    if (!video) return;
+
+    if (video.paused) {
+      video.play().then(() => {
+        setOperationalVideoPlaying((previous) => previous.map((value, itemIndex) => itemIndex === index ? true : value));
+      }).catch(() => undefined);
+    } else {
+      video.pause();
+      setOperationalVideoPlaying((previous) => previous.map((value, itemIndex) => itemIndex === index ? false : value));
+    }
+  };
   // These dashboard references are deliberately used only in existing viewers.
   const dashboardViews = [
     { src: `/images/infrastructure-network/${encodeURIComponent('Screenshot 2026-09-29 134604.png')}`, label: isAr ? 'مسار بنفسجي مع لوحة خصائص جانبية' : 'Purple alignment with property panel' },
@@ -386,28 +441,28 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
   // operational views instead of a dense image gallery.
   const evidenceBoards = [
     {
-      src: field08,
-      kicker: isAr ? 'فهرسة الأصول' : 'Asset Inventory',
-      title: isAr ? 'سجل مرئي يربط كل عنصر بموقعه وطبقته' : 'A visual ledger that connects every asset to its location and layer',
-      text: isAr ? 'تجميع طبقات الشبكات والعناصر الميدانية في واجهة واحدة تساعد الفريق على المراجعة السريعة قبل أي زيارة أو قرار فني.' : 'Network layers and field assets are brought into one reviewable view before any site visit or technical decision.'
+      src: dashboardViews[2].src,
+      kicker: isAr ? 'تحليل الأصول' : 'Asset Analysis',
+      title: isAr ? 'مؤشرات الأصول داخل نطاق تشغيلي موحّد' : 'Asset indicators within one operational extent',
+      text: isAr ? 'لوحة تحليل تربط مضلعات الأصول الملونة بالمؤشرات الجانبية لتسهيل المراجعة السريعة.' : 'An analysis board linking coloured asset polygons to side metrics for rapid review.'
     },
     {
-      src: field07,
-      kicker: isAr ? 'فحص المسارات' : 'Corridor Review',
-      title: isAr ? 'قراءة واضحة للممرات والتقاطعات والخدمات المحيطة' : 'A clear reading of corridors, crossings, and adjacent utilities',
-      text: isAr ? 'تُعرض المسارات ضمن سياقها المكاني لتسهيل التنسيق بين فرق التصميم والتنفيذ والتشغيل.' : 'Utility alignments are viewed in their spatial context to support design, delivery, and operations coordination.'
+      src: dashboardViews[1].src,
+      kicker: isAr ? 'طبقات ومسارات' : 'Layers & Alignments',
+      title: isAr ? 'قطع ومسارات موثقة في خريطة قابلة للمراجعة' : 'Documented parcels and alignments in a reviewable map',
+      text: isAr ? 'توضح اللوحة علاقة القطع بممرات الخدمة والطبقات الفنية دون إخفاء تفاصيل الخريطة.' : 'The board makes parcel, corridor, and technical-layer relationships clear without hiding map detail.'
     },
     {
-      src: field10,
-      kicker: isAr ? 'جاهزية الموقع' : 'Site Readiness',
-      title: isAr ? 'تحويل الأدلة الميدانية إلى مراجعة قابلة للتنفيذ' : 'Turning field evidence into an actionable review',
-      text: isAr ? 'من خلال العرض الموحد يمكن متابعة العناصر الموثقة ومراجعة حالتها وملاحظاتها الفنية بصورة أكثر مباشرة.' : 'The unified view makes documented assets, their condition, and their technical notes easier to review.'
+      src: dashboardViews[7].src,
+      kicker: isAr ? 'متابعة التنفيذ' : 'Delivery Tracking',
+      title: isAr ? 'نطاق زمني ومكاني يوضح تقدم المراجعة' : 'A temporal and spatial view of review progress',
+      text: isAr ? 'يُظهر تسلسل التنفيذ داخل نطاق الموقع لتنسيق القرارات بين فرق المشروع.' : 'Shows delivery sequence within the site extent to align project-team decisions.'
     },
     {
-      src: field11,
-      kicker: isAr ? 'الرؤية التنفيذية' : 'Executive Perspective',
-      title: isAr ? 'ملخص مكاني واضح يدعم فرق المشروع والإدارة' : 'A clear spatial summary for project teams and management',
-      text: isAr ? 'تنتقل البيانات من الطبقات التفصيلية إلى رؤية مختصرة يمكن الرجوع منها إلى الأصل والموقع والدليل المرتبط به.' : 'Detailed layers become an executive view that remains traceable back to the asset, location, and supporting evidence.'
+      src: dashboardViews[6].src,
+      kicker: isAr ? 'مؤشرات التشغيل' : 'Operational Metrics',
+      title: isAr ? 'نطاقات تشغيلية مرتبطة بمؤشرات واضحة' : 'Operational areas paired with clear metrics',
+      text: isAr ? 'تعرض اللوحة نطاقات العمل ومؤشرات المتابعة في سياق واحد يدعم قرار المراجعة.' : 'Presents work areas and monitoring indicators in one decision-ready context.'
     }
   ];
 
@@ -1243,6 +1298,102 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       {/* ========================================================================= */}
       {/* SECTION E — PLANNING AND TECHNICAL STUDIES (network-03 vs network-08)     */}
       {/* ========================================================================= */}
+      <section id="operational-video-evidence" className="w-full border-b border-slate-200 bg-white py-16 md:py-24 dark:border-slate-800 dark:bg-slate-950">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mb-8 flex flex-col justify-between gap-4 sm:mb-10 md:flex-row md:items-end">
+            <div className="max-w-2xl text-start">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700 dark:border-blue-900 dark:bg-blue-950/50 dark:text-blue-300">
+                <Activity className="h-3.5 w-3.5" />
+                <span>{isAr ? 'توثيق تشغيلي متحرك' : 'Operational video evidence'}</span>
+              </div>
+              <h2 className="text-2xl font-black tracking-tight text-slate-950 sm:text-3xl md:text-4xl dark:text-white">
+                {isAr ? 'من قراءة الشبكات إلى متابعة التنفيذ' : 'From network review to delivery tracking'}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
+                {isAr ? 'لقطات تشغيلية مختصرة توضح انتقال فريق العمل من الاستعراض المكاني إلى تحليل الطبقات ثم المتابعة التنفيذية.' : 'Concise operational clips follow the team from spatial overview to layer analysis and delivery tracking.'}
+              </p>
+            </div>
+            <p className="max-w-sm text-start text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+              {isAr ? 'تعمل المقاطع بصمت وبشكل متكرر، ويمكن إيقاف أو تشغيل كل مقطع بشكل مستقل.' : 'Clips loop silently and each can be paused or resumed independently.'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-12 lg:gap-7">
+            <article className="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 p-2 shadow-2xl lg:col-span-8">
+              <div className="relative aspect-video overflow-hidden rounded-2xl bg-black">
+                <video
+                  ref={(node) => { operationalVideoRefs.current[0] = node; }}
+                  className="h-full w-full object-contain"
+                  src={operationalVideos[0].src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-label={operationalVideos[0].title}
+                  onPlay={() => setOperationalVideoPlaying((previous) => previous.map((value, index) => index === 0 ? true : value))}
+                  onPause={() => setOperationalVideoPlaying((previous) => previous.map((value, index) => index === 0 ? false : value))}
+                />
+                <div className="pointer-events-none absolute start-4 top-4 inline-flex items-center gap-2 rounded-lg border border-emerald-400/30 bg-slate-950/85 px-3 py-1.5 text-xs font-bold text-emerald-300 shadow-lg">
+                  <span className={`h-2 w-2 rounded-full bg-emerald-400 ${operationalVideoPlaying[0] ? 'animate-pulse' : ''}`} />
+                  {isAr ? 'بث تشغيلي' : 'Operational feed'}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => toggleOperationalVideo(0)}
+                  className="absolute bottom-4 end-4 inline-flex items-center gap-2 rounded-xl border border-white/20 bg-slate-950/90 px-3 py-2 text-xs font-bold text-white shadow-lg transition-colors hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  aria-label={operationalVideoPlaying[0] ? (isAr ? 'إيقاف استعراض الشبكات' : 'Pause network overview') : (isAr ? 'تشغيل استعراض الشبكات' : 'Play network overview')}
+                >
+                  {operationalVideoPlaying[0] ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                  {operationalVideoPlaying[0] ? (isAr ? 'إيقاف' : 'Pause') : (isAr ? 'تشغيل' : 'Play')}
+                </button>
+              </div>
+              <div className="px-3 pb-2 pt-4 text-start sm:px-4">
+                <p className="text-xs font-bold text-blue-300">01 — {operationalVideos[0].title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-300">{operationalVideos[0].description}</p>
+              </div>
+            </article>
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
+              {operationalVideos.slice(1).map((video, index) => {
+                const videoIndex = index + 1;
+                return (
+                  <article key={video.src} className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-sm transition-shadow hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
+                    <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-950">
+                      <video
+                        ref={(node) => { operationalVideoRefs.current[videoIndex] = node; }}
+                        className="h-full w-full object-contain"
+                        src={video.src}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        aria-label={video.title}
+                        onPlay={() => setOperationalVideoPlaying((previous) => previous.map((value, itemIndex) => itemIndex === videoIndex ? true : value))}
+                        onPause={() => setOperationalVideoPlaying((previous) => previous.map((value, itemIndex) => itemIndex === videoIndex ? false : value))}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => toggleOperationalVideo(videoIndex)}
+                        className="absolute bottom-2 end-2 grid h-9 w-9 place-items-center rounded-lg border border-white/20 bg-slate-950/90 text-white shadow-md transition-colors hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                        aria-label={operationalVideoPlaying[videoIndex] ? (isAr ? `إيقاف ${video.title}` : `Pause ${video.title}`) : (isAr ? `تشغيل ${video.title}` : `Play ${video.title}`)}
+                      >
+                        {operationalVideoPlaying[videoIndex] ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                      </button>
+                    </div>
+                    <div className="px-2 pb-2 pt-3 text-start">
+                      <p className="text-[11px] font-bold text-blue-600 dark:text-blue-400">0{videoIndex + 1} — {video.title}</p>
+                      <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">{video.description}</p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="technical-studies" className="w-full py-16 md:py-24 bg-slate-50/60 dark:bg-slate-900/40 border-b border-slate-150 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           

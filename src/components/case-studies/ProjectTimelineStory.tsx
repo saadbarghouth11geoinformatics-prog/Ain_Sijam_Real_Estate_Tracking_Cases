@@ -27,7 +27,6 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
 }) => {
   const { t, isAr } = useLanguage();
   const [activeStageIndex, setActiveStageIndex] = useState<number>(0);
-  const [isCrossFading, setIsCrossFading] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // The satellite images are up to ~1.4 MB each. Start warming the browser
@@ -54,11 +53,9 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
 
   const handleStageChange = (newIndex: number) => {
     if (newIndex === activeStageIndex) return;
-    setIsCrossFading(true);
-    setTimeout(() => {
-      setActiveStageIndex(newIndex);
-      setIsCrossFading(false);
-    }, 180);
+    // Every stage is preloaded. Changing immediately lets the new frame fade
+    // in without showing an empty canvas between the two satellite captures.
+    setActiveStageIndex(newIndex);
   };
 
   const handlePrev = (e?: React.MouseEvent) => {
@@ -150,12 +147,8 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
       <div className="relative w-full aspect-16/10 bg-[#0a1128] overflow-hidden flex items-center justify-center group/view">
         
         {/* Animated Visual Stage with transition */}
-        <div 
-          className={`w-full h-full flex items-center justify-center transition-all duration-300 ease-out ${
-            isCrossFading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'
-          }`}
-        >
-          <div className="w-full h-full transform transition-transform duration-500 ease-out group-hover/view:scale-[1.025]">
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="h-full w-full transition-[transform,opacity] duration-500 ease-out animate-in fade-in" style={{ transform: 'scale(0.7)' }}>
             <ImageViewerWithZoom
               src={currentStage.imagePath}
               fallbackSrc={currentStage.fallbackAliasPath}
@@ -164,7 +157,7 @@ export const ProjectTimelineStory: React.FC<ProjectTimelineStoryProps> = ({
               caption={currentStage.descriptionAr}
               aspectRatioClass="aspect-16/10"
               objectFit="contain"
-              className="w-full h-full border-0 bg-transparent"
+              className="h-full w-full border-0 bg-transparent"
               loading="eager"
             />
           </div>

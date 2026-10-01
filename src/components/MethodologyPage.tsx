@@ -853,12 +853,11 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
   // --- Hero Hotspots State ---
   const [activeHeroHotspot, setActiveHeroHotspot] = useState<number | null>(null);
 
-  // --- Page Element Scale (85% across the board) & Journey State ---
+  // --- Visual presentation scale & Journey State ---
   const [activeStageId, setActiveStageId] = useState<number>(1);
   const activeStage = SEVEN_STAGES.find((s) => s.id === activeStageId) || SEVEN_STAGES[0];
-  const [pageScale, setPageScale] = useState<number>(0.85); // 85% scale across the board as requested
-  const journeyZoomScale = pageScale;
-  const setJourneyZoomScale = setPageScale;
+  // Keep interchangeable imagery comfortably inside its canvas by default.
+  const [pageScale, setPageScale] = useState<number>(0.7);
 
   const renderScaleController = (customLabel?: string) => (
     <div className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50/95 px-3 py-1 text-xs shadow-xs backdrop-blur-xs">
@@ -870,8 +869,8 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
       {/* Quick Presets */}
       <div className="flex items-center gap-1 ms-1">
         {[
-          { scale: 0.75, label: '75%' },
-          { scale: 0.85, label: isAr ? '85% (موصى به)' : '85% (Optimal)' },
+          { scale: 0.7, label: isAr ? '70% (موصى به)' : '70% (Recommended)' },
+          { scale: 0.85, label: '85%' },
           { scale: 1.0, label: '100%' },
         ].map((p) => (
           <button
@@ -911,7 +910,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
           </button>
           <button
             type="button"
-            onClick={() => setPageScale(0.85)}
+            onClick={() => setPageScale(0.7)}
             className="rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-800 transition-colors cursor-pointer"
             title={isAr ? 'إعادة ضبط المقياس' : 'Reset Scale'}
           >
@@ -1373,13 +1372,8 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
             </div>
           </div>
 
-          {/* ZOOMABLE JOURNEY CONTAINER (Applies the zoom-out scale effect to all elements cleanly) */}
-          <div
-            className="transition-all duration-300 origin-top"
-            style={{
-              zoom: journeyZoomScale,
-            }}
-          >
+          {/* Journey controls stay at their normal size; only the switched visual is scaled. */}
+          <div>
             {/* DESKTOP TIMELINE NAVIGATOR (Horizontal Connected Bar) */}
             <div className="mt-6 sm:mt-8 hidden lg:block">
               <div className="relative">
@@ -1472,12 +1466,15 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 {/* LEFT/DOMINANT VISUAL (In RTL, appears on the left of desktop) */}
                 <div className="lg:col-span-7">
                   <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 shadow-md">
-                    <div className="group relative aspect-16/9 sm:aspect-[1.85/1] max-h-[340px] w-full overflow-hidden">
+                    <div className="group relative aspect-16/9 sm:aspect-[1.85/1] max-h-[340px] w-full overflow-hidden bg-slate-950">
                       <img
                         key={activeStage.dominantImage}
                         src={activeStage.dominantImage}
                         alt={isAr ? activeStage.titleAr : activeStage.titleEn}
-                        className="h-full w-full object-cover transition-all duration-500 animate-in fade-in"
+                        className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
+                        style={{ transform: `scale(${pageScale})` }}
+                        loading="eager"
+                        decoding="async"
                       />
 
                       {/* Stage Badge on Dominant Visual */}
@@ -1790,13 +1787,14 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                   }}
                   onTouchEnd={stopDragging}
                   onTouchMove={handleTouchMove}
-                  className="relative aspect-16/10 w-full cursor-ew-resize select-none overflow-hidden sm:aspect-16/9"
+                  className="relative aspect-16/10 w-full cursor-ew-resize select-none overflow-hidden bg-slate-950 sm:aspect-16/9"
                 >
                   {/* Underneath image (After: 05 Advanced Construction) */}
                   <img
                     src="/assets/methodology/05-advanced-construction-satellite.jpg"
                     alt="After"
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out"
+                    style={{ transform: `scale(${pageScale})` }}
                     draggable={false}
                   />
 
@@ -1812,7 +1810,8 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                     <img
                       src="/assets/methodology/01-site-preparation-satellite.jpg"
                       alt="Before"
-                      className="absolute inset-0 h-full w-full object-cover"
+                      className="absolute inset-0 h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out"
+                      style={{ transform: `scale(${pageScale})` }}
                       draggable={false}
                     />
 
@@ -1846,14 +1845,15 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 </div>
               ) : (
                 /* --- MODE 2: TIME-BASED STAGE VIEWER WITH ANNOTATIONS --- */
-                <div className="relative aspect-16/10 w-full overflow-hidden sm:aspect-16/9">
+                <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-950 sm:aspect-16/9">
                   <img
                     key={activeEvidence.image}
                     src={activeEvidence.image}
                     alt={isAr ? activeEvidence.labelAr : activeEvidence.labelEn}
-                    className={`h-full w-full object-cover transition-transform duration-500 ${
-                      isEvidenceZoomed ? 'scale-125' : 'scale-100'
-                    }`}
+                    className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
+                    style={{ transform: `scale(${isEvidenceZoomed ? Math.max(pageScale, 1.25) : pageScale})` }}
+                    loading="eager"
+                    decoding="async"
                   />
 
                   {/* HTML Overlay Annotations (Solid High-Contrast Ain Sijam Blue Labels) */}
@@ -1976,13 +1976,8 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
             </div>
           </div>
 
-          {/* ZOOMABLE DIMENSIONS CONTAINER (85% scale across the board) */}
-          <div
-            className="transition-all duration-300 origin-top"
-            style={{
-              zoom: pageScale,
-            }}
-          >
+          {/* Keep controls readable; apply the visibility scale to the active visual only. */}
+          <div>
             {/* Interactive Split Board (Dominant Visual + Vertical List) */}
             <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:items-center">
               
@@ -2043,12 +2038,15 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:p-4 shadow-sm">
                   
                   {/* Active Main Visual */}
-                  <div className="group relative aspect-[1.85/1] sm:aspect-16/9 max-h-[380px] w-full overflow-hidden rounded-xl bg-slate-900 shadow-md">
+                  <div className="group relative aspect-[1.85/1] sm:aspect-16/9 max-h-[380px] w-full overflow-hidden rounded-xl bg-slate-950 shadow-md">
                     <img
                       key={activeDimension.image}
                       src={activeDimension.image}
                       alt={isAr ? activeDimension.titleAr : activeDimension.titleEn}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-102"
+                      className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
+                      style={{ transform: `scale(${pageScale})` }}
+                      loading="eager"
+                      decoding="async"
                     />
 
                     {/* Title overlay */}
@@ -2176,13 +2174,8 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
             </div>
           </div>
 
-          {/* ZOOMABLE CINEMA CONTAINER (85% scale across the board) */}
-          <div
-            className="transition-all duration-300 origin-top"
-            style={{
-              zoom: pageScale,
-            }}
-          >
+          {/* Cinema controls remain stable while the active frame uses the shared visibility scale. */}
+          <div>
             {/* CINEMA MAIN SCREEN */}
             <div className="mt-6">
               <div className="relative aspect-[1.95/1] sm:aspect-16/9 max-h-[440px] w-full overflow-hidden rounded-2xl border border-slate-800 bg-black shadow-2xl">
@@ -2190,7 +2183,10 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                   key={currentCinemaSlide.image}
                   src={currentCinemaSlide.image}
                   alt={isAr ? currentCinemaSlide.labelAr : currentCinemaSlide.labelEn}
-                  className="h-full w-full object-cover transition-opacity duration-300"
+                  className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
+                  style={{ transform: `scale(${pageScale})` }}
+                  loading="eager"
+                  decoding="async"
                 />
 
                 {/* Top Phase Tag */}
