@@ -24,6 +24,7 @@ import {
   Activity
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { ProfessionalMediaFrame } from './ProfessionalMediaFrame';
 
 // Direct local imports from the newly isolated folder: src/assets/infrastructure-networks-new/
 import network09 from '@/assets/infrastructure-networks-new/network-09.png';
@@ -51,6 +52,19 @@ import irrigationNetworkMap from '@/assets/irrigation-network/irrigation-network
 import irrigationValvesDashboard from '@/assets/irrigation-network/irrigation-valves-dashboard.png';
 
 const DEFAULT_DASHBOARD_ZOOM = 1;
+
+const normalizeMediaSource = (src: string) => decodeURIComponent(src).replace(/\\/g, '/').toLowerCase();
+const dedupeBySource = <T extends { src: string }>(items: T[]) => {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    const source = normalizeMediaSource(item.src);
+    if (seen.has(source)) return false;
+    seen.add(source);
+    return true;
+  });
+};
+const isTechnicalMedia = (src: string) =>
+  /(?:screenshot|dashboard|map|network-\d+|gis|plan|masterplan|conflict|irrigation)/i.test(src);
 
 interface InfrastructureNetworksPageProps {
   onNavigate: (pageId: string) => void;
@@ -279,7 +293,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
       bgColor: 'bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-800',
       accentColor: '#dc2626',
       src: field14,
-      supportingImage: field14,
+      supportingImage: field19,
       supportingLabel: isAr ? 'سياق شبكة الغاز الميداني' : 'Field Gas Network Overview',
       mainTitle: isAr ? 'لوحة تحكم مسارات خطوط الغاز ونقاط العزل' : 'Gas Pipeline Network & Isolation Controls',
       explanation: isAr 
@@ -468,7 +482,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     }
   ];
 
-  const fieldEvidence = [
+  const fieldEvidence = dedupeBySource([
     { src: field01, phase: isAr ? '1. الرفع الميداني' : '1. Field Survey', title: isAr ? 'تثبيت الإحداثيات ونقطة بداية التوثيق' : 'Establish coordinates and the documentation baseline' },
     { src: field20, phase: isAr ? '1. الرفع الميداني' : '1. Field Survey', title: isAr ? 'مراجعة فريق المسح ومسارات التغطية' : 'Review survey team coverage and routes' },
     { src: field03, phase: isAr ? '2. كشف الخدمات' : '2. Utility Detection', title: isAr ? 'فحص الخدمات تحت السطح قبل التنفيذ' : 'Detect subsurface utilities before works begin' },
@@ -489,7 +503,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     { src: field11, phase: isAr ? '9. القرار الفني' : '9. Technical Decision', title: isAr ? 'دمج المخطط العام مع مسارات الشبكات' : 'Combine masterplan context with utility alignments' },
     { src: field19, phase: isAr ? '9. القرار الفني' : '9. Technical Decision', title: isAr ? 'تنسيق الأدلة بين الفرق والتخصصات' : 'Coordinate evidence across teams and disciplines' },
     { src: field16, phase: isAr ? '10. التحديث المستمر' : '10. Continuous Update', title: isAr ? 'استمرار التحديث الميداني للإحداثيات' : 'Maintain ongoing field-coordinate updates' }
-  ];
+  ]);
   const [activeFieldEvidence, setActiveFieldEvidence] = useState(0);
 
   // Sync viewer image on tab change
@@ -997,19 +1011,14 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
 
                     {/* Screenshot Frame (object-fit: contain, sharp and readable) */}
                     <div 
-                      className="relative aspect-16/10 rounded-2xl overflow-hidden bg-slate-950 border border-slate-200 dark:border-slate-800 cursor-pointer group p-1 sm:p-2"
+                      className="relative aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 dark:border-slate-800 cursor-pointer group"
                       onClick={() => setLightboxImage({
                         src: currentStep.src,
                         title: currentStep.title,
                         subtitle: currentStep.caption
                       })}
                     >
-                      <img
-                        src={currentStep.src}
-                        alt={currentStep.title}
-                        className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.01]"
-                        loading="lazy"
-                      />
+                      <ProfessionalMediaFrame src={currentStep.src} alt={currentStep.title} technical={isTechnicalMedia(currentStep.src)} imageClassName="transition-transform duration-300 group-hover:scale-[1.01]" />
 
                       {/* Clean Callout Label */}
                       <div className="absolute bottom-3 end-3 px-3 py-1.5 rounded-lg bg-blue-900/90 backdrop-blur-md border border-blue-400/60 text-white text-xs font-bold shadow-lg">
@@ -1076,8 +1085,8 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                     <Maximize2 className="w-4 h-4" />
                   </button>
                 </div>
-                <button onClick={() => setLightboxImage({ src: fieldEvidence[activeFieldEvidence].src, title: fieldEvidence[activeFieldEvidence].title, subtitle: fieldEvidence[activeFieldEvidence].phase })} className="block w-full aspect-16/10 sm:aspect-16/9 p-2 sm:p-3 cursor-zoom-in">
-                  <img src={fieldEvidence[activeFieldEvidence].src} alt={fieldEvidence[activeFieldEvidence].title} className="w-full h-full object-contain" loading="lazy" />
+                <button onClick={() => setLightboxImage({ src: fieldEvidence[activeFieldEvidence].src, title: fieldEvidence[activeFieldEvidence].title, subtitle: fieldEvidence[activeFieldEvidence].phase })} className="block w-full aspect-16/10 sm:aspect-16/9 cursor-zoom-in bg-slate-100">
+                  <ProfessionalMediaFrame src={fieldEvidence[activeFieldEvidence].src} alt={fieldEvidence[activeFieldEvidence].title} technical={isTechnicalMedia(fieldEvidence[activeFieldEvidence].src)} />
                 </button>
                 <div className="px-4 sm:px-6 py-3 bg-slate-900/95 text-xs text-slate-300 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400" />
@@ -1086,17 +1095,16 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
               </div>
             </div>
 
-            <div className="xl:col-span-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-3 max-h-[760px] xl:overflow-y-auto xl:pe-2">
-              {fieldEvidence.map((item, index) => {
-                const active = activeFieldEvidence === index;
+            <div className="xl:col-span-5 flex gap-3 overflow-x-auto pb-2 xl:grid xl:grid-cols-1 xl:overflow-y-auto xl:overflow-x-visible xl:pb-0 xl:pe-2 xl:max-h-[760px]">
+              {fieldEvidence.map((item, index) => ({ item, index })).filter(({ index }) => index !== activeFieldEvidence).map(({ item, index }) => {
                 return (
-                  <button key={`${item.title}-${index}`} onClick={() => setActiveFieldEvidence(index)} className={`group flex items-center gap-3 p-2.5 rounded-2xl text-start border transition-all cursor-pointer ${active ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-500 shadow-sm' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-blue-300'}`}>
-                    <div className="relative w-20 h-14 rounded-xl overflow-hidden shrink-0 bg-slate-950 border border-slate-200 dark:border-slate-700 p-0.5">
-                      <img src={item.src} alt="" className="w-full h-full object-contain" loading="lazy" />
+                  <button key={`${item.title}-${index}`} onClick={() => setActiveFieldEvidence(index)} className="group flex min-w-[280px] xl:min-w-0 items-center gap-3 p-2.5 rounded-2xl text-start border transition-all cursor-pointer bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-blue-300">
+                    <div className="relative w-20 h-14 rounded-xl overflow-hidden shrink-0 bg-slate-100 border border-slate-200 dark:border-slate-700">
+                      <ProfessionalMediaFrame src={item.src} alt="" technical={isTechnicalMedia(item.src)} />
                       <span className="absolute top-1 start-1 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-black flex items-center justify-center">{index + 1}</span>
                     </div>
                     <span className="min-w-0">
-                      <span className={`block text-[11px] font-bold ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}>{item.phase}</span>
+                      <span className="block text-[11px] font-bold text-slate-500 dark:text-slate-400">{item.phase}</span>
                       <span className="block text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 leading-snug mt-0.5">{item.title}</span>
                     </span>
                   </button>
@@ -1203,20 +1211,16 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
             </div>
 
             {/* Central Display: Large and Readable with object-fit: contain */}
-            <div className="relative aspect-16/10 sm:aspect-16/9 bg-slate-950 flex items-center justify-center overflow-hidden p-2 sm:p-4">
-              <img
-                src={activeViewerImage}
-                alt={activeViewerCaption}
-                className="w-full h-full object-contain transition-transform duration-200"
-                style={{ transform: `scale(${dashboardZoom})`, transformOrigin: 'center' }}
-                loading="lazy"
-              />
+            <div className="relative aspect-16/10 sm:aspect-16/9 bg-slate-100 flex items-center justify-center overflow-hidden">
+              <span className="absolute inset-0 transition-transform duration-200" style={{ transform: `scale(${dashboardZoom})`, transformOrigin: 'center' }}>
+                <ProfessionalMediaFrame src={activeViewerImage} alt={activeViewerCaption} technical />
+              </span>
             </div>
 
             {/* Selectable Thumbnails Bar (Clicking updates main display) */}
             <div className="bg-slate-950/90 p-3 sm:p-4 border-t border-slate-800">
               <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1">
-                {viewerTabs[activeViewerTab].thumbnails.map((tItem, tIdx) => {
+                {dedupeBySource(viewerTabs[activeViewerTab].thumbnails).filter((tItem) => normalizeMediaSource(tItem.src) !== normalizeMediaSource(activeViewerImage)).map((tItem, tIdx) => {
                   const isCur = activeViewerImage === tItem.src;
                   return (
                     <button
@@ -1231,12 +1235,9 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                           : 'bg-slate-900 border-slate-800 hover:border-slate-700'
                       }`}
                     >
-                      <img
-                        src={tItem.src}
-                        alt={tItem.label}
-                        className="w-14 h-9 sm:w-16 sm:h-10 object-contain rounded-lg shrink-0 border border-slate-700 bg-slate-950"
-                        loading="lazy"
-                      />
+                      <span className="h-9 w-14 shrink-0 overflow-hidden rounded-lg border border-slate-300 bg-slate-100 sm:h-10 sm:w-16">
+                        <ProfessionalMediaFrame src={tItem.src} alt={tItem.label} technical={isTechnicalMedia(tItem.src)} />
+                      </span>
                       <span className={`text-xs font-semibold px-1 ${isCur ? 'text-blue-300' : 'text-slate-400'}`}>
                         {tItem.label}
                       </span>

@@ -29,6 +29,7 @@ import {
   Info,
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { ProfessionalMediaFrame } from './ProfessionalMediaFrame';
 
 interface MethodologyPageProps {
   onNavigate: (targetId: string) => void;
@@ -36,6 +37,17 @@ interface MethodologyPageProps {
 
 const shouldPreserveFullFrame = (src: string) =>
   /(?:satellite|map|plan|dashboard|gis|report|drawing|masterplan|conflict)/i.test(src);
+
+const normalizeMediaSource = (src: string) => decodeURIComponent(src).replace(/\\/g, '/').toLowerCase();
+const uniqueMedia = <T extends { src: string }>(items: T[]) => {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    const source = normalizeMediaSource(item.src);
+    if (seen.has(source)) return false;
+    seen.add(source);
+    return true;
+  });
+};
 
 // This is deliberately a workflow comparison, not a fabricated before/after claim.
 // The field capture and its GIS review are two connected records in the same survey process.
@@ -1411,14 +1423,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 <div className="lg:col-span-7">
                   <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 shadow-md">
                     <div className="group relative aspect-16/9 sm:aspect-[1.85/1] max-h-[340px] w-full overflow-hidden bg-slate-100">
-                      <img
-                        key={activeStage.dominantImage}
-                        src={activeStage.dominantImage}
-                        alt={isAr ? activeStage.titleAr : activeStage.titleEn}
-                        className={`h-full w-full transition-opacity duration-500 ease-out animate-in fade-in ${shouldPreserveFullFrame(activeStage.dominantImage) ? 'object-contain p-2' : 'object-cover'}`}
-                        loading="eager"
-                        decoding="async"
-                      />
+                      <ProfessionalMediaFrame key={activeStage.dominantImage} src={activeStage.dominantImage} alt={isAr ? activeStage.titleAr : activeStage.titleEn} technical={shouldPreserveFullFrame(activeStage.dominantImage)} loading="eager" imageClassName="transition-opacity duration-500 ease-out animate-in fade-in" />
 
                       {/* Stage Badge on Dominant Visual */}
                       <div className="absolute top-3 right-3 flex items-center gap-2 rounded-lg bg-slate-950/80 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-md border border-white/10">
@@ -1456,7 +1461,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                     </div>
 
                     <div className="grid grid-cols-3 gap-2.5">
-                      {activeStage.stripImages.map((item, idx) => (
+                      {uniqueMedia(activeStage.stripImages).filter((item) => normalizeMediaSource(item.src) !== normalizeMediaSource(activeStage.dominantImage)).map((item, idx) => (
                         <button
                           key={idx}
                           type="button"
@@ -1806,14 +1811,14 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
               ) : (
                 /* --- MODE 2: TIME-BASED STAGE VIEWER WITH ANNOTATIONS --- */
                 <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-100 sm:aspect-16/9">
-                  <img
+                  <ProfessionalMediaFrame
                     key={activeEvidence.image}
                     src={activeEvidence.image}
                     alt={isAr ? activeEvidence.labelAr : activeEvidence.labelEn}
-                    className={`h-full w-full transition-[transform,opacity] duration-500 ease-out animate-in fade-in ${shouldPreserveFullFrame(activeEvidence.image) ? 'object-contain p-2' : 'object-cover'}`}
-                    style={{ transform: `scale(${isEvidenceZoomed ? 1.25 : 1})`, transformOrigin: 'center' }}
+                    technical={shouldPreserveFullFrame(activeEvidence.image)}
                     loading="eager"
-                    decoding="async"
+                    imageClassName="transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
+                    className={isEvidenceZoomed ? '[&>img:last-child]:scale-125' : ''}
                   />
 
                   {/* HTML Overlay Annotations (Solid High-Contrast Ain Sijam Blue Labels) */}
@@ -2134,14 +2139,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
             {/* CINEMA MAIN SCREEN */}
             <div className="mt-6">
               <div className="relative aspect-[1.95/1] sm:aspect-16/9 max-h-[440px] w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-2xl">
-                <img
-                  key={currentCinemaSlide.image}
-                  src={currentCinemaSlide.image}
-                  alt={isAr ? currentCinemaSlide.labelAr : currentCinemaSlide.labelEn}
-                  className={`h-full w-full transition-opacity duration-500 ease-out animate-in fade-in ${shouldPreserveFullFrame(currentCinemaSlide.image) ? 'object-contain p-2' : 'object-cover'}`}
-                  loading="eager"
-                  decoding="async"
-                />
+                <ProfessionalMediaFrame key={currentCinemaSlide.image} src={currentCinemaSlide.image} alt={isAr ? currentCinemaSlide.labelAr : currentCinemaSlide.labelEn} technical={shouldPreserveFullFrame(currentCinemaSlide.image)} loading="eager" imageClassName="transition-opacity duration-500 ease-out animate-in fade-in" />
 
                 {/* Top Phase Tag */}
                 <div className="absolute top-3.5 right-3.5 flex items-center gap-2 rounded-lg bg-slate-950/80 px-3 py-1.5 text-xs font-bold text-sky-300 backdrop-blur-md border border-white/10">
@@ -2181,7 +2179,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
 
             {/* HORIZONTAL STORY RAIL (Clickable Previews) */}
             <div className="mt-4 flex gap-2.5 overflow-x-auto pb-2 no-scrollbar">
-              {CINEMA_SLIDES.map((slide, idx) => {
+              {CINEMA_SLIDES.map((slide, idx) => ({ slide, idx })).filter(({ idx }) => idx !== cinemaIndex).map(({ slide, idx }) => {
                 const isActive = idx === cinemaIndex;
                 return (
                   <button
