@@ -482,27 +482,21 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     }
   ];
 
+  // This evidence rail intentionally owns a separate asset set. None of these
+  // images is reused by the workflow, network explorer, dashboard, comparison,
+  // hero, or editorial-board sections above.
   const fieldEvidence = dedupeBySource([
-    { src: field01, phase: isAr ? '1. الرفع الميداني' : '1. Field Survey', title: isAr ? 'تثبيت الإحداثيات ونقطة بداية التوثيق' : 'Establish coordinates and the documentation baseline' },
-    { src: field20, phase: isAr ? '1. الرفع الميداني' : '1. Field Survey', title: isAr ? 'مراجعة فريق المسح ومسارات التغطية' : 'Review survey team coverage and routes' },
-    { src: field03, phase: isAr ? '2. كشف الخدمات' : '2. Utility Detection', title: isAr ? 'فحص الخدمات تحت السطح قبل التنفيذ' : 'Detect subsurface utilities before works begin' },
-    { src: field02, phase: isAr ? '3. توثيق الأصل' : '3. Asset Documentation', title: isAr ? 'توثيق المحابس والعناصر التشغيلية' : 'Document valves and operational assets' },
-    { src: field04, phase: isAr ? '3. توثيق الأصل' : '3. Asset Documentation', title: isAr ? 'فحص غرف التفتيش ومسارات الصرف' : 'Inspect manholes and sewer alignments' },
-    { src: field06, phase: isAr ? '3. توثيق الأصل' : '3. Asset Documentation', title: isAr ? 'تسجيل عناصر الكهرباء ومسارات الكابلات' : 'Register power assets and cable corridors' },
-    { src: field17, phase: isAr ? '4. التحقق الموقعي' : '4. Site Verification', title: isAr ? 'فحص غرفة المحبس وربطها بالسجل' : 'Verify valve chamber and link it to the register' },
-    { src: field13, phase: isAr ? '4. التحقق الموقعي' : '4. Site Verification', title: isAr ? 'مراجعة حالة عناصر الصرف في الموقع' : 'Review on-site wastewater asset condition' },
-    { src: field15, phase: isAr ? '4. التحقق الموقعي' : '4. Site Verification', title: isAr ? 'تأكيد حالة الأصل ودليل الفحص' : 'Confirm asset status and inspection evidence' },
-    { src: field05, phase: isAr ? '5. ضبط الجودة' : '5. Quality Control', title: isAr ? 'تدقيق الأدلة الفنية قبل الاعتماد' : 'Audit technical evidence before approval' },
-    { src: field12, phase: isAr ? '5. ضبط الجودة' : '5. Quality Control', title: isAr ? 'مراجعة ميدانية مشتركة للأصول' : 'Joint field review of documented assets' },
-    { src: field18, phase: isAr ? '6. الربط المكاني' : '6. Spatial Integration', title: isAr ? 'تحويل الملاحظات إلى طبقات قابلة للمراجعة' : 'Convert field observations into reviewable layers' },
-    { src: field07, phase: isAr ? '6. الربط المكاني' : '6. Spatial Integration', title: isAr ? 'عرض المسارات ضمن خريطة شبكات موحدة' : 'Visualize alignments on a unified utility map' },
-    { src: field08, phase: isAr ? '7. سجل الأصول' : '7. Asset Ledger', title: isAr ? 'مؤشرات سجل الأصول وبياناتها' : 'Asset ledger indicators and records' },
-    { src: field14, phase: isAr ? '7. سجل الأصول' : '7. Asset Ledger', title: isAr ? 'تتبع طبقات شبكة الغاز ونقاط التحكم' : 'Track gas layers and control points' },
-    { src: field09, phase: isAr ? '8. فحص التعارضات' : '8. Conflict Review', title: isAr ? 'قراءة علاقة القطع بممرات الخدمات' : 'Read parcels against utility corridors' },
-    { src: field10, phase: isAr ? '8. فحص التعارضات' : '8. Conflict Review', title: isAr ? 'مراجعة التعارضات على المخطط الهندسي' : 'Review conflicts on the engineering plan' },
-    { src: field11, phase: isAr ? '9. القرار الفني' : '9. Technical Decision', title: isAr ? 'دمج المخطط العام مع مسارات الشبكات' : 'Combine masterplan context with utility alignments' },
-    { src: field19, phase: isAr ? '9. القرار الفني' : '9. Technical Decision', title: isAr ? 'تنسيق الأدلة بين الفرق والتخصصات' : 'Coordinate evidence across teams and disciplines' },
-    { src: field16, phase: isAr ? '10. التحديث المستمر' : '10. Continuous Update', title: isAr ? 'استمرار التحديث الميداني للإحداثيات' : 'Maintain ongoing field-coordinate updates' }
+    { src: '/images/infrastructure-network/21-gnss-network-survey.png', phase: isAr ? '1. الرفع الميداني' : '1. Field Survey', title: isAr ? 'تثبيت نقاط شبكة الرفع المساحي' : 'Establish the GNSS survey control network' },
+    { src: '/images/infrastructure-network/13-water-station-and-reservoirs.png', phase: isAr ? '2. حصر المنشآت' : '2. Facility Inventory', title: isAr ? 'حصر محطة المياه والخزانات المرتبطة' : 'Inventory the water station and linked reservoirs' },
+    { src: '/images/infrastructure-network/14-gpr-utilities-detection.jpeg', phase: isAr ? '3. كشف الخدمات' : '3. Utility Detection', title: isAr ? 'مسح المرافق المدفونة بالرادار الأرضي' : 'Scan buried utilities with ground-penetrating radar' },
+    { src: '/images/infrastructure-network/15-water-valve-and-irrigation-assets.png', phase: isAr ? '4. توثيق الأصول' : '4. Asset Documentation', title: isAr ? 'توثيق المحابس وأصول شبكة الري' : 'Document valves and irrigation-network assets' },
+    { src: '/images/infrastructure-network/16-mobile-gis-data-collection.png', phase: isAr ? '5. الجمع الرقمي' : '5. Digital Capture', title: isAr ? 'تسجيل بيانات الأصل ميدانيًا عبر GIS' : 'Capture asset records in the field with mobile GIS' },
+    { src: '/images/infrastructure-network/22-sewer-inspection-terrain.png', phase: isAr ? '6. فحص الصرف' : '6. Sewer Inspection', title: isAr ? 'مراجعة مسار الصرف وطبيعة الموقع' : 'Review the sewer alignment and site terrain' },
+    { src: '/images/infrastructure-network/23-qaqc-site-review.png', phase: isAr ? '7. ضبط الجودة' : '7. Quality Control', title: isAr ? 'مراجعة جودة الرفع والأدلة في الموقع' : 'Review survey quality and field evidence on site' },
+    { src: '/images/infrastructure-network/19-utility-conflict-study-plan.png', phase: isAr ? '8. فحص التعارضات' : '8. Conflict Review', title: isAr ? 'تحليل تعارض المرافق على المخطط' : 'Analyse utility conflicts on the engineering plan' },
+    { src: '/images/infrastructure-network/20-technical-readiness-report.png', phase: isAr ? '9. الاعتماد الفني' : '9. Technical Approval', title: isAr ? 'مراجعة تقرير الجاهزية الفنية للاعتماد' : 'Review the technical-readiness report for approval' },
+    { src: '/images/infrastructure-network/24-infrastructure-network-map-dashboard-illustrative.png', phase: isAr ? '10. الربط المكاني' : '10. Spatial Integration', title: isAr ? 'دمج طبقات الشبكات في لوحة مكانية' : 'Combine network layers in a spatial dashboard' },
+    { src: '/images/infrastructure-network/26-land-and-utility-conflict-dashboard-illustrative.png', phase: isAr ? '11. دعم القرار' : '11. Decision Support', title: isAr ? 'مراجعة تعارضات الأرض والمرافق قبل القرار' : 'Review land and utility conflicts before decision' }
   ]);
   const [activeFieldEvidence, setActiveFieldEvidence] = useState(0);
 
