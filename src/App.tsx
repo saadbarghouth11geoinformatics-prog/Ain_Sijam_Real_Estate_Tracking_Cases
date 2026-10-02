@@ -83,12 +83,12 @@ export default function App() {
     setFocusedProjectId(projectId);
     setCurrentPageId('map');
     window.location.hash = 'map';
-    setTimeout(() => {
+    window.requestAnimationFrame(() => {
       const mapEl = document.getElementById('saudi-kingdom-map-section');
       if (mapEl) {
-        mapEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        mapEl.scrollIntoView({ behavior: 'auto', block: 'start' });
       }
-    }, 120);
+    });
   }, []);
 
   // Handle URL hash changes and in-page anchor scrolling
@@ -303,9 +303,6 @@ export default function App() {
                     selectedCategory={selectedCategoryFilter}
                     onSelectCategory={setSelectedCategoryFilter}
                     focusedProjectId={focusedProjectId}
-                    onSelectProject={(proj) => {
-                      if (proj?.id) setFocusedProjectId(proj.id);
-                    }}
                   />
                 </div>
                 <ProjectStatistics 
@@ -589,7 +586,7 @@ export default function App() {
           )}
 
           {/* Quick jump grid at bottom for dedicated pages */}
-          {currentPageId !== 'home' && currentPageId !== 'case-studies' && currentPageId !== 'methodology' && (
+          {currentPageId !== 'home' && currentPageId !== 'map' && currentPageId !== 'case-studies' && currentPageId !== 'methodology' && (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-6">
               <div className="bg-slate-50 dark:bg-slate-900/60 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800">
                 <PagesDirectoryGrid
@@ -623,9 +620,6 @@ export default function App() {
               selectedCategory={selectedCategoryFilter}
               onSelectCategory={setSelectedCategoryFilter}
               focusedProjectId={focusedProjectId}
-              onSelectProject={(proj) => {
-                if (proj?.id) setFocusedProjectId(proj.id);
-              }}
             />
           </div>
           <ProjectStatistics 

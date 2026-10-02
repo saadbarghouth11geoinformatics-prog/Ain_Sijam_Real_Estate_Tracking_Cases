@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { 
@@ -241,7 +241,6 @@ export interface SaudiInteractiveKingdomMapProps {
   selectedCategory?: string;
   onSelectCategory?: (category: string) => void;
   focusedProjectId?: string | null;
-  onSelectProject?: (project: ConstructionSiteItem) => void;
   initialExploreMode?: MapExploreMode;
 }
 
@@ -250,7 +249,6 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
   selectedCategory: propCategory,
   onSelectCategory,
   focusedProjectId,
-  onSelectProject,
   initialExploreMode = 'market'
 }) => {
   const { t, isAr } = useLanguage();
@@ -268,6 +266,9 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
   // Markers Layer Groups
   const userMarkerGroupRef = useRef<L.LayerGroup | null>(null);
   const modeMarkerGroupRef = useRef<L.LayerGroup | null>(null);
+  const markerRegistryRef = useRef(new globalThis.Map<string, L.Marker>());
+  const selectedMarkerKeyRef = useRef<string | null>(null);
+  const selectItemRef = useRef<(item: SelectedItemType) => void>(() => undefined);
 
   // Geolocation Hook
   const {
@@ -281,6 +282,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
 
   // Search Bar State
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('');
   const [isSearchFocused, setIsSearchFocused] = useState<boolean>(false);
 
   // Basemap & View States
@@ -290,6 +292,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
   const [selectedRegionId, setSelectedRegionId] = useState<string>('riyadh');
   const [mouseCoords, setMouseCoords] = useState<{ lat: number; lng: number } | null>({ lat: 24.7136, lng: 46.6753 });
   const [currentZoom, setCurrentZoom] = useState<number>(11);
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(false);
 
   // Mode 1: Market State
   const [marketSubFilter, setMarketSubFilter] = useState<'all' | 'residential' | 'commercial' | 'deals'>('all');
@@ -302,16 +305,18 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
   const [internalCategory, setInternalCategory] = useState<string>('all');
   const activeCategory = propCategory !== undefined ? propCategory : internalCategory;
 
-  const handleCategoryChange = (catId: string) => {
+  const handleCategoryChange = useCallback((catId: string) => {
     setInternalCategory(catId);
     onSelectCategory?.(catId);
-  };
+  }, [onSelectCategory]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearchQuery(searchQuery), 200);
+    return () => window.clearTimeout(timer);
+  }, [searchQuery]);
 
   // Selected item state (Defaults to certified District: حي النرجس)
-  const [selectedItem, setSelectedItem] = useState<SelectedItemType>({
-    type: 'district',
-    data: saudiDistricts[0]
-  });
+  const [selectedItem, setSelectedItem] = useState<SelectedItemType>(null);
 
   // Inspection Modal for Project Photos
   const [selectedInspectionProject, setSelectedInspectionProject] = useState<ProjectWithDistance | null>(null);
@@ -327,14 +332,11 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     if (proj) {
       setExploreMode('monitoring');
       setSelectedItem({ type: 'project', data: proj as ProjectWithDistance });
-      mapInstanceRef.current.flyTo([proj.realGps.lat, proj.realGps.lng], 14, { animate: true });
-      if (mapContainerRef.current) {
-        mapContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      mapInstanceRef.current.setView([proj.realGps.lat, proj.realGps.lng], 14, { animate: false });
     } else if (selectedItem?.type === 'project') {
       setSelectedItem(null);
     }
-  }, [focusedProjectId, nearbyProjects, selectedItem?.type]);
+  }, [focusedProjectId, nearbyProjects]);
 
   // Sync city navigation when selectedCity prop changes
   useEffect(() => {
@@ -365,42 +367,42 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     if (activeCategory !== 'all') {
       list = list.filter(p => p.category === activeCategory);
     }
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
+    if (debouncedSearchQuery.trim()) {
+      const q = debouncedSearchQuery.toLowerCase().trim();
       list = list.filter(p => p.name.toLowerCase().includes(q) || p.city.toLowerCase().includes(q));
     }
     return list;
-  }, [nearbyProjects, selectedCity, activeCategory, searchQuery]);
+  }, [nearbyProjects, selectedCity, activeCategory, debouncedSearchQuery]);
 
   // Filtered Districts for Market Mode
   const filteredDistricts = useMemo(() => {
     let list = saudiDistricts;
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
+    if (debouncedSearchQuery.trim()) {
+      const q = debouncedSearchQuery.toLowerCase().trim();
       list = list.filter(d => d.name.toLowerCase().includes(q) || d.city.toLowerCase().includes(q));
     }
     return list;
-  }, [searchQuery]);
+  }, [debouncedSearchQuery]);
 
   // Filtered Deals for Market Mode
   const filteredDeals = useMemo(() => {
     let list = sampleLiveDeals;
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
+    if (debouncedSearchQuery.trim()) {
+      const q = debouncedSearchQuery.toLowerCase().trim();
       list = list.filter(deal => deal.dealNumber.toLowerCase().includes(q) || deal.district.toLowerCase().includes(q));
     }
     return list;
-  }, [searchQuery]);
+  }, [debouncedSearchQuery]);
 
   // Filtered Parcels for Planning Mode
   const filteredParcels = useMemo(() => {
     let list = sampleDistrictBuildings;
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
+    if (debouncedSearchQuery.trim()) {
+      const q = debouncedSearchQuery.toLowerCase().trim();
       list = list.filter(p => p.parcelNumber.toLowerCase().includes(q) || p.subdivision.toLowerCase().includes(q));
     }
     return list;
-  }, [searchQuery]);
+  }, [debouncedSearchQuery]);
 
   // Determine if active mode returned empty results
   const isEmptyResults = useMemo(() => {
@@ -418,6 +420,12 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     return false;
   }, [exploreMode, marketSubFilter, filteredDistricts, filteredDeals, filteredParcels, filteredProjects]);
 
+  const activeFilterCount = useMemo(() => {
+    if (exploreMode === 'market') return marketSubFilter === 'all' ? 0 : 1;
+    if (exploreMode === 'planning') return Number(showMetroOverlay) + Number(showUtilitiesOverlay);
+    return activeCategory === 'all' ? 0 : 1;
+  }, [exploreMode, marketSubFilter, showMetroOverlay, showUtilitiesOverlay, activeCategory]);
+
   // Clear filters
   const handleClearFilters = () => {
     setSearchQuery('');
@@ -426,16 +434,13 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
   };
 
   // Fly to target and highlight item
-  const handleFlyToTarget = (lat: number, lng: number, zoomLevel: number = 13) => {
+  const handleFlyToTarget = useCallback((lat: number, lng: number, zoomLevel: number = 13) => {
     if (!mapInstanceRef.current) return;
-    mapInstanceRef.current.flyTo([lat, lng], zoomLevel, {
-      duration: 0.8,
-      easeLinearity: 0.25,
-    });
-  };
+    mapInstanceRef.current.setView([lat, lng], zoomLevel, { animate: false });
+  }, []);
 
   // Select Item and Automatically Zoom into Feature
-  const handleSelectItemWithZoom = (item: SelectedItemType) => {
+  const handleSelectItemWithZoom = useCallback((item: SelectedItemType) => {
     // Selection can be triggered by quick actions, popup callbacks, or stale
     // filtered results. Never publish an incomplete selection to the parent.
     if (!item || !item.data) {
@@ -444,10 +449,6 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     }
 
     setSelectedItem(item);
-
-    if (item.type === 'project') {
-      onSelectProject?.(item.data);
-    }
 
     let targetLat = 24.7136;
     let targetLng = 46.6753;
@@ -481,28 +482,32 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     }
 
     handleFlyToTarget(targetLat, targetLng, targetZoom);
-  };
+  }, [handleFlyToTarget]);
+
+  useEffect(() => {
+    selectItemRef.current = handleSelectItemWithZoom;
+  }, [handleSelectItemWithZoom]);
 
   // Global window callbacks for Leaflet Popups
   useEffect(() => {
     (window as any).__selectDistrictFromMap = (districtId: string) => {
       const d = saudiDistricts.find(item => item.id === districtId);
-      if (d) handleSelectItemWithZoom({ type: 'district', data: d });
+      if (d) selectItemRef.current({ type: 'district', data: d });
     };
 
     (window as any).__selectDealFromMap = (dealId: string) => {
       const deal = sampleLiveDeals.find(item => item.id === dealId);
-      if (deal) handleSelectItemWithZoom({ type: 'deal', data: deal });
+      if (deal) selectItemRef.current({ type: 'deal', data: deal });
     };
 
     (window as any).__selectParcelFromMap = (parcelId: string) => {
       const parcel = sampleDistrictBuildings.find(item => item.id === parcelId);
-      if (parcel) handleSelectItemWithZoom({ type: 'parcel', data: parcel });
+      if (parcel) selectItemRef.current({ type: 'parcel', data: parcel });
     };
 
     (window as any).__selectProjectFromMap = (projectId: string) => {
       const proj = nearbyProjects.find(item => item.id === projectId);
-      if (proj) handleSelectItemWithZoom({ type: 'project', data: proj });
+      if (proj) selectItemRef.current({ type: 'project', data: proj });
     };
 
     return () => {
@@ -682,6 +687,8 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     if (!map || !modeGroup) return;
 
     modeGroup.clearLayers();
+    markerRegistryRef.current.clear();
+    selectedMarkerKeyRef.current = null;
 
     // -------------------------------------------------------------
     // MODE 1: السوق العقاري (Real Estate Market)
@@ -738,13 +745,13 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
             const coords = DISTRICT_GEO_COORDS[d.name];
             if (!coords) return;
 
-            const isSelected = selectedItem?.type === 'district' && selectedItem.data.id === d.id;
             const displayPrice = marketSubFilter === 'commercial' 
               ? `${d.avgPriceM2Commercial.toLocaleString()} ر.س` 
               : `${d.avgPriceM2Residential.toLocaleString()} ر.س`;
 
-            const icon = createDistrictMarkerIcon(isSelected);
-            const marker = L.marker([coords.lat, coords.lng], { icon });
+            const icon = createDistrictMarkerIcon(false);
+            const marker = L.marker([coords.lat, coords.lng], { icon, title: `${t('حي', 'District')} ${d.name}`, alt: `${t('حي', 'District')} ${d.name}` });
+            markerRegistryRef.current.set(`district:${d.id}`, marker);
 
             // Compact 2-line tooltip next to marker (no emojis)
             marker.bindTooltip(`
@@ -761,7 +768,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
             });
 
             marker.on('click', () => {
-              handleSelectItemWithZoom({ type: 'district', data: d });
+              selectItemRef.current({ type: 'district', data: d });
             });
             marker.addTo(modeGroup);
           });
@@ -773,9 +780,9 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
             const coords = DEAL_GEO_COORDS[deal.id];
             if (!coords) return;
 
-            const isSelected = selectedItem?.type === 'deal' && selectedItem.data.id === deal.id;
-            const icon = createDealMarkerIcon(isSelected);
-            const marker = L.marker([coords.lat, coords.lng], { icon });
+            const icon = createDealMarkerIcon(false);
+            const marker = L.marker([coords.lat, coords.lng], { icon, title: `${t('صفقة', 'Deal')} ${deal.dealNumber}`, alt: `${t('صفقة', 'Deal')} ${deal.dealNumber}` });
+            markerRegistryRef.current.set(`deal:${deal.id}`, marker);
 
             // Compact 2-line tooltip next to marker (no emojis)
             marker.bindTooltip(`
@@ -792,7 +799,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
             });
 
             marker.on('click', () => {
-              handleSelectItemWithZoom({ type: 'deal', data: deal });
+              selectItemRef.current({ type: 'deal', data: deal });
             });
             marker.addTo(modeGroup);
           });
@@ -809,9 +816,9 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
         const coords = PARCEL_GEO_COORDS[parcel.id];
         if (!coords) return;
 
-        const isSelected = selectedItem?.type === 'parcel' && selectedItem.data.id === parcel.id;
-        const icon = createParcelMarkerIcon(isSelected);
-        const marker = L.marker([coords.lat, coords.lng], { icon });
+        const icon = createParcelMarkerIcon(false);
+        const marker = L.marker([coords.lat, coords.lng], { icon, title: `${t('قطعة', 'Parcel')} ${parcel.parcelNumber}`, alt: `${t('قطعة', 'Parcel')} ${parcel.parcelNumber}` });
+        markerRegistryRef.current.set(`parcel:${parcel.id}`, marker);
 
         // Compact 2-line tooltip next to marker (no emojis)
         marker.bindTooltip(`
@@ -828,7 +835,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
         });
 
         marker.on('click', () => {
-          handleSelectItemWithZoom({ type: 'parcel', data: parcel });
+          selectItemRef.current({ type: 'parcel', data: parcel });
         });
         marker.addTo(modeGroup);
       });
@@ -885,9 +892,9 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
     // -------------------------------------------------------------
     if (exploreMode === 'monitoring') {
       filteredProjects.forEach((project) => {
-        const isSelected = selectedItem?.type === 'project' && selectedItem.data.id === project.id;
-        const icon = createProjectMarkerIcon(isSelected);
-        const marker = L.marker([project.realGps.lat, project.realGps.lng], { icon });
+        const icon = createProjectMarkerIcon(false);
+        const marker = L.marker([project.realGps.lat, project.realGps.lng], { icon, title: project.name, alt: project.name });
+        markerRegistryRef.current.set(`project:${project.id}`, marker);
 
         // Compact 2-line tooltip next to marker (no emojis)
         marker.bindTooltip(`
@@ -904,13 +911,39 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
         });
 
         marker.on('click', () => {
-          handleSelectItemWithZoom({ type: 'project', data: project });
+          selectItemRef.current({ type: 'project', data: project });
         });
         marker.addTo(modeGroup);
       });
     }
 
-  }, [exploreMode, marketSubFilter, showMetroOverlay, showUtilitiesOverlay, activeCategory, filteredDistricts, filteredDeals, filteredParcels, filteredProjects, selectedItem, currentZoom, isAr]);
+  }, [exploreMode, marketSubFilter, showMetroOverlay, showUtilitiesOverlay, filteredDistricts, filteredDeals, filteredParcels, filteredProjects, currentZoom, isAr]);
+
+  // Selection is a lightweight icon swap. It must never destroy/recreate the
+  // complete Leaflet layer collection.
+  useEffect(() => {
+    const iconFor = (type: NonNullable<SelectedItemType>['type'], active: boolean) => {
+      if (type === 'district') return createDistrictMarkerIcon(active);
+      if (type === 'deal') return createDealMarkerIcon(active);
+      if (type === 'parcel') return createParcelMarkerIcon(active);
+      return createProjectMarkerIcon(active);
+    };
+
+    const previousKey = selectedMarkerKeyRef.current;
+    if (previousKey) {
+      const [previousType] = previousKey.split(':') as [NonNullable<SelectedItemType>['type']];
+      markerRegistryRef.current.get(previousKey)?.setIcon(iconFor(previousType, false));
+    }
+
+    if (!selectedItem) {
+      selectedMarkerKeyRef.current = null;
+      return;
+    }
+
+    const nextKey = `${selectedItem.type}:${selectedItem.data.id}`;
+    markerRegistryRef.current.get(nextKey)?.setIcon(iconFor(selectedItem.type, true));
+    selectedMarkerKeyRef.current = nextKey;
+  }, [selectedItem]);
 
   // Autocomplete search results with clean Lucide icons
   const searchResults = useMemo(() => {
@@ -1096,9 +1129,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
               <button
                 onClick={() => {
                   setExploreMode('market');
-                  if ((!selectedItem || selectedItem.type !== 'district') && saudiDistricts[0]) {
-                    handleSelectItemWithZoom({ type: 'district', data: saudiDistricts[0] });
-                  }
+                  if (selectedItem?.type !== 'district') setSelectedItem(null);
                 }}
                 className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer whitespace-nowrap ${
                   exploreMode === 'market'
@@ -1114,9 +1145,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
               <button
                 onClick={() => {
                   setExploreMode('planning');
-                  if ((!selectedItem || selectedItem.type !== 'parcel') && sampleDistrictBuildings[0]) {
-                    handleSelectItemWithZoom({ type: 'parcel', data: sampleDistrictBuildings[0] });
-                  }
+                  if (selectedItem?.type !== 'parcel') setSelectedItem(null);
                 }}
                 className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer whitespace-nowrap ${
                   exploreMode === 'planning'
@@ -1132,11 +1161,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
               <button
                 onClick={() => {
                   setExploreMode('monitoring');
-                  if ((!selectedItem || selectedItem.type !== 'project') && nearbyProjects[0]) {
-                    handleSelectItemWithZoom({ type: 'project', data: nearbyProjects[0] });
-                  } else if (!nearbyProjects[0]) {
-                    setSelectedItem(null);
-                  }
+                  if (selectedItem?.type !== 'project') setSelectedItem(null);
                 }}
                 className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer whitespace-nowrap ${
                   exploreMode === 'monitoring'
@@ -1150,10 +1175,29 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
 
             </div>
 
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((open) => !open)}
+              aria-expanded={filtersOpen}
+              className={`h-10 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-colors shrink-0 ${
+                filtersOpen || activeFilterCount > 0
+                  ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-950/60 dark:border-blue-800 dark:text-blue-300'
+                  : 'bg-white border-slate-200 text-slate-700 hover:border-blue-300 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200'
+              }`}
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              <span>{t('الفلاتر', 'Filters')}</span>
+              {activeFilterCount > 0 && (
+                <span className="min-w-5 h-5 px-1 rounded-md bg-blue-600 text-white text-[10px] grid place-items-center">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+
           </div>
 
           {/* Sub-Context Controls Bar: Shows ONLY what applies to the selected mode */}
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+          <div className={`${filtersOpen ? 'flex' : 'hidden'} flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs`}>
             
             {/* Mode 1 Context: Market Filters */}
             {exploreMode === 'market' && (
@@ -1525,9 +1569,10 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
               FOCUSED INFORMATION PANEL (لوحة تفاصيل العنصر المختار - بدون إيموجي)
               ========================================================================= */}
           {!isFullscreen && (
-            <div className="lg:col-span-4 space-y-4">
+            <div className={`lg:col-span-4 space-y-4 ${selectedItem ? 'max-lg:fixed max-lg:inset-x-3 max-lg:bottom-3 max-lg:z-[1200] max-lg:max-h-[48vh] max-lg:overflow-y-auto max-lg:rounded-3xl max-lg:shadow-2xl' : ''}`}>
               
               <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-xs space-y-4 transition-all">
+                {selectedItem && <div className="lg:hidden w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-600 mx-auto -mt-1" aria-hidden="true" />}
                 
                 {/* 1. Header of selected item */}
                 <div className="flex items-start justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
