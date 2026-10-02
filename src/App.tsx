@@ -52,6 +52,9 @@ export default function App() {
     if (path === 'methodology') {
       return 'methodology';
     }
+    if (path === 'infrastructure-networks') {
+      return 'infrastructure-networks';
+    }
     if (PAGES_DATA.some(p => p.id === path)) {
       return path;
     }
@@ -99,6 +102,8 @@ export default function App() {
         target = 'case-studies';
       } else if (path === 'methodology') {
         target = 'methodology';
+      } else if (path === 'infrastructure-networks') {
+        target = 'infrastructure-networks';
       } else if (PAGES_DATA.some(p => p.id === path)) {
         target = path;
       } else if (hash && (hash === 'case-studies' || hash === 'methodology' || PAGES_DATA.some(p => p.id === hash))) {
@@ -298,7 +303,9 @@ export default function App() {
                     selectedCategory={selectedCategoryFilter}
                     onSelectCategory={setSelectedCategoryFilter}
                     focusedProjectId={focusedProjectId}
-                    onSelectProject={(proj) => setFocusedProjectId(proj.id)}
+                    onSelectProject={(proj) => {
+                      if (proj?.id) setFocusedProjectId(proj.id);
+                    }}
                   />
                 </div>
                 <ProjectStatistics 
@@ -616,7 +623,9 @@ export default function App() {
               selectedCategory={selectedCategoryFilter}
               onSelectCategory={setSelectedCategoryFilter}
               focusedProjectId={focusedProjectId}
-              onSelectProject={(proj) => setFocusedProjectId(proj.id)}
+              onSelectProject={(proj) => {
+                if (proj?.id) setFocusedProjectId(proj.id);
+              }}
             />
           </div>
           <ProjectStatistics 

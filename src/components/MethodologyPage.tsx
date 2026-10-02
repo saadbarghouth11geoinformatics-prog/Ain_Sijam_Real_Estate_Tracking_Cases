@@ -34,7 +34,8 @@ interface MethodologyPageProps {
   onNavigate: (targetId: string) => void;
 }
 
-const FIXED_VISUAL_PRESENTATION_SCALE = 0.7;
+const shouldPreserveFullFrame = (src: string) =>
+  /(?:satellite|map|plan|dashboard|gis|report|drawing|masterplan|conflict)/i.test(src);
 
 // This is deliberately a workflow comparison, not a fabricated before/after claim.
 // The field capture and its GIS review are two connected records in the same survey process.
@@ -166,7 +167,7 @@ const SEVEN_STAGES: StageInfo[] = [
     id: 1,
     titleAr: 'الأصل والأرض',
     titleEn: 'Land & Asset Foundation',
-    dominantImage: '/images/infrastructure-network/01-gnss-field-survey.png',
+    dominantImage: '/images/infrastructure-network/27-field-utility-verification-team.jpg',
     explanationAr: 'تحديد إحداثيات ومساحة الأرض، وتوثيق خط الأساس الطبوغرافي والحدود النظامية للأصل قبل بدء أي نشاط.',
     explanationEn: 'Establishing exact spatial boundaries, topographic baseline, and legal zoning before any field activity begins.',
     whatWeKnowAr: [
@@ -1409,13 +1410,12 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 {/* LEFT/DOMINANT VISUAL (In RTL, appears on the left of desktop) */}
                 <div className="lg:col-span-7">
                   <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 shadow-md">
-                    <div className="group relative aspect-16/9 sm:aspect-[1.85/1] max-h-[340px] w-full overflow-hidden bg-slate-950">
+                    <div className="group relative aspect-16/9 sm:aspect-[1.85/1] max-h-[340px] w-full overflow-hidden bg-slate-100">
                       <img
                         key={activeStage.dominantImage}
                         src={activeStage.dominantImage}
                         alt={isAr ? activeStage.titleAr : activeStage.titleEn}
-                        className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
-                        style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
+                        className={`h-full w-full transition-opacity duration-500 ease-out animate-in fade-in ${shouldPreserveFullFrame(activeStage.dominantImage) ? 'object-contain p-2' : 'object-cover'}`}
                         loading="eager"
                         decoding="async"
                       />
@@ -1636,7 +1636,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                       ? 'العودة لمراحل الرصد'
                       : 'Back to Timeline'
                     : isAr
-                    ? 'مقارنة قبل وبعد (سلايدر)'
+                    ? 'مقارنة مسار الرفع والربط (اسحب)'
                       : 'Field Survey ↔ Network Map'}
                 </span>
               </button>
@@ -1653,7 +1653,7 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 <span className="font-bold text-slate-800">
                   {isBeforeAfterMode
                     ? isAr
-                      ? 'مقارنة حية: خط الأساس (01) مقابل المرحلة المتقدمة (05)'
+                      ? 'مسار موحّد: الرفع الميداني GNSS ثم المراجعة على خريطة GIS'
                       : 'One documented workflow: field capture versus network-layer review'
                     : isAr
                     ? activeEvidence.timeframeAr
@@ -1689,14 +1689,14 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                         : activeEvidence.image,
                       title: isBeforeAfterMode
                         ? isAr
-                          ? 'مقارنة التطور الزمني'
+                          ? 'من الرفع الميداني إلى خريطة الشبكات'
                           : 'From Field Survey to Network Map'
                         : isAr
                         ? activeEvidence.labelAr
                         : activeEvidence.labelEn,
                       subtitle: isBeforeAfterMode
                         ? isAr
-                          ? 'تطور الموقع من خط الأساس إلى مرحلة البناء المتقدمة'
+                          ? SURVEY_WORKFLOW_COMPARISON.explanationAr
                           : SURVEY_WORKFLOW_COMPARISON.explanationEn
                         : isAr
                         ? activeEvidence.timeframeAr
@@ -1730,14 +1730,15 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                   }}
                   onTouchEnd={stopDragging}
                   onTouchMove={handleTouchMove}
-                  className="relative aspect-16/10 w-full cursor-ew-resize select-none overflow-hidden bg-slate-950 sm:aspect-16/9"
+                  className="relative aspect-[3/2] w-full cursor-ew-resize select-none overflow-hidden bg-slate-100"
                 >
                   {/* GIS review is the second, connected step after field capture. */}
                   <img
                     src={SURVEY_WORKFLOW_COMPARISON.mapImage}
                     alt={isAr ? SURVEY_WORKFLOW_COMPARISON.mapLabelAr : SURVEY_WORKFLOW_COMPARISON.mapLabelEn}
-                    className="absolute inset-0 h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out"
-                    style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
+                    className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-out"
+                    loading="eager"
+                    decoding="async"
                     draggable={false}
                   />
 
@@ -1753,8 +1754,9 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                     <img
                       src={SURVEY_WORKFLOW_COMPARISON.fieldImage}
                       alt={isAr ? SURVEY_WORKFLOW_COMPARISON.fieldLabelAr : SURVEY_WORKFLOW_COMPARISON.fieldLabelEn}
-                      className="absolute inset-0 h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out"
-                      style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
+                      className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-out"
+                      loading="eager"
+                      decoding="async"
                       draggable={false}
                     />
 
@@ -1803,13 +1805,13 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 </div>
               ) : (
                 /* --- MODE 2: TIME-BASED STAGE VIEWER WITH ANNOTATIONS --- */
-                <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-950 sm:aspect-16/9">
+                <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-100 sm:aspect-16/9">
                   <img
                     key={activeEvidence.image}
                     src={activeEvidence.image}
                     alt={isAr ? activeEvidence.labelAr : activeEvidence.labelEn}
-                    className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
-                    style={{ transform: `scale(${isEvidenceZoomed ? 1.25 : FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
+                    className={`h-full w-full transition-[transform,opacity] duration-500 ease-out animate-in fade-in ${shouldPreserveFullFrame(activeEvidence.image) ? 'object-contain p-2' : 'object-cover'}`}
+                    style={{ transform: `scale(${isEvidenceZoomed ? 1.25 : 1})`, transformOrigin: 'center' }}
                     loading="eager"
                     decoding="async"
                   />
@@ -1992,13 +1994,12 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:p-4 shadow-sm">
                   
                   {/* Active Main Visual */}
-                  <div className="group relative aspect-[1.85/1] sm:aspect-16/9 max-h-[380px] w-full overflow-hidden rounded-xl bg-slate-950 shadow-md">
+                  <div className="group relative aspect-[1.85/1] sm:aspect-16/9 max-h-[380px] w-full overflow-hidden rounded-xl bg-slate-100 shadow-md">
                     <img
                       key={activeDimension.image}
                       src={activeDimension.image}
                       alt={isAr ? activeDimension.titleAr : activeDimension.titleEn}
-                      className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
-                      style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
+                      className={`h-full w-full transition-opacity duration-500 ease-out animate-in fade-in ${shouldPreserveFullFrame(activeDimension.image) ? 'object-contain p-2' : 'object-cover'}`}
                       loading="eager"
                       decoding="async"
                     />
@@ -2132,13 +2133,12 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
           <div>
             {/* CINEMA MAIN SCREEN */}
             <div className="mt-6">
-              <div className="relative aspect-[1.95/1] sm:aspect-16/9 max-h-[440px] w-full overflow-hidden rounded-2xl border border-slate-800 bg-black shadow-2xl">
+              <div className="relative aspect-[1.95/1] sm:aspect-16/9 max-h-[440px] w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-2xl">
                 <img
                   key={currentCinemaSlide.image}
                   src={currentCinemaSlide.image}
                   alt={isAr ? currentCinemaSlide.labelAr : currentCinemaSlide.labelEn}
-                  className="h-full w-full object-contain transition-[transform,opacity] duration-500 ease-out animate-in fade-in"
-                  style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
+                  className={`h-full w-full transition-opacity duration-500 ease-out animate-in fade-in ${shouldPreserveFullFrame(currentCinemaSlide.image) ? 'object-contain p-2' : 'object-cover'}`}
                   loading="eager"
                   decoding="async"
                 />
@@ -2394,13 +2394,13 @@ export function MethodologyPage({ onNavigate }: MethodologyPageProps) {
             })}
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4" role="tabpanel">
+          <div className="mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 lg:grid-cols-4" role="tabpanel">
             {visibleWorkGalleryItems.map((item, index) => (
               <button
                 key={item.src}
                 type="button"
                 onClick={() => setWorkGalleryLightboxIndex(index)}
-                className={`group relative min-w-0 overflow-hidden border border-slate-900/10 bg-slate-200 text-start shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-cyan-700 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 ${
+                className={`group relative w-[82vw] max-w-[320px] shrink-0 snap-center overflow-hidden border border-slate-900/10 bg-slate-200 text-start shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-cyan-700 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:w-auto sm:max-w-none ${
                   index % 11 === 0 ? 'sm:col-span-2 sm:row-span-2' : index % 7 === 0 ? 'sm:row-span-2' : ''
                 }`}
               >

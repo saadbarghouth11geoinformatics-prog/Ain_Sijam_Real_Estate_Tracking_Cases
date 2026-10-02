@@ -50,7 +50,7 @@ import field20 from '@/assets/infrastructure-networks-field/35-gnss-site-survey.
 import irrigationNetworkMap from '@/assets/irrigation-network/irrigation-network-map.png';
 import irrigationValvesDashboard from '@/assets/irrigation-network/irrigation-valves-dashboard.png';
 
-const FIXED_VISUAL_PRESENTATION_SCALE = 0.7;
+const DEFAULT_DASHBOARD_ZOOM = 1;
 
 interface InfrastructureNetworksPageProps {
   onNavigate: (pageId: string) => void;
@@ -374,7 +374,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
   const [activeViewerTab, setActiveViewerTab] = useState<number>(0);
   const [activeViewerImage, setActiveViewerImage] = useState<string>(field08);
   const [activeViewerCaption, setActiveViewerCaption] = useState<string>(isAr ? 'عرض موحد للطبقات' : 'Unified Layer View');
-  const [dashboardZoom, setDashboardZoom] = useState<number>(FIXED_VISUAL_PRESENTATION_SCALE);
+  const [dashboardZoom, setDashboardZoom] = useState<number>(DEFAULT_DASHBOARD_ZOOM);
 
   const viewerTabs = [
     {
@@ -497,7 +497,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
     const cur = viewerTabs[activeViewerTab];
     setActiveViewerImage(cur.main);
     setActiveViewerCaption(cur.caption);
-    setDashboardZoom(FIXED_VISUAL_PRESENTATION_SCALE);
+    setDashboardZoom(DEFAULT_DASHBOARD_ZOOM);
   }, [activeViewerTab]);
 
   // =========================================================================
@@ -1181,7 +1181,7 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                   <ZoomOut className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => setDashboardZoom(FIXED_VISUAL_PRESENTATION_SCALE)}
+                  onClick={() => setDashboardZoom(DEFAULT_DASHBOARD_ZOOM)}
                   className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer text-xs font-mono px-2"
                   title={isAr ? 'إعادة ضبط' : 'Reset Zoom'}
                 >
@@ -1478,16 +1478,16 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                 onMouseDown={() => setIsDraggingSlider(true)}
                 onMouseUp={() => setIsDraggingSlider(false)}
                 onTouchMove={handleTouchMove}
-                className="relative aspect-16/10 rounded-3xl overflow-hidden bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-xl select-none p-1"
+                className="relative aspect-[3/2] rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl select-none"
               >
                 
                 {/* Background Image: field corridor context */}
                 <img
                   src={field09}
                   alt={isAr ? 'سياق شبكات البنية' : 'Corridor Context'}
-                  className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                  style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
-                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                  loading="eager"
+                  decoding="async"
                 />
 
                 {/* Overlaid Image: engineering plan or utility map */}
@@ -1502,9 +1502,9 @@ export const InfrastructureNetworksPage: React.FC<InfrastructureNetworksPageProp
                   <img
                     src={comparisonTarget === 'plan1' ? field10 : field07}
                     alt={isAr ? 'التحليل المكاني' : 'Spatial Analysis'}
-                    className="w-full h-full object-contain"
-                    style={{ transform: `scale(${FIXED_VISUAL_PRESENTATION_SCALE})`, transformOrigin: 'center' }}
-                    loading="lazy"
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                    decoding="async"
                   />
                 </div>
 

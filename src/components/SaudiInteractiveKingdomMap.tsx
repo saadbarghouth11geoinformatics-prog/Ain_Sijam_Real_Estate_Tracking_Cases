@@ -331,8 +331,10 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
       if (mapContainerRef.current) {
         mapContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
+    } else if (selectedItem?.type === 'project') {
+      setSelectedItem(null);
     }
-  }, [focusedProjectId, nearbyProjects]);
+  }, [focusedProjectId, nearbyProjects, selectedItem?.type]);
 
   // Sync city navigation when selectedCity prop changes
   useEffect(() => {
@@ -434,8 +436,14 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
 
   // Select Item and Automatically Zoom into Feature
   const handleSelectItemWithZoom = (item: SelectedItemType) => {
+    // Selection can be triggered by quick actions, popup callbacks, or stale
+    // filtered results. Never publish an incomplete selection to the parent.
+    if (!item || !item.data) {
+      setSelectedItem(null);
+      return;
+    }
+
     setSelectedItem(item);
-    if (!item) return;
 
     if (item.type === 'project') {
       onSelectProject?.(item.data);
@@ -1088,7 +1096,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
               <button
                 onClick={() => {
                   setExploreMode('market');
-                  if (!selectedItem || selectedItem.type !== 'district') {
+                  if ((!selectedItem || selectedItem.type !== 'district') && saudiDistricts[0]) {
                     handleSelectItemWithZoom({ type: 'district', data: saudiDistricts[0] });
                   }
                 }}
@@ -1106,7 +1114,7 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
               <button
                 onClick={() => {
                   setExploreMode('planning');
-                  if (!selectedItem || selectedItem.type !== 'parcel') {
+                  if ((!selectedItem || selectedItem.type !== 'parcel') && sampleDistrictBuildings[0]) {
                     handleSelectItemWithZoom({ type: 'parcel', data: sampleDistrictBuildings[0] });
                   }
                 }}
@@ -1124,8 +1132,10 @@ export const SaudiInteractiveKingdomMap: React.FC<SaudiInteractiveKingdomMapProp
               <button
                 onClick={() => {
                   setExploreMode('monitoring');
-                  if (!selectedItem || selectedItem.type !== 'project') {
+                  if ((!selectedItem || selectedItem.type !== 'project') && nearbyProjects[0]) {
                     handleSelectItemWithZoom({ type: 'project', data: nearbyProjects[0] });
+                  } else if (!nearbyProjects[0]) {
+                    setSelectedItem(null);
                   }
                 }}
                 className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer whitespace-nowrap ${
